@@ -1,4 +1,4 @@
-package com.example.login_happylunch;
+package com.cnpm.happylunch;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -23,7 +23,7 @@ public class Login extends AppCompatActivity {
         String username = ((EditText)findViewById(R.id.txtUsername)).getText().toString();
         String password = ((EditText)findViewById(R.id.txtPassword)).getText().toString();
 
-        if(username.equals("hocdoan") && password.equals("hocdoan")){
+        if(username.equals("admin") && password.equals("admin")){
             Intent in = new Intent(Login.this, Hello.class);
             startActivity(in);
         }else{

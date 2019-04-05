@@ -1,4 +1,4 @@
-package com.example.login_happylunch;
+package com.cnpm.happylunch;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

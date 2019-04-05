@@ -25,20 +25,20 @@ public class BagActivity extends AppCompatActivity {
     }
 
     public void AnhXa(){
-        arrayBag.add(new Bag(R.drawable.ck_banh_bao_xa_xiu_2,   "Bánh bao xá xíu 2",
-                "9:28",3,R.drawable.x));
+        arrayBag.add(new Bag(R.drawable.ck_banh_bao_ba_xiu_2,   "Bánh bao xá xíu 2",
+                "9:28",3,R.drawable.icb_x));
         arrayBag.add(new Bag(R.drawable.ck_com_chien,           "Cơm chiên",
-                "9:18",2,R.drawable.x));
+                "9:18",2,R.drawable.icb_x));
         arrayBag.add(new Bag(R.drawable.ck_fruit_whole_nodish,  "Fruit whole nodish",
-                "9:08",3,R.drawable.chamthan));
+                "9:08",3,R.drawable.icb_chamthan));
         arrayBag.add(new Bag(R.drawable.ck_salad_caron,         "Salad caron",
-                "8:28",1,R.drawable.tichv));
+                "8:28",1,R.drawable.icb_tichv));
         arrayBag.add(new Bag(R.drawable.ck_single_banana,       "Single_banana",
-                "8:18",1,R.drawable.tichv));
+                "8:18",1,R.drawable.icb_tichv));
         arrayBag.add(new Bag(R.drawable.ck_trung_cut,           "Trứng cút",
-                "8:08",4,R.drawable.tichv));
+                "8:08",4,R.drawable.icb_tichv));
         arrayBag.add(new Bag(R.drawable.ck_salad_caron,         "Slad caron",
-                "8:00",1,R.drawable.tichv));
+                "8:00",1,R.drawable.icb_tichv));
 
     }
 
