@@ -13,8 +13,6 @@ public class SelectLoginType extends AppCompatActivity {
         setContentView(R.layout.activity_select_login_type);
     }
 
-
-
     private void moveToLoginActivity(){
         Intent in = new Intent(SelectLoginType.this, Login.class);
         startActivity(in);

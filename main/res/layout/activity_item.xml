@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbarchitietsanpham"
@@ -22,7 +21,7 @@
             android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/imageviewchitietsanpham"
-                android:src="@drawable/COM"
+                android:src="@drawable/ck_com_chien"
                 android:layout_margin="10dp"
                 android:layout_width="150dp"
                 android:layout_height="150dp"/>
@@ -31,7 +30,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <TextView
-                    android:id="@+id/textviewtenchitietsanpham"
                     android:text="TÊN SẢN PHẨM"
                     android:textStyle="bold"
                     android:textColor="#00BCD4"
@@ -43,7 +41,7 @@
                     android:id="@+id/textviewtenchitietsanpham"
                     android:text="CƠM TRỨNG XÚCH XÍCH"
                     android:textColor="#249E9E"
-                    android:layout_margin="0dpdp"
+                    android:layout_margin="0dp"
                     android:textSize="20sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>

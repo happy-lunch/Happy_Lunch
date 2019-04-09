@@ -24,7 +24,7 @@ public class Login extends AppCompatActivity {
         String password = ((EditText)findViewById(R.id.txtPassword)).getText().toString();
 
         if(username.equals("admin") && password.equals("admin")){
-            Intent in = new Intent(Login.this, Hello.class);
+            Intent in = new Intent(Login.this, BagActivity.class);
             startActivity(in);
         }else{
             Toast.makeText(this, "Failed Login", Toast.LENGTH_SHORT).show();

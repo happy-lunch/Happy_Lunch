@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:onClick="clickBagRow"
+    >
 
     <ImageView
         android:id="@+id/imageView_bagImg"
@@ -23,14 +24,10 @@
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:text="Tên item"
-        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/imageView_bagImg"
-        app:layout_constraintEnd_toStartOf="@+id/textView_bagTime"
-        app:layout_constraintHorizontal_bias="0.189"
         app:layout_constraintStart_toEndOf="@+id/imageView_bagImg"
         app:layout_constraintTop_toTopOf="@+id/imageView_bagImg" />
 
@@ -38,13 +35,18 @@
         android:id="@+id/textView_bagTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="500dp"
+        android:layout_marginLeft="500dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginBottom="8dp"
         android:text="TextView"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/textView_bagCount"
         app:layout_constraintEnd_toStartOf="@+id/textView_bagCount"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/imageView_bagImg"
         app:layout_constraintTop_toTopOf="@+id/textView_bagCount"
         tools:text="@tools:sample/date/hhmm" />
 
@@ -53,10 +55,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
         android:layout_marginBottom="8dp"
         android:text="Num"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/imageView_bagStatus"
         app:layout_constraintEnd_toStartOf="@+id/imageView_bagStatus"
         app:layout_constraintTop_toTopOf="@+id/imageView_bagStatus" />
@@ -66,8 +69,8 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginTop="33dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginRight="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
