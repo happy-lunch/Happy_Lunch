@@ -2,7 +2,9 @@ package com.cnpm.happylunch;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +12,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +64,7 @@ class BagAdapter extends BaseAdapter {
     private int layout;
     private List<BagRow> bagList;
 
-    BagAdapter(Context context, int layout, List<BagRow> bagList) {
+    public BagAdapter(Context context, int layout, List<BagRow> bagList) {
         this.context = context;
         this.layout = layout;
         this.bagList = bagList;
@@ -122,12 +123,29 @@ class BagAdapter extends BaseAdapter {
     }
 }
 
-public class Bag extends AppCompatActivity {
+public class Bag extends Fragment {
 
     private ListView lvBag;
     private ArrayList<BagRow> arrayBag ;
     private BagAdapter bagAdapter;
 
+    private View view;
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.activity_bag, container, false);
+
+        lvBag = view.findViewById(R.id.list_bag);
+        arrayBag = new ArrayList<>();
+        AnhXa();
+        bagAdapter = new BagAdapter(getContext(), R.layout.bag_row, arrayBag);
+        lvBag.setAdapter(bagAdapter);
+
+        return view;
+    }
+
+    /*
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,6 +158,7 @@ public class Bag extends AppCompatActivity {
         lvBag.setAdapter(bagAdapter);
 
     }
+    */
 
     private void AnhXa(){
         arrayBag.add(new BagRow(R.drawable.ck_banh_bao_ba_xiu_2,   "Bánh bao xá xíu 2",
@@ -166,8 +185,10 @@ public class Bag extends AppCompatActivity {
                 "8:00",1,R.drawable.icb_tichv));
     }
 
+    /*
     public void clickBagRow(View view) {
-        Toast.makeText(this, "Mở giao diện item_info của Vy", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Mở giao diện item_info của Vy", Toast.LENGTH_SHORT).show();
 
     }
+    */
 }
