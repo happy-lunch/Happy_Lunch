@@ -8,7 +8,7 @@
     >
 
     <ImageView
-        android:id="@+id/imageView_bagImg"
+        android:id="@+id/imageView_bag_img"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginStart="8dp"
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView_bagName"
+        android:id="@+id/textView_bag_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -27,12 +27,12 @@
         android:layout_marginBottom="8dp"
         android:text="Tên item"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView_bagImg"
-        app:layout_constraintStart_toEndOf="@+id/imageView_bagImg"
-        app:layout_constraintTop_toTopOf="@+id/imageView_bagImg" />
+        app:layout_constraintBottom_toBottomOf="@+id/imageView_bag_img"
+        app:layout_constraintStart_toEndOf="@+id/imageView_bag_img"
+        app:layout_constraintTop_toTopOf="@+id/imageView_bag_img" />
 
     <TextView
-        android:id="@+id/textView_bagTime"
+        android:id="@+id/textView_bag_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="500dp"
@@ -43,15 +43,15 @@
         android:layout_marginBottom="8dp"
         android:text="TextView"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/textView_bagCount"
-        app:layout_constraintEnd_toStartOf="@+id/textView_bagCount"
+        app:layout_constraintBottom_toBottomOf="@+id/textView_bag_count"
+        app:layout_constraintEnd_toStartOf="@+id/textView_bag_count"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/imageView_bagImg"
-        app:layout_constraintTop_toTopOf="@+id/textView_bagCount"
+        app:layout_constraintStart_toEndOf="@+id/imageView_bag_img"
+        app:layout_constraintTop_toTopOf="@+id/textView_bag_count"
         tools:text="@tools:sample/date/hhmm" />
 
     <TextView
-        android:id="@+id/textView_bagCount"
+        android:id="@+id/textView_bag_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -60,12 +60,12 @@
         android:layout_marginBottom="8dp"
         android:text="Num"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView_bagStatus"
-        app:layout_constraintEnd_toStartOf="@+id/imageView_bagStatus"
-        app:layout_constraintTop_toTopOf="@+id/imageView_bagStatus" />
+        app:layout_constraintBottom_toBottomOf="@+id/imageView_bag_status"
+        app:layout_constraintEnd_toStartOf="@+id/imageView_bag_status"
+        app:layout_constraintTop_toTopOf="@+id/imageView_bag_status" />
 
     <ImageView
-        android:id="@+id/imageView_bagStatus"
+        android:id="@+id/imageView_bag_status"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginTop="33dp"
