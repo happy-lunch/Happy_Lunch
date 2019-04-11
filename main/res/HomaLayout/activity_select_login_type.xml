@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_marginRight="50dp"
+    android:layout_marginLeft="50dp"
+    android:layout_marginTop="100dp"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <Button
+        android:onClick="loginByUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#EC03F4"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:layout_marginBottom="20dp"
+        android:text="Login by user account"
+        android:textColor="#FFFFFF" />
+
+    <Button
+        android:onClick="loginByAdmin"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:background="#03D0F4"
+        android:textColor="#FFFFFF"
+        android:text="Login by admin account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:textColor="#FFFFFF"
+        android:background="#3F51B5"
+        android:layout_marginTop="20dp"
+        android:text="Create a new account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
