@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 public class Bottom_Nav extends AppCompatActivity {
 
@@ -80,11 +79,6 @@ public class Bottom_Nav extends AppCompatActivity {
 
         toolBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         toolBar.setCustomView(view);
-    }
-
-    public void clickBagRow(View view) {
-        Toast.makeText(this, "Mở giao diện item_info của Vy", Toast.LENGTH_SHORT).show();
-
     }
 
 }

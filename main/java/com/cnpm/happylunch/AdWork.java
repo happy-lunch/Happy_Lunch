@@ -111,7 +111,7 @@ public class AdWork extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ad_work);
 
-        lvAdWork = findViewById(R.id.list_work);
+        lvAdWork = findViewById(R.id.list_ad_work);
         arrayAdWork = new ArrayList<>();
         AnhXa();
         adWorkAdapter = new AdWorkAdapter(this, R.layout.ad_work_row, arrayAdWork);

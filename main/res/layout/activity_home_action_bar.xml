@@ -8,20 +8,20 @@
     >
 
     <EditText
-        android:focusable="false"
-        android:textSize="14sp"
-        android:paddingLeft="5dp"
-        android:paddingRight="10dp"
+        android:layout_width="265dp"
+        android:layout_height="40dp"
         android:layout_marginLeft="10dp"
         android:layout_weight="8"
-        android:drawablePadding="5dp"
+        android:background="@drawable/border_text"
         android:drawableLeft="@drawable/ic_search"
+        android:drawablePadding="5dp"
+        android:focusable="false"
+        android:hint="Happy Lunch"
         android:inputType="text"
         android:maxLines="1"
-        android:background="@drawable/border_text"
-        android:hint="Happy Lunch"
-        android:layout_width="265dp"
-        android:layout_height="40dp" />
+        android:paddingLeft="5dp"
+        android:paddingRight="10dp"
+        android:textSize="14sp" />
 
     <ImageView
         android:layout_gravity="center"

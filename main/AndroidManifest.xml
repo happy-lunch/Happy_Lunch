@@ -11,11 +11,17 @@
         android:label="Happy Lunch"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ListFoodsInCategory"></activity>
         <activity
-            android:name=".Bag"
+            android:name=".AdItem"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing" />
+            android:windowSoftInputMode="adjustNothing"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
+            android:name=".AdWork"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".ListFoodsInCategory"></activity>
         <activity
             android:name=".Bottom_Nav"
             android:screenOrientation="portrait"

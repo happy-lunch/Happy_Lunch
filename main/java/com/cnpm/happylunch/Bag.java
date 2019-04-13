@@ -8,10 +8,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,6 +144,15 @@ public class Bag extends Fragment {
         bagAdapter = new BagAdapter(getContext(), R.layout.bag_row, arrayBag);
         lvBag.setAdapter(bagAdapter);
 
+
+        lvBag.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getContext(),"Mở giao diện của Vy item " + arrayBag.get(position).getName(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
         return view;
     }
 
@@ -184,6 +195,8 @@ public class Bag extends Fragment {
         arrayBag.add(new BagRow(R.drawable.ck_salad_caron,         "Salad caron",
                 "8:00",1,R.drawable.icb_tichv));
     }
+
+
 
     /*
     public void clickBagRow(View view) {
