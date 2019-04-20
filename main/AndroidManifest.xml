@@ -11,6 +11,12 @@
         android:label="Happy Lunch"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+		
+		<activity android:name=".VerifyEmail"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".Sign_Up"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+		
         <activity android:name=".ListFoodsInCategory"></activity>
         <activity android:name=".FoodDetail" />
         <activity

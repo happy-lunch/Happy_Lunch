@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "264394554138",
+    "firebase_url": "https://happy-lunch-e5d98.firebaseio.com",
+    "project_id": "happy-lunch-e5d98",
+    "storage_bucket": "happy-lunch-e5d98.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:264394554138:android:9d0cd6e146c11f55",
+        "android_client_info": {
+          "package_name": "com.example.login_happylunch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "264394554138-jpjapv0ksiluevmg8ie731vqqoudkh4p.apps.googleusercontent.com",
+          "client_type": 3
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzmbxrvbutdJcJEPz73gnnenrx5sQ-GX0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "264394554138-jpjapv0ksiluevmg8ie731vqqoudkh4p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
