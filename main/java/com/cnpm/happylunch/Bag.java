@@ -173,27 +173,27 @@ public class Bag extends Fragment {
 
     private void AnhXa(){
         arrayBag.add(new BagRow(R.drawable.ck_banh_bao_ba_xiu_2,   "Bánh bao xá xíu 2",
-                "9:50",3,R.drawable.icb_x));
+                "9:50",3,R.drawable.ic_clear_black_18dp));
         arrayBag.add(new BagRow(R.drawable.ck_com_chien,           "Cơm chiên",
-                "9:45",2,R.drawable.icb_x));
+                "9:45",2,R.drawable.ic_clear_black_18dp));
         arrayBag.add(new BagRow(R.drawable.ck_fruit_whole_nodish,  "Fruit whole nodish",
-                "9:30",3,R.drawable.icb_chamthan));
+                "9:30",3,R.drawable.ic_clear_black_18dp));
         arrayBag.add(new BagRow(R.drawable.ck_salad_caron,         "Salad caron",
-                "9:20",1,R.drawable.icb_tichv));
+                "9:20",1,R.drawable.ic_done_black_18dp));
         arrayBag.add(new BagRow(R.drawable.ck_single_banana,       "Single banana",
-                "8:55",1,R.drawable.icb_tichv));
+                "8:55",1,R.drawable.ic_done_black_18dp));
         arrayBag.add(new BagRow(R.drawable.ck_trung_cut,           "Trứng cút",
-                "8:45",4,R.drawable.icb_tichv));
+                "8:45",4,R.drawable.ic_done_black_18dp));
         arrayBag.add(new BagRow(R.drawable.ck_salad_caron,         "Salad caron",
-                "8:40",1,R.drawable.icb_tichv));
+                "8:40",1,R.drawable.ic_done_black_18dp));
         arrayBag.add(new BagRow(R.drawable.ck_salad_caron,         "Salad caron",
-                "8:40",1,R.drawable.icb_tichv));
+                "8:40",1,R.drawable.ic_done_black_18dp));
         arrayBag.add(new BagRow(R.drawable.ck_single_banana,       "Single banana",
-                "8:30",1,R.drawable.icb_tichv));
+                "8:30",1,R.drawable.ic_done_black_18dp));
         arrayBag.add(new BagRow(R.drawable.ck_trung_cut,           "Trứng cút",
-                "8:20",4,R.drawable.icb_tichv));
+                "8:20",4,R.drawable.ic_done_black_18dp));
         arrayBag.add(new BagRow(R.drawable.ck_salad_caron,         "Salad caron",
-                "8:00",1,R.drawable.icb_tichv));
+                "8:00",1,R.drawable.ic_done_black_18dp));
     }
 
 

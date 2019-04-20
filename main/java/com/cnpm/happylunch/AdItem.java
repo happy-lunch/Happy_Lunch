@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -129,7 +130,8 @@ public class AdItem extends AppCompatActivity {
     private GridView gvAdItem;
     private ArrayList<AdItemElement> arrayAdItem;
     private AdItemAdapter adItemAdapter;
-    private ImageButton imageButton_idItem_delete;
+    private ImageButton search, add;
+    private String txtSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +146,22 @@ public class AdItem extends AppCompatActivity {
         adItemAdapter = new AdItemAdapter(this, R.layout.ad_item_element, arrayAdItem);
         gvAdItem.setAdapter(adItemAdapter);
 
+        search = findViewById(R.id.imageButton_adItem_search);
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Search();
+            }
+        });
+
+        add = findViewById(R.id.imageButton_adItem_add);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Add();
+            }
+        });
+
         gvAdItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -152,6 +170,15 @@ public class AdItem extends AppCompatActivity {
                 Dialog_click_item(position);
             }
         });
+    }
+
+    private void Search(){
+        txtSearch = ((EditText)findViewById(R.id.editText_adItem_search)).getText().toString();
+        Toast.makeText(getBaseContext(), "Tìm kiếm " + txtSearch, Toast.LENGTH_SHORT).show();
+    }
+
+    private void Add(){
+        Toast.makeText(getBaseContext(), "Add item", Toast.LENGTH_SHORT).show();
     }
 
     private void Dialog_click_item(final int position){
