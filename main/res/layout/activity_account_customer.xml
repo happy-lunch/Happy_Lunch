@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".account_customer"
+    android:orientation="vertical">
+<android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:title="Account"
+        app:titleTextColor="#f001"
+        android:background="#f20"
+        android:id="@+id/toolbaraccount">
+
+</android.support.v7.widget.Toolbar>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imagecustomer"
+            android:layout_width="150dp"
+            android:layout_height="195dp"
+            android:src="@drawable/user" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="207dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/texttenkhachhang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginRight="20dp"
+                android:text="Nguyen Van Hung"
+                android:textColor="#000"
+                android:textSize="25dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:text="ID: 1234567897"
+                android:textSize="20dp"
+                android:textStyle="italic" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Kiểm tra tài khoàn "
+            android:textSize="20dp"
+            android:id="@+id/btnkiemtrataikhoan"
+            />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cài đặt tài khoản"
+            android:id="@+id/btncaidattaikhoan"
+            android:textSize="20dp"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Kiểm tra hóa đơn"
+            android:id="@+id/btnhoadon"
+            android:textSize="20dp"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Đăng xuất"
+            android:textSize="20dp"
+            android:id="@+id/btndangxuat"/>
+    </LinearLayout>
+</LinearLayout>
