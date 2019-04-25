@@ -1,15 +1,9 @@
 package com.cnpm.happylunch;
 
 import android.content.Intent;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class SelectLoginType extends AppCompatActivity {
 
@@ -32,10 +26,7 @@ public class SelectLoginType extends AppCompatActivity {
     }
 
     public void loginByAdmin(View view) {
-        moveToLoginActivity();
-    }
-
-    public void signUp(View view) {
-        startActivity(new Intent(SelectLoginType.this, Sign_Up.class));
+        Intent in = new Intent(SelectLoginType.this, AdItem.class);
+        startActivity(in);
     }
 }

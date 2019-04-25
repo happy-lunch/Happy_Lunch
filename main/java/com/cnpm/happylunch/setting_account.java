@@ -1,16 +1,15 @@
-package com.example.account;
+package com.cnpm.happylunch;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 public class setting_account extends AppCompatActivity {
 
-    Toolbar toolbarcaidat;
+    //Toolbar toolbarcaidat;
     EditText edittxtmatkhauhientai,edittxtmatkhauthaydoi,edittxtnhaplaimatkhau;
     Button btnhuy,btnxacnhan;
     @Override
@@ -25,14 +24,14 @@ public class setting_account extends AppCompatActivity {
         btnhuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent account = new Intent(setting_account.this,account_customer.class);
-                startActivities(account);
+                Intent account = new Intent(setting_account.this,Bottom_Nav.class);
+                startActivity(account);
             }
         });
     }
 
     private void Anhxa() {
-        toolbarcaidat = (Toolbar) findViewById(R.id.toolbarsetacc);
+        //toolbarcaidat = (Toolbar) findViewById(R.id.toolbarsetacc);
         edittxtmatkhauhientai = (EditText) findViewById(R.id.edittxtmatkhauhientai);
         edittxtmatkhauthaydoi = (EditText) findViewById(R.id.edittxtmatkhauthaydoi);
         edittxtnhaplaimatkhau = (EditText) findViewById(R.id.edittxtnhaplaimatkhau);

@@ -16,7 +16,7 @@ public class Bottom_Nav extends AppCompatActivity {
 
     private HomePage home = new HomePage();
     private Bag shop = new Bag();
-    private AccountPage account = new AccountPage();
+    private account_customer account = new account_customer();
 
     private View view;
     private String toolBarTitle;
@@ -38,8 +38,8 @@ public class Bottom_Nav extends AppCompatActivity {
                     break;
                 case R.id.nav_account:
                     selectedFragment = account;
-                    toolBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE);
-                    toolBarTitle = "Account";
+                    toolBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+                    toolBar.setCustomView(view);
                     break;
             }
             toolBar.setTitle(toolBarTitle);
