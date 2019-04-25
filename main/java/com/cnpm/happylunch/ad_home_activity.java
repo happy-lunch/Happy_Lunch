@@ -10,11 +10,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import com.cnpm.happylunch.fragment.CartFragment;
-import com.cnpm.happylunch.fragment.HomeFragment;
-import com.cnpm.happylunch.fragment.ProfileFragment;
-import com.cnpm.happylunch.fragment.SettingFragment;
-import com.cnpm.happylunch.helper.BottomNavigationBehavior;
+import com.cnpm.happylunch.fragment.CartsFragment;
+import com.cnpm.happylunch.fragment.LogOutFragment;
+import com.cnpm.happylunch.fragment.MenuFragment;
+import com.cnpm.happylunch.fragment.OrderedFragment;
+import com.cnpm.happylunch.bot_nav_home_adminr;
 
 public class HomeAdmin extends AppCompatActivity {
 
