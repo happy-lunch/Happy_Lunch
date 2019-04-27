@@ -8,14 +8,14 @@ import android.view.ViewGroup;
 
 import com.cnpm.happylunch.R;
 
-public class LogOutFragment extends Fragment {
+public class ShopFragment extends Fragment {
 
-    public LogOutFragment() {
+    public ShopFragment() {
         // Required empty public constructor
     }
 
-    public static LogOutFragment newInstance(String param1, String param2) {
-        LogOutFragment fragment = new LogOutFragment();
+    public static ShopFragment newInstance(String param1, String param2) {
+        ShopFragment fragment = new ShopFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -30,6 +30,6 @@ public class LogOutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_logout, container, false);
+        return inflater.inflate(R.layout.fragment_shop, container, false);
     }
 }

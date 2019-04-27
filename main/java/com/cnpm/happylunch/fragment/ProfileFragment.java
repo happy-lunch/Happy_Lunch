@@ -8,14 +8,14 @@ import android.view.ViewGroup;
 
 import com.cnpm.happylunch.R;
 
-public class CartsFragment extends Fragment {
+public class ProfileFragment extends Fragment {
 
-    public CartsFragment() {
+    public ProfileFragment() {
         // Required empty public constructor
     }
 
-    public static CartsFragment newInstance(String param1, String param2) {
-        CartsFragment fragment = new MoreFragment();
+    public static ProfileFragment newInstance(String param1, String param2) {
+        ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -30,6 +30,6 @@ public class CartsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_carts, container, false);
+        return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 }

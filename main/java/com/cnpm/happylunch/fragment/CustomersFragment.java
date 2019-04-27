@@ -8,14 +8,14 @@ import android.view.ViewGroup;
 
 import com.cnpm.happylunch.R;
 
-public class MenuFragment extends Fragment {
+public class CustomersFragment extends Fragment {
 
-    public MenuFragment() {
+    public CustomersFragment() {
         // Required empty public constructor
     }
 
-    public static MenuFragment newInstance(String param1, String param2) {
-        MenuFragment fragment = new MenuFragment();
+    public static CustomersFragment newInstance(String param1, String param2) {
+        CustomersFragment fragment = new CustomersFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -30,6 +30,6 @@ public class MenuFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_menu, container, false);
+        return inflater.inflate(R.layout.fragment_customers, container, false);
     }
 }

@@ -4,15 +4,17 @@
     android:layout_height="match_parent"
     tools:context="com.cnpm.happylunch.fragment.OrderedFragment">
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="10dp"
+        android:drawableLeft="@drawable/ic_ordered_black_24dp"
+        android:drawablePadding="20dp"
+        android:hint="Search ID"
+        android:textColor="#03A9F4" />
 
 
-    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
-        android:layout_height="119dp"
-        android:columnWidth="100dp"
-        android:gravity="center"
-        android:numColumns="1"
-        android:numRows="2"
-        android:stretchMode="columnWidth" />
 
 </FrameLayout>

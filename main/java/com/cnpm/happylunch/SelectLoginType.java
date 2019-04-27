@@ -26,7 +26,7 @@ public class SelectLoginType extends AppCompatActivity {
     }
 
     public void loginByAdmin(View view) {
-        Intent in = new Intent(SelectLoginType.this, AdItem.class);
+        Intent in = new Intent(SelectLoginType.this, MainActivity_admin.class);
         startActivity(in);
     }
 }
