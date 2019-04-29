@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:onClick="clickAdWorkRow"
     >
 
     <TextView
@@ -51,9 +50,8 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:background="@null"
-        android:onClick="clickAdWork_full"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icb_dauchan"/>
+        app:srcCompat="@drawable/icb_dauchan" />
 
 </android.support.constraint.ConstraintLayout>

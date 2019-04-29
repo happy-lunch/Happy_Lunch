@@ -3,18 +3,12 @@ package com.cnpm.happylunch;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.CoordinatorLayout;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -25,11 +19,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.cnpm.happylunch.fragment.CustomersFragment;
-import com.cnpm.happylunch.fragment.OrderedFragment;
-import com.cnpm.happylunch.fragment.ProfileFragment;
-import com.cnpm.happylunch.fragment.ShopFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -138,39 +127,34 @@ class AdItemAdapter extends BaseAdapter {
     }
 }
 
-public class AdItem extends AppCompatActivity {
+public class AdItem extends Fragment {
 
     private GridView gvAdItem;
     private ArrayList<AdItemElement> arrayAdItem;
     private AdItemAdapter adItemAdapter;
     private ImageButton search, add;
     private String txtSearch;
-    private ActionBar toolbar;
+
+    private View view;
+
     @Override
+    /*
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ad_item);
+    */
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.activity_ad_item, container, false);
 
-        toolbar = getSupportActionBar();
-
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        // attaching bottom sheet behaviour - hide / show on scroll
-       /* CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) navigation.getLayoutParams();
-        layoutParams.setBehavior(new BottomNavigationBehavior());
-        toolbar.setTitle("Shop");
-        Intent in = new Intent(MainActivity_admin.this, AdItem.class);
-        startActivity(in);*/
-
-        gvAdItem = findViewById(R.id.grid_ad_item);
+        gvAdItem = view.findViewById(R.id.grid_ad_item);
         arrayAdItem = new ArrayList<>();
 
         AnhXa();
 
-        adItemAdapter = new AdItemAdapter(this, R.layout.ad_item_element, arrayAdItem);
+        adItemAdapter = new AdItemAdapter(getContext(), R.layout.ad_item_element, arrayAdItem);
         gvAdItem.setAdapter(adItemAdapter);
 
-        search = findViewById(R.id.imageButton_adItem_search);
+        search = view.findViewById(R.id.imageButton_adItem_search);
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -178,7 +162,7 @@ public class AdItem extends AppCompatActivity {
             }
         });
 
-        add = findViewById(R.id.imageButton_adItem_add);
+        add = view.findViewById(R.id.imageButton_adItem_add);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -194,19 +178,21 @@ public class AdItem extends AppCompatActivity {
                 Dialog_click_item(position);
             }
         });
+
+        return view;
     }
 
     private void Search(){
-        txtSearch = ((EditText)findViewById(R.id.editText_adItem_search)).getText().toString();
-        Toast.makeText(getBaseContext(), "Tìm kiếm " + txtSearch, Toast.LENGTH_SHORT).show();
+        txtSearch = ((EditText)view.findViewById(R.id.editText_adItem_search)).getText().toString();
+        Toast.makeText(getContext(), "Tìm kiếm " + txtSearch, Toast.LENGTH_SHORT).show();
     }
 
     private void Add(){
-        Toast.makeText(getBaseContext(), "Add item", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Add item", Toast.LENGTH_SHORT).show();
     }
 
     private void Dialog_click_item(final int position){
-        final Dialog dialog = new Dialog(this);
+        final Dialog dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.ad_item_dialog);
         dialog.setTitle("Bạn muốn làm gì " + arrayAdItem.get(position).getName() + "???");
 
@@ -217,7 +203,7 @@ public class AdItem extends AppCompatActivity {
         btn_dialog_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getBaseContext(),"Chỉnh sửa item " + arrayAdItem.get(position).getName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"Chỉnh sửa item " + arrayAdItem.get(position).getName(), Toast.LENGTH_SHORT).show();
                 dialog.cancel();
             }
         });
@@ -247,14 +233,14 @@ public class AdItem extends AppCompatActivity {
     }
 
     private void Dialog_click_delete(final int position){
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
         alertDialog.setTitle("Cảnh báo!!!");
         alertDialog.setMessage("Bạn chắc chắn muốn xóa " + arrayAdItem.get(position).getName() + "???");
 
         alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getBaseContext(),"Bạn đã xóa item " + arrayAdItem.get(position).getName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"Bạn đã xóa item " + arrayAdItem.get(position).getName(), Toast.LENGTH_SHORT).show();
                 arrayAdItem.remove(position);
                 adItemAdapter.notifyDataSetChanged();
             }
@@ -263,7 +249,7 @@ public class AdItem extends AppCompatActivity {
         alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getBaseContext(),"Cẩn thận đấy!!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"Cẩn thận đấy!!!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -289,48 +275,5 @@ public class AdItem extends AppCompatActivity {
                 15000, 5));
         arrayAdItem.add(new AdItemElement(R.drawable.ck_banh_gio,           "Bánh giò",
                 15000, 5));
-    }
-
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            Fragment selectedFragment = null;
-            switch (item.getItemId()) {
-                case R.id.navigation_shop:
-                    toolbar.setTitle("Shop");
-                    //loadFragment(new ShopFragment());
-                    Intent in = new Intent(AdItem.this, AdItem.class);
-                    startActivity(in);
-                    return true;
-                case R.id.navigation_customers:
-                    toolbar.setTitle("Customers");
-                   /* Intent intentMain = new Intent(AdItem.this, MainActivity_admin.class);
-                    startActivity(intentMain);*/
-                    return true;
-                case R.id.navigation_ordered:
-                    toolbar.setTitle("Ordered");
-                    loadFragment(new OrderedFragment());
-                    Intent intentOrdered = new Intent(AdItem.this, AdWork.class);
-                    startActivity(intentOrdered);
-                    return true;
-                case R.id.navigation_profile:
-                    toolbar.setTitle("Profile");
-                   /* Intent intentMain1 = new Intent(AdItem.this, MainActivity_admin.class);
-                    startActivity(intentMain1);*/
-                    return true;
-            }
-            return false;
-        }
-    };
-
-    private void loadFragment(Fragment fragment) {
-        // load fragment
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_container, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
     }
 }

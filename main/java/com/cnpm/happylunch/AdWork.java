@@ -1,27 +1,20 @@
 package com.cnpm.happylunch;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.cnpm.happylunch.fragment.CustomersFragment;
-import com.cnpm.happylunch.fragment.ProfileFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,35 +103,42 @@ class AdWorkAdapter extends BaseAdapter {
     }
 }
 
-public class AdWork extends AppCompatActivity {
+public class AdWork extends Fragment {
 
     private ListView lvAdWork;
     private ArrayList<AdWorkRow> arrayAdWork ;
     private AdWorkAdapter adWorkAdapter;
-    private ActionBar toolbar;
+
+    private View view;
+    private ImageButton work_full;
 
     @Override
+    /*
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ad_work);
+        view.setContentView(R.layout.activity_ad_work);
+        */
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.activity_ad_work, container, false);
 
-        toolbar = getSupportActionBar();
-
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        // attaching bottom sheet behaviour - hide / show on scroll
-       /* CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) navigation.getLayoutParams();
-        layoutParams.setBehavior(new BottomNavigationBehavior());
-        toolbar.setTitle("Shop");
-        Intent in = new Intent(MainActivity_admin.this, AdItem.class);
-        startActivity(in);*/
-
-        lvAdWork = findViewById(R.id.list_ad_work);
+        lvAdWork = view.findViewById(R.id.list_ad_work);
         arrayAdWork = new ArrayList<>();
         AnhXa();
-        adWorkAdapter = new AdWorkAdapter(this, R.layout.ad_work_row, arrayAdWork);
+        adWorkAdapter = new AdWorkAdapter(getContext(), R.layout.ad_work_row, arrayAdWork);
         lvAdWork.setAdapter(adWorkAdapter);
 
+        lvAdWork.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Toast.makeText(getBaseContext(),"Chỉnh sửa item " + arrayAdItem.get(position).getName(), Toast.LENGTH_SHORT).show();
+                //Option(position);
+                Toast.makeText(getContext(), "Mở giao diện để chọn làm một phần số lượng", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+        return view;
     }
 
     void AnhXa(){
@@ -155,61 +155,21 @@ public class AdWork extends AppCompatActivity {
         arrayAdWork.add(new AdWorkRow(R.drawable.ck_salad_caron,         "Salad caron",         1));
     }
 
-    public void clickAdWorkRow(View view) {
-        Toast.makeText(this, "Mở giao diện để chọn làm một phần số lượng", Toast.LENGTH_SHORT).show();
+    public void clickAdWorkRow() {
+        Toast.makeText(getContext(), "Mở giao diện để chọn làm một phần số lượng", Toast.LENGTH_SHORT).show();
 
     }
 
-    public void clickAdWork_full(View view) {
+    public void clickAdWork_full() {
         if (arrayAdWork.get(0).getStatus() == R.drawable.icb_dauchan){
-            Toast.makeText(this, "Nhân viên nhận làm hết số lượng được giao", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Nhân viên nhận làm hết số lượng được giao", Toast.LENGTH_SHORT).show();
             arrayAdWork.get(0).setStatus(R.drawable.icb_tichv);
         }
         else{
-            Toast.makeText(this, "Nhân viên xác nhận đã hoàn thành tất cả số lượng", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Nhân viên xác nhận đã hoàn thành tất cả số lượng", Toast.LENGTH_SHORT).show();
         }
 
 
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            Fragment selectedFragment = null;
-            switch (item.getItemId()) {
-                case R.id.navigation_shop:
-                    toolbar.setTitle("Shop");
-                    Intent in = new Intent(AdWork.this, AdItem.class);
-                    startActivity(in);
-                    return true;
-                case R.id.navigation_customers:
-                    toolbar.setTitle("Customers");
-                    /*Intent intentMain = new Intent(AdWork.this, MainActivity_admin.class);
-                    startActivity(intentMain);*/
-                    return true;
-                case R.id.navigation_ordered:
-                    toolbar.setTitle("Ordered");
-                    /*Intent intentOrdered = new Intent(AdWork.this, AdWork.class);
-                    startActivity(intentOrdered);*/
-                    return true;
-                case R.id.navigation_profile:
-                    toolbar.setTitle("Profile");
-                   /* Intent intentMain1 = new Intent(AdWork.this, MainActivity_admin.class);
-                    startActivity(intentMain1);*/
-                    return true;
-            }
-            return false;
-        }
-    };
-
-    private void loadFragment(Fragment fragment) {
-        // load fragment
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_container, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
 }
-
