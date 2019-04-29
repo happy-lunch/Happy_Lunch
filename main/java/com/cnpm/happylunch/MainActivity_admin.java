@@ -15,11 +15,10 @@ import com.cnpm.happylunch.fragment.ShopFragment;
 import com.cnpm.happylunch.fragment.ProfileFragment;
 import com.cnpm.happylunch.fragment.CustomersFragment;
 import com.cnpm.happylunch.fragment.OrderedFragment;
-import com.cnpm.happylunch.BottomNavigationBehavior;
 
 public class MainActivity_admin extends AppCompatActivity {
 
-     private ActionBar toolbar;
+    private ActionBar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +31,8 @@ public class MainActivity_admin extends AppCompatActivity {
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) navigation.getLayoutParams();
         layoutParams.setBehavior(new BottomNavigationBehavior());
         toolbar.setTitle("Shop");
-        loadFragment(new ShopFragment());
+        Intent in = new Intent(MainActivity_admin.this, AdItem.class);
+        startActivity(in);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -40,11 +40,12 @@ public class MainActivity_admin extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            Fragment fragment;
+            Fragment selectedFragment = null;
             switch (item.getItemId()) {
                 case R.id.navigation_shop:
                     toolbar.setTitle("Shop");
-                    loadFragment(new ShopFragment());
+                    Intent in = new Intent(MainActivity_admin.this, AdItem.class);
+                    startActivity(in);
                     return true;
                 case R.id.navigation_customers:
                     toolbar.setTitle("Customers");
@@ -52,7 +53,8 @@ public class MainActivity_admin extends AppCompatActivity {
                     return true;
                 case R.id.navigation_ordered:
                     toolbar.setTitle("Ordered");
-                    loadFragment(new OrderedFragment());
+                    Intent intentOrdered = new Intent(MainActivity_admin.this, AdWork.class);
+                    startActivity(intentOrdered);
                     return true;
                 case R.id.navigation_profile:
                     toolbar.setTitle("Profile");

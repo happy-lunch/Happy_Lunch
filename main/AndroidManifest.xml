@@ -56,6 +56,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity_admin" />
+        <activity android:name=".AdItem" />
+        <activity android:name=".AdWork" />
     </application>
 
 </manifest>
