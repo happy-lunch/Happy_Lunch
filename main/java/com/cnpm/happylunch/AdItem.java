@@ -144,9 +144,9 @@ public class AdItem extends Fragment {
         setContentView(R.layout.activity_ad_item);
     */
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.activity_ad_item, container, false);
+        view = inflater.inflate(R.layout.ad_item, container, false);
 
-        gvAdItem = view.findViewById(R.id.grid_ad_item);
+        gvAdItem = view.findViewById(R.id.grid_adItem);
         arrayAdItem = new ArrayList<>();
 
         AnhXa();

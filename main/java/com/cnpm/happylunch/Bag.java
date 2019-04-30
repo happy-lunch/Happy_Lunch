@@ -141,7 +141,7 @@ public class Bag extends Fragment {
         lvBag = view.findViewById(R.id.list_bag);
         arrayBag = new ArrayList<>();
         AnhXa();
-        bagAdapter = new BagAdapter(getContext(), R.layout.bag_row, arrayBag);
+        bagAdapter = new BagAdapter(getContext(), R.layout.element_bag, arrayBag);
         lvBag.setAdapter(bagAdapter);
 
 

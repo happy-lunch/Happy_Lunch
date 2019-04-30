@@ -14,10 +14,9 @@ public class AdBottom_Nav extends AppCompatActivity {
 
     private ActionBar toolBar;
 
-    private HomePage home = new HomePage();
     private AdWork adWork = new AdWork();
     private AdItem adItem = new AdItem();
-    private Bag bag = new Bag();
+    private AdRecharge adRecharge = new AdRecharge();
     private String toolBarTitle;
     private View view;
     private Fragment selectedFragment = null;
@@ -28,12 +27,16 @@ public class AdBottom_Nav extends AppCompatActivity {
             switch (menuItem.getItemId()){
                 case R.id.navigation_shop:
                     selectedFragment = adItem;
-                    toolBarTitle = "Kìa con bứm";
                     toolBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
                     toolBar.setCustomView(view);
                     break;
                 case R.id.navigation_ordered:
                     selectedFragment = adWork;
+                    toolBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+                    toolBar.setCustomView(view);
+                    break;
+                case R.id.navigation_customers:
+                    selectedFragment = adRecharge;
                     toolBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
                     toolBar.setCustomView(view);
                     break;
@@ -47,13 +50,13 @@ public class AdBottom_Nav extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ad_main);
+        setContentView(R.layout.ad_main);
         toolBar = getSupportActionBar();
 
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         view = layoutInflater.inflate(R.layout.activity_home_action_bar, null);
 
-        getSupportFragmentManager().beginTransaction().add(R.id.ad_fragment_container, adItem).add(R.id.ad_fragment_container, adWork).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.ad_fragment_container, adRecharge).add(R.id.ad_fragment_container, adItem).add(R.id.ad_fragment_container, adWork).commit();
 
         BottomNavigationView botNav = findViewById(R.id.ad_bottom_nav);
         botNav.setOnNavigationItemSelectedListener(new adBotNavListener());

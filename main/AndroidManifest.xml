@@ -12,30 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".setting_account"
+            android:name=".AdBottom_Nav"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-        <activity
-            android:name=".check_money"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-        <activity
-            android:name=".hoa_don"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-        <activity
-            android:name=".AdItem"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-        <activity
-            android:name=".AdWork"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+            android:windowSoftInputMode="adjustNothing"/>
         <activity android:name=".ListFoodsInCategory"></activity>
         <activity
             android:name=".Bottom_Nav"
@@ -55,9 +34,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity_admin" />
-        <activity android:name=".AdItem" />
-        <activity android:name=".AdWork" />
     </application>
 
 </manifest>

@@ -119,12 +119,12 @@ public class AdWork extends Fragment {
         view.setContentView(R.layout.activity_ad_work);
         */
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.activity_ad_work, container, false);
+        view = inflater.inflate(R.layout.ad_work, container, false);
 
-        lvAdWork = view.findViewById(R.id.list_ad_work);
+        lvAdWork = view.findViewById(R.id.list_adWork);
         arrayAdWork = new ArrayList<>();
         AnhXa();
-        adWorkAdapter = new AdWorkAdapter(getContext(), R.layout.ad_work_row, arrayAdWork);
+        adWorkAdapter = new AdWorkAdapter(getContext(), R.layout.ad_work_element, arrayAdWork);
         lvAdWork.setAdapter(adWorkAdapter);
 
         lvAdWork.setOnItemClickListener(new AdapterView.OnItemClickListener() {
