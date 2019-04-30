@@ -23,7 +23,7 @@ class AdWorkRow {
     private int img;
     private String name;
     private int count;
-    private int status = R.drawable.icb_dauchan;
+    private int status = R.drawable.ic_favorite_border_black_24dp;
 
 
     AdWorkRow(int img, String name, int count) {
@@ -163,7 +163,7 @@ public class AdWork extends Fragment {
     public void clickAdWork_full() {
         if (arrayAdWork.get(0).getStatus() == R.drawable.icb_dauchan){
             Toast.makeText(getContext(), "Nhân viên nhận làm hết số lượng được giao", Toast.LENGTH_SHORT).show();
-            arrayAdWork.get(0).setStatus(R.drawable.icb_tichv);
+            arrayAdWork.get(0).setStatus(R.drawable.ic_done_black_18dp);
         }
         else{
             Toast.makeText(getContext(), "Nhân viên xác nhận đã hoàn thành tất cả số lượng", Toast.LENGTH_SHORT).show();

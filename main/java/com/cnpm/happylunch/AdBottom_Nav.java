@@ -54,7 +54,7 @@ public class AdBottom_Nav extends AppCompatActivity {
         toolBar = getSupportActionBar();
 
         LayoutInflater layoutInflater = LayoutInflater.from(this);
-        view = layoutInflater.inflate(R.layout.activity_home_action_bar, null);
+        view = layoutInflater.inflate(R.layout.ad_action_bar, null);
 
         getSupportFragmentManager().beginTransaction().add(R.id.ad_fragment_container, adRecharge).add(R.id.ad_fragment_container, adItem).add(R.id.ad_fragment_container, adWork).commit();
 

@@ -7,7 +7,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_app_icon1"
+        android:icon="@drawable/logo1"
         android:label="Happy Lunch"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -15,7 +15,15 @@
             android:name=".AdBottom_Nav"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing"/>
-        <activity android:name=".ListFoodsInCategory"></activity>
+        <activity android:name=".ListFoodsInCategory"/>
+        <activity
+            android:name=".Bill"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Setting_account"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".Bottom_Nav"
             android:screenOrientation="portrait"

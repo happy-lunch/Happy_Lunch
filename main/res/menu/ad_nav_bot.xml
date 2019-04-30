@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@+id/navigation_shop"
-        android:icon="@drawable/ic_shop_black_24dp"
-        android:title="@string/title_shop" />
 
     <item
         android:id="@+id/navigation_ordered"
         android:icon="@drawable/ic_ordered_black_24dp"
         android:title="@string/title_ordered" />
+
+    <item
+        android:id="@+id/navigation_shop"
+        android:icon="@drawable/ic_shop_black_24dp"
+        android:title="@string/title_shop" />
 
     <item
         android:id="@+id/navigation_customers"
