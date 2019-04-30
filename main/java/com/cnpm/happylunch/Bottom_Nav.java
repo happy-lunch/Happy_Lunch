@@ -15,8 +15,9 @@ public class Bottom_Nav extends AppCompatActivity {
     private ActionBar toolBar;
 
     private HomePage home = new HomePage();
+    private Bag second = new Bag();
     private Bag shop = new Bag();
-    private account_customer account = new account_customer();
+    private Customer account = new Customer();
 
     private View view;
     private String toolBarTitle;
@@ -28,6 +29,11 @@ public class Bottom_Nav extends AppCompatActivity {
             switch (menuItem.getItemId()){
                 case R.id.nav_home:
                     selectedFragment = home;
+                    toolBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+                    toolBar.setCustomView(view);
+                    break;
+                case R.id.nav_second_shop:
+                    selectedFragment = second;
                     toolBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
                     toolBar.setCustomView(view);
                     break;
@@ -60,7 +66,7 @@ public class Bottom_Nav extends AppCompatActivity {
 
         //setHomeActionBar();
 
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, shop).add(R.id.fragment_container, account).add(R.id.fragment_container, home).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, account).add(R.id.fragment_container, shop).add(R.id.fragment_container, second).add(R.id.fragment_container, home).commit();
 
         BottomNavigationView botNav = findViewById(R.id.bottom_nav);
         botNav.setOnNavigationItemSelectedListener(new BotNavListener());

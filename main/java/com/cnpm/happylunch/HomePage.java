@@ -40,6 +40,7 @@ public class HomePage extends Fragment {
     private int countDot = numPopularItem;
     private ImageView[] dots;
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
