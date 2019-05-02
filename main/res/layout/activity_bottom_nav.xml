@@ -21,9 +21,9 @@
         android:background="?android:attr/windowBackground"
         android:layout_alignParentBottom="true"
         app:menu="@menu/buttom_nav"
-        app:itemTextColor="#FFFFFF"
-        app:itemIconTint="#FFFFFF"
-        android:backgroundTint="#F44336"
+        app:itemTextColor="@color/nav_item_color"
+        app:itemIconTint="@color/nav_item_color"
+        android:backgroundTint="#FFF"
         />
 
 </RelativeLayout>
