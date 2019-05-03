@@ -113,7 +113,7 @@ public class Sign_Up extends AppCompatActivity {
                         return;
                     }
 
-                    User user = new User(currentUser.getUid(), firstName, lastName, mssv, email, 0);
+                    User user = new User(currentUser.getUid(),"", firstName, lastName, mssv, email, 0);
 
                     //Push user up database
                     mDatabase.child("Customers").child(user.getUid()).setValue(user);

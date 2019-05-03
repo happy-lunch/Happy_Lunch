@@ -10,7 +10,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class App {
-    public static User user = null;
+    private App(){
+
+    }
+    public volatile static User user;
     public static void prepareUser(){
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();

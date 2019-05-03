@@ -4,6 +4,7 @@ import java.util.List;
 
 public class User {
     private String uid;
+    private String avaName;
     private String firstName;
     private String lastName;
     private String mssv;
@@ -15,13 +16,14 @@ public class User {
 
     }
 
-    public User(String uid, String firstName, String lastName, String mssv, String email, int HPCoin) {
+    public User(String uid,String avaName, String firstName, String lastName, String mssv, String email, int HPCoin) {
         this.uid = uid;
         this.firstName = firstName;
         this.lastName = lastName;
         this.mssv = mssv;
         this.email = email;
         this.HPCoin = HPCoin;
+        this.avaName = avaName;
     }
 
     public String getUid() {
@@ -30,6 +32,10 @@ public class User {
 
     public String getFirstName() {
         return firstName;
+    }
+
+    public String getAvaName() {
+        return avaName;
     }
 
     public String getLastName() {
@@ -54,6 +60,10 @@ public class User {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public void setAvaName(String avaName) {
+        this.avaName = avaName;
     }
 
     public void setLastName(String lastName) {
