@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbarchitietsanpham"
+        android:background="#7BB5E9"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:title="CHI TIẾT MÓN ĂN "
+        app:titleTextColor="#FFFFFF">
+
+    </android.support.v7.widget.Toolbar>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/imageviewchitietsanpham"
+                android:src="@drawable/ck_com_chien"
+                android:layout_margin="10dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"/>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:text="TÊN SẢN PHẨM"
+                    android:textStyle="bold"
+                    android:textColor="#00BCD4"
+                    android:layout_margin="10dp"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/textviewtenchitietsanpham"
+                    android:text="CƠM TRỨNG XÚCH XÍCH"
+                    android:textColor="#249E9E"
+                    android:layout_margin="0dp"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/textviewgiachitiet"
+                    android:layout_margin="10dp"
+                    android:textSize="20sp"
+                    android:text="GIÁ TIỀN: 22 000đ"
+                    android:textColor="#465C66"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <Button
+                    android:id="@+id/buttondatmua"
+                    android:text="Thêm giỏ hàng"
+                    android:textColor="#009688"
+                    android:textSize="15sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:textColor="#3F51B5"
+                android:layout_marginTop="5dp"
+                android:textSize="20sp"
+                android:text="MÔ TẢ MÓN ĂN"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:textSize="20sp"
+                    android:paddingBottom="10dp"
+                    android:id="@+id/textviewmotachitiet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="- CƠM TRẮNG 5K\n - XÚC XÍCH ĐỨC 12k\n - TRỨNG CHIÊN 5k"/>
+            </ScrollView>
+            <TextView
+                android:textColor="#3F51B5"
+                android:layout_marginTop="5dp"
+                android:textSize="20sp"
+                android:text="Đánh giá"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:textSize="20sp"
+                    android:paddingBottom="10dp"
+                    android:id="@+id/Review"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="- nnkv99: món ăn rất ngon\n - datai69 Trứng chiên chưa kỹ\n - nganle Tệ :(("/>
+            </ScrollView>
+        </LinearLayout>
+</LinearLayout>

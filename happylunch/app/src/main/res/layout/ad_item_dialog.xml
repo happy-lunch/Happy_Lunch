@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageButton
+        android:id="@+id/imageButton_adItem_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="8dp"
+        android:background="@null"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_edit_black_18dp" />
+
+    <ImageButton
+        android:id="@+id/imageButton_idItem_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@null"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton_idItem_exit"
+        app:layout_constraintStart_toEndOf="@+id/imageButton_adItem_edit"
+        app:layout_constraintTop_toTopOf="@+id/imageButton_adItem_edit"
+        app:srcCompat="@drawable/ic_delete_black_18dp" />
+
+    <ImageButton
+        android:id="@+id/imageButton_idItem_exit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:background="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_clear_black_18dp" />
+
+    <TextView
+        android:id="@+id/textView_idItem_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Edit"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/imageButton_adItem_edit"
+        app:layout_constraintStart_toStartOf="@+id/imageButton_adItem_edit"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton_adItem_edit" />
+
+    <TextView
+        android:id="@+id/textView_idItem_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Delete"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/imageButton_idItem_delete"
+        app:layout_constraintStart_toStartOf="@+id/imageButton_idItem_delete"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton_idItem_delete" />
+
+    <TextView
+        android:id="@+id/textView_idItem_nothing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Exit"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/imageButton_idItem_exit"
+        app:layout_constraintStart_toStartOf="@+id/imageButton_idItem_exit"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton_idItem_exit" />
+
+</android.support.constraint.ConstraintLayout>

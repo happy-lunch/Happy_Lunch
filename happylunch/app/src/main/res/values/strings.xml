@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">happy_lunch</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+	<string name="sign_up"><u>Tạo tài khoản mới</u></string>
+    //Admin
+    <string name="title_shop">Shop</string>
+    <string name="title_ordered">Ordered</string>
+    <string name="title_customers">Customers</string>
+    <string name="title_profile">Profile</string>
+</resources>
