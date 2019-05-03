@@ -1,6 +1,6 @@
 package com.cnpm.happylunch;
 
-import android.content.Context;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,168 +8,131 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
-class AdWorkRow {
-    private int img;
-    private String name;
-    private int count;
-    private int status = R.drawable.ic_favorite_border_black_24dp;
-
-
-    AdWorkRow(int img, String name, int count) {
-        this.img = img;
-        this.name = name;
-        this.count = count;
-    }
-
-    int getImg() { return img; }
-    String getName() { return name; }
-    int getCount() { return count; }
-    int getStatus() { return status; }
-
-    public void setCount(int count) { this.count = count; }
-    public void setStatus(int status) { this.status = status; }
-}
-
-class AdWorkAdapter extends BaseAdapter {
-
-    private Context context;
-    private int layout;
-    private List<AdWorkRow> adWorkList;
-
-    AdWorkAdapter(Context context, int layout, List<AdWorkRow> adWorkList) {
-        this.context = context;
-        this.layout = layout;
-        this.adWorkList = adWorkList;
-    }
-
-    @Override
-    public int getCount() { return adWorkList.size(); }
-
-    @Override
-    public Object getItem(int position) {
-        return null;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    private class ViewHolder{
-        ImageView imgImg;
-        TextView txtName, txtCount;
-        ImageButton imgBtnStatus;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        ViewHolder holder;
-
-        if (convertView == null){
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-            convertView = inflater.inflate(layout, null);
-            holder = new ViewHolder();
-            holder.imgImg    = convertView.findViewById(R.id.imageView_adWork_img);
-            holder.txtName   = convertView.findViewById(R.id.textView_adWork_name);
-            holder.txtCount  = convertView.findViewById(R.id.textView_adWork_count);
-            holder.imgBtnStatus = convertView.findViewById(R.id.imageButton_adWork_status);
-            convertView.setTag(holder);
-        }
-        else{
-            holder = (ViewHolder) convertView.getTag();
-        }
-
-        AdWorkRow adWork = adWorkList.get(position);
-
-        holder.imgImg.setImageResource(adWork.getImg());
-        holder.txtName.setText(adWork.getName());
-        holder.txtCount.setText(String.valueOf(adWork.getCount()));
-        holder.imgBtnStatus.setImageResource(adWork.getStatus());
-
-        return convertView;
-    }
-}
 
 public class AdWork extends Fragment {
 
     private ListView lvAdWork;
-    private ArrayList<AdWorkRow> arrayAdWork ;
-    private AdWorkAdapter adWorkAdapter;
+    private ArrayList<BagRow> arrayAdWork ;
+    private BagAdapter adWorkAdapter;
 
     private View view;
-    private ImageButton work_full;
 
+    @Nullable
     @Override
-    /*
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        view.setContentView(R.layout.activity_ad_work);
-        */
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.ad_work, container, false);
+        view = inflater.inflate(R.layout.activity_bag, container, false);
 
-        lvAdWork = view.findViewById(R.id.list_adWork);
+        lvAdWork = view.findViewById(R.id.list_bag);
         arrayAdWork = new ArrayList<>();
         AnhXa();
-        adWorkAdapter = new AdWorkAdapter(getContext(), R.layout.ad_work_element, arrayAdWork);
+        adWorkAdapter = new BagAdapter(getContext(), R.layout.element_bag, arrayAdWork);
         lvAdWork.setAdapter(adWorkAdapter);
 
-        lvAdWork.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Toast.makeText(getBaseContext(),"Chỉnh sửa item " + arrayAdItem.get(position).getName(), Toast.LENGTH_SHORT).show();
-                //Option(position);
-                Toast.makeText(getContext(), "Mở giao diện để chọn làm một phần số lượng", Toast.LENGTH_SHORT).show();
-
+        lvAdWork.setOnItemClickListener((parent, view, position, id) -> {
+            if (arrayAdWork.get(position).getStatus() == R.drawable.ic_favorite_black_24dp){
+                Toast.makeText(getContext(),"Đã hoàn thành " + arrayAdWork.get(position).getCount() + " " + arrayAdWork.get(position).getName(), Toast.LENGTH_SHORT).show();
+                arrayAdWork.remove(position);
             }
+            else {
+                Dialog_click_item(position);
+            }
+
         });
+
 
 
         return view;
     }
 
-    void AnhXa(){
-        arrayAdWork.add(new AdWorkRow(R.drawable.ck_banh_bao_ba_xiu_2,   "Bánh bao xá xíu 2",   3));
-        arrayAdWork.add(new AdWorkRow(R.drawable.ck_com_chien,           "Cơm chiên",           2));
-        arrayAdWork.add(new AdWorkRow(R.drawable.ck_fruit_whole_nodish,  "Fruit whole nodish",  3));
-        arrayAdWork.add(new AdWorkRow(R.drawable.ck_salad_caron,         "Salad caron",         1));
-        arrayAdWork.add(new AdWorkRow(R.drawable.ck_single_banana,       "Single banana",       1));
-        arrayAdWork.add(new AdWorkRow(R.drawable.ck_trung_cut,           "Trứng cút",           4));
-        arrayAdWork.add(new AdWorkRow(R.drawable.ck_salad_caron,         "Salad caron",         1));
-        arrayAdWork.add(new AdWorkRow(R.drawable.ck_salad_caron,         "Salad caron",         1));
-        arrayAdWork.add(new AdWorkRow(R.drawable.ck_single_banana,       "Single banana",       1));
-        arrayAdWork.add(new AdWorkRow(R.drawable.ck_trung_cut,           "Trứng cút",           4));
-        arrayAdWork.add(new AdWorkRow(R.drawable.ck_salad_caron,         "Salad caron",         1));
+    private void Dialog_click_item(final int position){
+        final Dialog dialog = new Dialog(Objects.requireNonNull(getContext()));
+        dialog.setContentView(R.layout.ad_work_dialog);
+        dialog.setTitle("Bạn muốn làm bao nhiêu " + arrayAdWork.get(position).getName() + "???");
+
+        SeekBar seekBar      = dialog.findViewById(R.id.seekBar_adWork);
+        TextView textView    = dialog.findViewById(R.id.textView_adWork_dialog);
+        Button button        = dialog.findViewById(R.id.button_adWork_dialog);
+
+        BagRow temp = arrayAdWork.get(position);
+        textView.setText((String.valueOf(temp.getCount())));
+
+        final int[] count = new int[1];
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                count[0] = (int) ((float)(seekBar.getProgress()*temp.getCount()))/seekBar.getMax();
+                textView.setText(String.valueOf(count[0]));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        button.setOnClickListener(v -> {
+            if (count[0] > 0){
+                BagRow new_row = new BagRow(temp.getImg(), temp.getName(), temp.getTime(), count[0],R.drawable.ic_favorite_black_24dp);
+                if (count[0] == temp.getCount()){
+                    arrayAdWork.remove(position);
+                }
+                arrayAdWork.add(0,new_row);
+                adWorkAdapter.notifyDataSetChanged();
+            }
+
+            dialog.cancel();
+        });
+
+        dialog.show();
     }
 
-    public void clickAdWorkRow() {
-        Toast.makeText(getContext(), "Mở giao diện để chọn làm một phần số lượng", Toast.LENGTH_SHORT).show();
-
+    private void AnhXa(){
+        arrayAdWork.add(new BagRow(R.drawable.ck_banh_bao_ba_xiu_2,   "Bánh bao xá xíu 2",
+                "9:50",3));
+        arrayAdWork.add(new BagRow(R.drawable.ck_com_chien,           "Cơm chiên",
+                "9:45",2));
+        arrayAdWork.add(new BagRow(R.drawable.ck_fruit_whole_nodish,  "Fruit whole nodish",
+                "9:30",3));
+        arrayAdWork.add(new BagRow(R.drawable.ck_salad_caron,         "Salad caron",
+                "9:20",5));
+        arrayAdWork.add(new BagRow(R.drawable.ck_single_banana,       "Single banana",
+                "8:55",1));
+        arrayAdWork.add(new BagRow(R.drawable.ck_trung_cut,           "Trứng cút",
+                "8:45",4));
+        arrayAdWork.add(new BagRow(R.drawable.ck_salad_caron,         "Salad caron",
+                "8:40",2));
+        arrayAdWork.add(new BagRow(R.drawable.ck_salad_caron,         "Salad caron",
+                "8:40",1));
+        arrayAdWork.add(new BagRow(R.drawable.ck_banh_bao_ba_xiu_2,   "Bánh bao xá xíu 2",
+                "9:50",3));
+        arrayAdWork.add(new BagRow(R.drawable.ck_com_chien,           "Cơm chiên",
+                "9:45",2));
+        arrayAdWork.add(new BagRow(R.drawable.ck_fruit_whole_nodish,  "Fruit whole nodish",
+                "9:30",3));
+        arrayAdWork.add(new BagRow(R.drawable.ck_salad_caron,         "Salad caron",
+                "9:20",5));
+        arrayAdWork.add(new BagRow(R.drawable.ck_single_banana,       "Single banana",
+                "8:55",1));
+        arrayAdWork.add(new BagRow(R.drawable.ck_trung_cut,           "Trứng cút",
+                "8:45",4));
+        arrayAdWork.add(new BagRow(R.drawable.ck_salad_caron,         "Salad caron",
+                "8:40",2));
+        arrayAdWork.add(new BagRow(R.drawable.ck_salad_caron,         "Salad caron",
+                "8:40",1));
     }
-
-    public void clickAdWork_full() {
-        if (arrayAdWork.get(0).getStatus() == R.drawable.icb_dauchan){
-            Toast.makeText(getContext(), "Nhân viên nhận làm hết số lượng được giao", Toast.LENGTH_SHORT).show();
-            arrayAdWork.get(0).setStatus(R.drawable.ic_done_black_18dp);
-        }
-        else{
-            Toast.makeText(getContext(), "Nhân viên xác nhận đã hoàn thành tất cả số lượng", Toast.LENGTH_SHORT).show();
-        }
-
-
-    }
-
 }

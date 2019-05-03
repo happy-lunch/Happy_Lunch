@@ -40,7 +40,7 @@ public class Bottom_Nav extends AppCompatActivity {
                     toolBarTitle = "Shopping cart";
                     break;
                 case R.id.nav_account:
-                    selectedFragment = new Customer();
+                    selectedFragment = new AccountPage();
                     toolBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE);
                     toolBarTitle = "Account";
                     break;

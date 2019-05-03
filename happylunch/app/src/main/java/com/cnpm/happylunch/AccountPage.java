@@ -37,7 +37,7 @@ public class AccountPage extends Fragment {
 
     //Firebase
     private FirebaseStorage storage = FirebaseStorage.getInstance();
-    private StorageReference storageReference = storage.getReferenceFromUrl("gs://happy-lunch-e5d98.appspot.com");
+    private StorageReference storageReference = storage.getReferenceFromUrl("gs://happylunch-802e2.appspot.com/");
 
     private final int REQUEST_CODE_IMAGE = 10;
     private View view;

@@ -5,10 +5,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -34,30 +34,53 @@ class BagRow {
         this.status = status;
     }
 
+    BagRow(int img, String name, String time, int count) {
+        this.img = img;
+        this.name = name;
+        this.time = time;
+        this.count = count;
+        this.status = R.drawable.ic_favorite_border_black_24dp;
+    }
+
     int getImg() {
         return img;
     }
 
+    public void setImg(int img) {
+        this.img = img;
+    }
 
-    String getName() {
+    public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
     String getTime() {
         return time;
     }
 
+    public void setTime(String time) {
+        this.time = time;
+    }
 
-    int getCount() {
+    public int getCount() {
         return count;
     }
 
+    public void setCount(int count) {
+        this.count = count;
+    }
 
-    int getStatus() {
+    public int getStatus() {
         return status;
     }
 
+    public void setStatus(int status) {
+        this.status = status;
+    }
 }
 
 class BagAdapter extends BaseAdapter {
@@ -145,10 +168,13 @@ public class Bag extends Fragment {
         lvBag.setAdapter(bagAdapter);
 
 
-        lvBag.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(),"Mở giao diện của Vy item " + arrayBag.get(position).getName(), Toast.LENGTH_SHORT).show();
+        lvBag.setOnItemClickListener((parent, view, position, id) -> {
+            if (arrayBag.get(position).getStatus() == R.drawable.ic_clear_black_18dp){
+                Dialog_click_tra_mon(position);
+
+            }
+            else {
+                Dialog_click_chuyen_mon(position);
             }
         });
 
@@ -156,20 +182,37 @@ public class Bag extends Fragment {
         return view;
     }
 
-    /*
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bag);
+    private void Dialog_click_tra_mon(final int position){
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+        alertDialog.setTitle("Cảnh báo!!!");
+        alertDialog.setMessage("Bạn chắc chắn muốn trả lại " + arrayBag.get(position).getCount() + " " + arrayBag.get(position).getName() + "???");
 
-        lvBag = findViewById(R.id.list_bag);
-        arrayBag = new ArrayList<>();
-        AnhXa();
-        bagAdapter = new BagAdapter(this, R.layout.bag_row, arrayBag);
-        lvBag.setAdapter(bagAdapter);
+        alertDialog.setPositiveButton("Yes", (dialog, which) -> {
+            Toast.makeText(getContext(),"Bạn đã trả lại " + arrayBag.get(position).getCount() + " " + arrayBag.get(position).getName(), Toast.LENGTH_SHORT).show();
+            arrayBag.remove(position);
+            bagAdapter.notifyDataSetChanged();
+        });
 
+        alertDialog.setNegativeButton("No", (dialog, which) -> Toast.makeText(getContext(),"Cẩn thận đấy!!!", Toast.LENGTH_SHORT).show());
+
+        alertDialog.show();
     }
-    */
+
+    private void Dialog_click_chuyen_mon(final int position){
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+        alertDialog.setTitle("Cảnh báo!!!");
+        alertDialog.setMessage("Đồ bạn đặt đã được Circle K làm xong, bạn không thể trả. Bạn có muốn bán lại " + arrayBag.get(position).getCount() + " " + arrayBag.get(position).getName() + "???");
+
+        alertDialog.setPositiveButton("Yes", (dialog, which) -> {
+            Toast.makeText(getContext(),"Bạn đã bán lại " + arrayBag.get(position).getCount() + " " + arrayBag.get(position).getName(), Toast.LENGTH_SHORT).show();
+            arrayBag.remove(position);
+            bagAdapter.notifyDataSetChanged();
+        });
+
+        alertDialog.setNegativeButton("No", (dialog, which) -> Toast.makeText(getContext(),"Cẩn thận đấy!!!", Toast.LENGTH_SHORT).show());
+
+        alertDialog.show();
+    }
 
     private void AnhXa(){
         arrayBag.add(new BagRow(R.drawable.ck_banh_bao_ba_xiu_2,   "Bánh bao xá xíu 2",
@@ -179,7 +222,7 @@ public class Bag extends Fragment {
         arrayBag.add(new BagRow(R.drawable.ck_fruit_whole_nodish,  "Fruit whole nodish",
                 "9:30",3,R.drawable.ic_clear_black_18dp));
         arrayBag.add(new BagRow(R.drawable.ck_salad_caron,         "Salad caron",
-                "9:20",1,R.drawable.ic_done_black_18dp));
+                "9:20",1,R.drawable.ic_clear_black_18dp));
         arrayBag.add(new BagRow(R.drawable.ck_single_banana,       "Single banana",
                 "8:55",1,R.drawable.ic_done_black_18dp));
         arrayBag.add(new BagRow(R.drawable.ck_trung_cut,           "Trứng cút",
@@ -195,13 +238,4 @@ public class Bag extends Fragment {
         arrayBag.add(new BagRow(R.drawable.ck_salad_caron,         "Salad caron",
                 "8:00",1,R.drawable.ic_done_black_18dp));
     }
-
-
-
-    /*
-    public void clickBagRow(View view) {
-        Toast.makeText(getContext(), "Mở giao diện item_info của Vy", Toast.LENGTH_SHORT).show();
-
-    }
-    */
 }

@@ -17,6 +17,7 @@ public class AdBottom_Nav extends AppCompatActivity {
     private AdWork adWork = new AdWork();
     private AdItem adItem = new AdItem();
     private AdRecharge adRecharge = new AdRecharge();
+    private Customer adProfile = new Customer();
     private String toolBarTitle;
     private View view;
     private Fragment selectedFragment = null;
@@ -40,6 +41,11 @@ public class AdBottom_Nav extends AppCompatActivity {
                     toolBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
                     toolBar.setCustomView(view);
                     break;
+                case R.id.navigation_profile:
+                    selectedFragment = adProfile;
+                    toolBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+                    toolBar.setCustomView(view);
+                    break;
             }
             toolBar.setTitle(toolBarTitle);
             getSupportFragmentManager().beginTransaction().replace(R.id.ad_fragment_container, selectedFragment).show(selectedFragment).commit();
@@ -56,7 +62,7 @@ public class AdBottom_Nav extends AppCompatActivity {
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         view = layoutInflater.inflate(R.layout.ad_action_bar, null);
 
-        getSupportFragmentManager().beginTransaction().add(R.id.ad_fragment_container, adRecharge).add(R.id.ad_fragment_container, adItem).add(R.id.ad_fragment_container, adWork).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.ad_fragment_container, adProfile).add(R.id.ad_fragment_container, adRecharge).add(R.id.ad_fragment_container, adItem).add(R.id.ad_fragment_container, adWork).commit();
 
         BottomNavigationView botNav = findViewById(R.id.ad_bottom_nav);
         botNav.setOnNavigationItemSelectedListener(new adBotNavListener());
