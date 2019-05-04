@@ -24,6 +24,8 @@ public class Bottom_Nav extends AppCompatActivity {
     private View view;
     private String toolBarTitle;
     private Fragment selectedFragment = new HomePage();
+    public volatile static Bag bag = new Bag();
+    public volatile static SecondShop secondShop = new SecondShop();
     private class BotNavListener implements BottomNavigationView.OnNavigationItemSelectedListener{
 
         @Override
@@ -35,7 +37,7 @@ public class Bottom_Nav extends AppCompatActivity {
                     toolBar.setCustomView(view);
                     break;
                 case R.id.nav_shopping_cart:
-                    selectedFragment = new Bag();
+                    selectedFragment = bag;
                     toolBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE);
                     toolBarTitle = "Shopping cart";
                     break;
@@ -43,6 +45,11 @@ public class Bottom_Nav extends AppCompatActivity {
                     selectedFragment = new AccountPage();
                     toolBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE);
                     toolBarTitle = "Account";
+                    break;
+                case R.id.nav_second_shop:
+                    selectedFragment = secondShop;
+                    toolBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE);
+                    toolBarTitle = "Second shop";
                     break;
             }
             toolBar.setTitle(toolBarTitle);

@@ -34,6 +34,13 @@ class SecondShopElement {
         this.time = time;
     }
 
+    SecondShopElement(BagRow bag){
+        this.img = bag.getImg();
+        this.name = bag.getName();
+        this.price = (int) (((float) bag.getPrice())*9/10);
+        this.time = bag.getTime();
+    }
+
     public int getImg() {
         return img;
     }
@@ -111,7 +118,8 @@ class SecondShopAdapter extends BaseAdapter {
 public class SecondShop extends Fragment {
 
     private GridView gvSecondShop;
-    private ArrayList<SecondShopElement> arraySecondShop;
+    public volatile ArrayList<SecondShopElement> arraySecondShop = new ArrayList<>();
+
     private SecondShopAdapter secondShopAdapter;
 
     private View view;
@@ -121,9 +129,7 @@ public class SecondShop extends Fragment {
         view = inflater.inflate(R.layout.second_shop, container, false);
 
         gvSecondShop = view.findViewById(R.id.grid_second_shop);
-        arraySecondShop = new ArrayList<>();
-
-        AnhXa();
+        //AnhXa();
 
         secondShopAdapter = new SecondShopAdapter(getContext(), R.layout.second_shop_element, arraySecondShop);
         gvSecondShop.setAdapter(secondShopAdapter);
@@ -150,7 +156,7 @@ public class SecondShop extends Fragment {
                 Toast.makeText(getContext(),"Giao dịch thành công !!!", Toast.LENGTH_SHORT).show();
 
                 //SecondShopElement temp = arraySecondShop.get(position);
-
+                Bottom_Nav.bag.arrayBag.add(new BagRow(arraySecondShop.get(position)));
                 //arrayBag.add(new BagRow(temp.getImg(),temp.getName(),temp.getTime(),1,R.drawable.ic_clear_black_18dp));
                 arraySecondShop.remove(position);
                 secondShopAdapter.notifyDataSetChanged();
