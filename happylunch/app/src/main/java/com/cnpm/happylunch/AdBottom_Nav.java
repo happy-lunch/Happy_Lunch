@@ -14,7 +14,7 @@ public class AdBottom_Nav extends AppCompatActivity {
 
     private ActionBar toolBar;
 
-    private AdWork adWork = new AdWork();
+    public volatile static AdWork adWork = new AdWork();
     private AdItem adItem = new AdItem();
     private AdRecharge adRecharge = new AdRecharge();
     private Customer adProfile = new Customer();

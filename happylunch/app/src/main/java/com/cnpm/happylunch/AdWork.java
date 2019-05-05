@@ -21,7 +21,7 @@ import java.util.Objects;
 public class AdWork extends Fragment {
 
     private ListView lvAdWork;
-    private ArrayList<BagRow> arrayAdWork ;
+    public volatile ArrayList<BagRow> arrayAdWork = new ArrayList<>();
     private BagAdapter adWorkAdapter;
 
     private View view;
@@ -32,8 +32,8 @@ public class AdWork extends Fragment {
         view = inflater.inflate(R.layout.activity_bag, container, false);
 
         lvAdWork = view.findViewById(R.id.list_bag);
-        arrayAdWork = new ArrayList<>();
-        AnhXa();
+        //arrayAdWork = new ArrayList<>();
+        //AnhXa();
         adWorkAdapter = new BagAdapter(getContext(), R.layout.element_bag, arrayAdWork);
         lvAdWork.setAdapter(adWorkAdapter);
 

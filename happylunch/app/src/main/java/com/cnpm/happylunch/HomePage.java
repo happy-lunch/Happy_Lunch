@@ -80,6 +80,7 @@ public class HomePage extends Fragment {
         alertDialog.setPositiveButton("Yes", (dialog, which) -> {
             Toast.makeText(getContext(),"Bạn đã đặt thành công " + foods.get(position).getFoodName(), Toast.LENGTH_SHORT).show();
             Bottom_Nav.bag.arrayBag.add(new BagRow(foods.get(position)));
+            AdBottom_Nav.adWork.arrayAdWork.add((new BagRow((foods.get(position)))));
         });
 
         alertDialog.setNegativeButton("No", (dialog, which) -> Toast.makeText(getContext(),"Cẩn thận đấy!!!", Toast.LENGTH_SHORT).show());

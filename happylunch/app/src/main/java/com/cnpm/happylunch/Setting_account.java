@@ -24,7 +24,7 @@ public class Setting_account extends AppCompatActivity {
         btnhuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent account = new Intent(Setting_account.this,Bottom_Nav.class);
+                Intent account = new Intent(Setting_account.this,AdBottom_Nav.class);
                 startActivity(account);
             }
         });

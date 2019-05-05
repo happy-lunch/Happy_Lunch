@@ -22,7 +22,7 @@ public class Bill extends AppCompatActivity {
         btnhoadon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent account = new Intent(Bill.this,Bottom_Nav.class);
+                Intent account = new Intent(Bill.this,AdBottom_Nav.class);
                 startActivity(account);
             }
         });
