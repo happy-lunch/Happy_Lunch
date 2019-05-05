@@ -1,10 +1,9 @@
 package com.cnpm.happylunch;
 
 import android.content.Intent;
-import android.os.Handler;
-import android.os.SystemClock;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +34,7 @@ public class Launch extends AppCompatActivity {
         Handler hand = new Handler();
         hand.postDelayed(()->{
             startActivity(i);
-        }, 3000);
+        }, 2000);
 
     }
 }

@@ -8,17 +8,12 @@ public class Food {
     private int numSold;
     private KindOfFood kind;
 
-    public Food(int foodImg, String foodName, String foodPrice) {
-        this.foodImg = foodImg;
-        this.foodName = foodName;
-        this.foodPrice = foodPrice;
-    }
 
     public Food(int foodImg, String foodName, String foodPrice, int numSold, KindOfFood kind) {
         this.foodImg = foodImg;
         this.foodName = foodName;
         this.foodPrice = foodPrice;
-        this.numSold = numSold;
+        this.numSold = 1;
         this.kind = kind;
     }
 
