@@ -31,7 +31,7 @@ public class HomePage extends Fragment {
             KindOfFood.Com, KindOfFood.Mi, KindOfFood.Banh_Bao, KindOfFood.Banh_Mi, KindOfFood.Sandwich, KindOfFood.Trang_Mieng
     };
 
-    private static int currentItem;
+    private int currentItem;
 
     private LinearLayout linearCategary;
 
