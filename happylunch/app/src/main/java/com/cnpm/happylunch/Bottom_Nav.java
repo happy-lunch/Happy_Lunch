@@ -92,7 +92,15 @@ public class Bottom_Nav extends AppCompatActivity {
 
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         view = layoutInflater.inflate(R.layout.activity_home_action_bar, null);
-
+		
+		EditText txtSearch = (EditText) view.findViewById(R.id.txtSearch);
+        txtSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Bottom_Nav.this, SearchHomePage.class));
+            }
+        });
+		
         toolBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         toolBar.setCustomView(view);
     }
