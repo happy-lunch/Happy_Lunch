@@ -30,10 +30,12 @@ public class ListFoodsInCategory extends AppCompatActivity {
         gridViewFoodsInCategory = (GridView) findViewById(R.id.gridViewFoodsInCategory);
         gridViewFoodsInCategory.setAdapter(new FoodAdapter(this, foodsInCategory));
 
+
         gridViewFoodsInCategory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Toast.makeText(this, )
+                //finish();
+                //Bottom_Nav.homePage.Order(foodsInCategory.get(position));
             }
         });
 

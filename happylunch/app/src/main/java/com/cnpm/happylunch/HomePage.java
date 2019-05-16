@@ -5,16 +5,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +30,7 @@ public class HomePage extends Fragment {
             KindOfFood.Com, KindOfFood.Mi, KindOfFood.Banh_Bao, KindOfFood.Banh_Mi, KindOfFood.Sandwich, KindOfFood.Trang_Mieng
     };
 
-    private int currentItem;
+    private static int currentItem;
 
     private LinearLayout linearCategary;
 
@@ -57,38 +56,27 @@ public class HomePage extends Fragment {
 
         setUpPopularView();
 
-        linearCategary = (LinearLayout) view.findViewById(R.id.linearCategory);
-        //itemCategoriesView = inflater.inflate(R.layout.item_category_layout, null);
+        linearCategary = view.findViewById(R.id.linearCategory);
         setUpCategories();
 
-        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                dat_mon(position);
-
-            }
-        });
+        grid.setOnItemClickListener((parent, view, position, id) -> Order(foods.get(position)));
 
         return view;
     }
 
-    void dat_mon(int position){
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-        alertDialog.setTitle("Hỏi lại!!!");
-        alertDialog.setMessage("Bạn muốn đặt " + foods.get(position).getFoodName() + "???");
+    public void Order(Food food){
 
-        alertDialog.setPositiveButton("Yes", (dialog, which) -> {
-            Toast.makeText(getContext(),"Bạn đã đặt thành công " + foods.get(position).getFoodName(), Toast.LENGTH_SHORT).show();
-            Bottom_Nav.bag.arrayBag.add(new BagRow(foods.get(position)));
-            AdBottom_Nav.adWork.arrayAdWork.add((new BagRow((foods.get(position)))));
-        });
+        FragmentManager fragmentManager = getFragmentManager();
+        assert fragmentManager != null;
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, Bottom_Nav.foodDetail).commitNow();
 
-        alertDialog.setNegativeButton("No", (dialog, which) -> Toast.makeText(getContext(),"Cẩn thận đấy!!!", Toast.LENGTH_SHORT).show());
-
-        alertDialog.show();
-
-
+        /*
+        Bottom_Nav.flFoodDetail.setVisibility(View.VISIBLE);
+        Bottom_Nav.selectedFrameLayout.setVisibility(View.INVISIBLE);*/
+        Bottom_Nav.foodDetail.set_food(food);
     }
+
 
     private static List<Food> getData(){
 

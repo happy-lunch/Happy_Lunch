@@ -1,15 +1,20 @@
 package com.cnpm.happylunch;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,6 +22,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 class BagRow {
     private int img;
@@ -25,21 +31,35 @@ class BagRow {
     private int count;
     private int status;
     private int price;
+    private String id = "null";
 
-    BagRow(SecondShopElement item){
-        this.img = item.getImg();
-        this.name = item.getName();
-        this.price = item.getPrice();
-        this.time = item.getTime();
-        this.status = R.drawable.ic_clear_black_18dp;
-        this.count = 1;
+    BagRow(){
+
     }
 
-    BagRow(Food food){
+    BagRow(BagRow food){
+        this.img = food.getImg();
+        this.name = food.getName();
+        this.time = food.time;
+        this.count = food.count;
+        this.status = R.drawable.ic_clear_black_18dp;
+        this.price = food.getPrice();
+    }
+
+    BagRow(BagRow food, int num){
+        this.img = food.getImg();
+        this.name = food.getName();
+        this.time = food.time;
+        this.count = num;
+        this.status = R.drawable.ic_clear_black_18dp;
+        this.price = food.getPrice();
+    }
+
+    BagRow(Food food, int num){
         this.img = food.getFoodImg();
         this.name = food.getFoodName();
         this.time = "10:11";
-        this.count = food.getNumSold();
+        this.count = num;
         this.status = R.drawable.ic_clear_black_18dp;
         this.price = Integer.valueOf(food.getFoodPrice());
     }
@@ -107,6 +127,10 @@ class BagRow {
     public void setPrice(int price) {
         this.price = price;
     }
+
+    public void setId(String id) {this.id = id;}
+
+    public String getId(){return id;}
 }
 
 class BagAdapter extends BaseAdapter {
@@ -155,7 +179,6 @@ class BagAdapter extends BaseAdapter {
             holder.txtName   = convertView.findViewById(R.id.textView_bag_name);
             holder.txtTime   = convertView.findViewById(R.id.textView_bag_time);
             holder.txtCount  = convertView.findViewById(R.id.textView_bag_count);
-            holder.imgStatus = convertView.findViewById(R.id.imageView_bag_status);
             convertView.setTag(holder);
         }
         else{
@@ -168,7 +191,6 @@ class BagAdapter extends BaseAdapter {
         holder.txtName.setText(bag.getName());
         holder.txtTime.setText(bag.getTime());
         holder.txtCount.setText(String.valueOf(bag.getCount()));
-        holder.imgStatus.setImageResource(bag.getStatus());
 
         return convertView;
     }
@@ -180,7 +202,6 @@ public class Bag extends Fragment {
 
     public volatile ArrayList<BagRow> arrayBag = new ArrayList<>();
     private BagAdapter bagAdapter;
-
     private View view;
 
 
@@ -188,58 +209,88 @@ public class Bag extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_bag, container, false);
+
         bagAdapter = new BagAdapter(getContext(), R.layout.element_bag, arrayBag);
         lvBag = view.findViewById(R.id.list_bag);
+
         //AnhXa();
+        Button btn_resell = view.findViewById(R.id.button_bag_resell);
+
         lvBag.setAdapter(bagAdapter);
 
 
-        lvBag.setOnItemClickListener((parent, view, position, id) -> {
-            if (arrayBag.get(position).getStatus() == R.drawable.ic_clear_black_18dp){
-                Dialog_click_tra_mon(position);
+        lvBag.setOnItemClickListener((parent, view, position, id) -> Dialog_click_tra_mon(position));
 
-            }
-            else {
-                Dialog_click_chuyen_mon(position);
-            }
-        });
-
+        btn_resell.setOnClickListener(v -> Click_btn_resell());
 
         return view;
     }
 
+    private void Click_btn_resell(){
+
+        FragmentManager fragmentManager = getFragmentManager();
+        assert fragmentManager != null;
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, Bottom_Nav.bagResell).commit();
+
+        /*
+        Bottom_Nav.selectedFrameLayout.setVisibility(View.INVISIBLE);
+        Bottom_Nav.flBagResell.setVisibility(View.VISIBLE);*/
+        Bottom_Nav.bagResell.set_cost();
+    }
+
     private void Dialog_click_tra_mon(final int position){
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-        alertDialog.setTitle("Cảnh báo!!!");
-        alertDialog.setMessage("Bạn muốn trả lại " + arrayBag.get(position).getCount() + " " + arrayBag.get(position).getName() + "(phí 10%)???");
+        final Dialog dialog = new Dialog(Objects.requireNonNull(getContext()));
+        dialog.setContentView(R.layout.bag_dialog);
+        dialog.setTitle("Chọn số lượng muốn trả");
 
-        alertDialog.setPositiveButton("Yes", (dialog, which) -> {
-            Toast.makeText(getContext(),"Bạn đã mất " + (int) (((float) arrayBag.get(position).getPrice())/10) + "đ tiền phí giao dịch!", Toast.LENGTH_SHORT).show();
-            Bottom_Nav.secondShop.arraySecondShop.add(new SecondShopElement(arrayBag.get(position)));
-            arrayBag.remove(position);
-            bagAdapter.notifyDataSetChanged();
+        ImageButton btn_down= dialog.findViewById(R.id.button_bagDialog_down);
+        ImageButton btn_up  = dialog.findViewById(R.id.button_bagDialog_up);
+        Button btn_confirm  = dialog.findViewById(R.id.button_bagDialog);
+        EditText txt        = dialog.findViewById(R.id.editText_bagDialog);
+
+        final int[] num = {0};
+
+        //txt.setText(0);
+
+
+        btn_down.setOnClickListener(v -> {
+            if (num[0] > 0)
+                txt.setText(String.valueOf(--num[0]));
         });
 
-        alertDialog.setNegativeButton("No", (dialog, which) -> Toast.makeText(getContext(),"Cẩn thận đấy!!!", Toast.LENGTH_SHORT).show());
-
-        alertDialog.show();
-    }
-
-    private void Dialog_click_chuyen_mon(final int position){
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-        alertDialog.setTitle("Cảnh báo!!!");
-        alertDialog.setMessage("Đồ bạn đặt đã được Circle K làm xong, bạn không thể trả. Bạn có muốn bán lại " + arrayBag.get(position).getCount() + " " + arrayBag.get(position).getName() + "???");
-
-        alertDialog.setPositiveButton("Yes", (dialog, which) -> {
-            Toast.makeText(getContext(),"Bạn đã bán lại " + arrayBag.get(position).getCount() + " " + arrayBag.get(position).getName(), Toast.LENGTH_SHORT).show();
-            arrayBag.remove(position);
-            bagAdapter.notifyDataSetChanged();
+        btn_up.setOnClickListener(v -> {
+            if (num[0] < arrayBag.get(position).getCount()){
+                txt.setText(String.valueOf(++num[0]));
+            }
         });
 
-        alertDialog.setNegativeButton("No", (dialog, which) -> Toast.makeText(getContext(),"Cẩn thận đấy!!!", Toast.LENGTH_SHORT).show());
+        btn_confirm.setOnClickListener(v -> {
+            num[0] = Integer.valueOf(String.valueOf(txt.getText()));
+            if (num[0] > arrayBag.get(position).getCount()){
+                Toast.makeText(getContext(),"Số lượng trả lại không lớn hơn " + arrayBag.get(position).getCount(), Toast.LENGTH_SHORT).show();
+            }
+            else {
+                if (num[0] > 0) {
+                    Toast.makeText(getContext(), "Bạn sẵn sàng trả " + num[0] + " " + arrayBag.get(position).getName(), Toast.LENGTH_SHORT).show();
 
-        alertDialog.show();
+                    BagRow food = new BagRow(arrayBag.get(position));
+                    food.setPrice((int)(food.getPrice()*0.9));
+                    food.setCount(num[0]);
+                    Bottom_Nav.bagResell.arrayBagRell.add(food);
+                    arrayBag.get(position).setCount(arrayBag.get(position).getCount() - num[0]);
+                    if (arrayBag.get(position).getCount() == 0) {
+                        arrayBag.remove(position);
+                    }
+                    bagAdapter.notifyDataSetChanged();
+                }
+                dialog.cancel();
+            }
+        });
+
+        dialog.show();
     }
+
 
     private void AnhXa(){
         arrayBag.add(new BagRow(R.drawable.ck_banh_bao_ba_xiu_2,   "Bánh bao xá xíu 2",
