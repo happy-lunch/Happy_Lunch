@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="10"
+    tools:context=".SearchHomePage">
+
+    <LinearLayout
+        android:background="#FFF"
+        android:layout_weight="9"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <EditText
+                android:layout_weight="2"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="#CDDDDDDD"
+                android:padding="8dp"
+                android:id="@+id/edtSearch"
+                android:drawableLeft="@drawable/ic_search"
+                android:drawablePadding="10dp"
+                android:hint="Tìm món ăn"
+                android:maxLines="1"
+                android:inputType="text"
+                android:layout_marginLeft="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:onClick="goBack"
+                android:clickable="true"
+                android:id="@+id/txtHuy"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:textColor="#FF6347"
+                android:text="Huỷ"
+                android:layout_weight="8"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_marginTop="20dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ListView
+            android:id="@+id/lvInSearch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></ListView>
+    </FrameLayout>
+
+
+</LinearLayout>

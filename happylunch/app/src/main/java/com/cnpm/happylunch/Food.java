@@ -1,6 +1,6 @@
 package com.cnpm.happylunch;
 
-public class Food {
+public class Food implements Serializable{
     private int foodImg;
     private String foodName;
     private String foodPrice;
@@ -64,6 +64,12 @@ public class Food {
     public KindOfFood getKind() {
         return kind;
     }
+	
+	@Override
+    public String toString() {
+        return getFoodName();
+    }
+	
 }
 
 enum KindOfFood {
