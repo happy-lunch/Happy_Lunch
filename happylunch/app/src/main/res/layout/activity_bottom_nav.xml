@@ -8,13 +8,6 @@
     tools:context=".Bottom_Nav">
 
     <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottom_nav"
-        />
-	
-	<FrameLayout
         android:id="@+id/flHome"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -22,7 +15,35 @@
         />
 
     <FrameLayout
-        android:id="@+id/flShop"
+        android:id="@+id/flFoodDetail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_nav"
+        />
+
+    <FrameLayout
+        android:id="@+id/flResell"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_nav"
+        />
+
+    <FrameLayout
+        android:id="@+id/flCart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_nav"
+        />
+
+    <FrameLayout
+        android:id="@+id/flBag"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_nav"
+        />
+
+    <FrameLayout
+        android:id="@+id/flBagResell"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_nav"

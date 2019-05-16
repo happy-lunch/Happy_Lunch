@@ -46,7 +46,7 @@
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content" >
 
             <CheckBox
                 android:layout_gravity="left|center"
@@ -63,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-        </LinearLayout>
+        </FrameLayout>
         <Button
             android:onClick="eventLogin"
             android:textColor="#FFFFFF"

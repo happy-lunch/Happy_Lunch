@@ -8,7 +8,6 @@ public class Food implements Serializable{
     private int numSold;
     private KindOfFood kind;
 
-
     public Food(int foodImg, String foodName, String foodPrice, int numSold, KindOfFood kind) {
         this.foodImg = foodImg;
         this.foodName = foodName;

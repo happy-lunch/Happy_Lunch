@@ -109,7 +109,7 @@ public class AdRecharge extends Fragment {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 User temp = dataSnapshot.getValue(User.class);
                 assert temp != null;
-                arrayAdRecharge.add(new User(temp.getMssv(),temp.getFirstName(), temp.getLastName()));
+                arrayAdRecharge.add(temp);
                 adRechargeAdapter.notifyDataSetChanged();
             }
 
@@ -175,43 +175,13 @@ public class AdRecharge extends Fragment {
 
         Toast.makeText(getContext(),"Giao dịch thành cômg", Toast.LENGTH_SHORT).show();
 
-        /*
-        mData.child("Customers").child("171315")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        String clubkey = dataSnapshot.getKey();
+        User u = arrayAdRecharge.get(position);
+
+        u.setHPCoin(u.getHPCoin() + money);
+
+        mData.child("Customers").child(u.getUid()).setValue(u);
 
 
-                        Toast.makeText(getContext(),clubkey,Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-                */
-
-        /*
-        mData.child("Customers").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User temp = dataSnapshot.getValue(User.class);
-                assert temp != null;
-                temp.setHPCoin(temp.getHPCoin() + money);
-                mData.child("Customers").push().setValue(temp.getHPCoin());
-                Toast.makeText(getContext(),"aii",Toast.LENGTH_SHORT).show();
-                adRechargeAdapter.notifyDataSetChanged();
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-        */
     }
 
     private void AnhXa() {
