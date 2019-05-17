@@ -1,12 +1,18 @@
 package com.cnpm.happylunch;
 
-public class Food implements Serializable{
+import java.io.Serializable;
+
+public class Food implements Serializable {
     private int foodImg;
     private String foodName;
     private String foodPrice;
     private double numStar;
     private int numSold;
     private KindOfFood kind;
+
+    public Food(){
+
+    }
 
     public Food(int foodImg, String foodName, String foodPrice, int numSold, KindOfFood kind) {
         this.foodImg = foodImg;
@@ -63,12 +69,6 @@ public class Food implements Serializable{
     public KindOfFood getKind() {
         return kind;
     }
-	
-	@Override
-    public String toString() {
-        return getFoodName();
-    }
-	
 }
 
 enum KindOfFood {

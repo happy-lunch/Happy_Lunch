@@ -1,66 +1,90 @@
 package com.cnpm.happylunch;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 
 public class Bottom_Nav extends AppCompatActivity {
 
     private ActionBar toolBar;
+    //private EditText toolBarEditText;
 
+    private FragmentTransaction ft;
+    private HomePage home = new HomePage();
+    private AccountPage account = new AccountPage();
+    public static Cart cart = new Cart();
+    public static Bag bag = new Bag();
+    public static SecondShop resell = new SecondShop();
+
+    private FrameLayout selectedFrameLayout;
+    private FrameLayout flHome, flResell, flCart, flBag, flAccount;
     private View view;
     private String toolBarTitle;
-    public static HomePage homePage = new HomePage();
-    private AccountPage accountPage = new AccountPage();
-    public volatile static Fragment selectedFragment = homePage;
-    public volatile static FoodDetail foodDetail = new FoodDetail();
-    public volatile static Cart cart = new Cart();
-    public volatile static Bag bag = new Bag();
-    public volatile static BagResell bagResell = new BagResell();
-    public volatile static SecondShop resell = new SecondShop();
-
     private class BotNavListener implements BottomNavigationView.OnNavigationItemSelectedListener{
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
             switch (menuItem.getItemId()){
                 case R.id.nav_home:
-                    selectedFragment = new HomePage();
+                    //selectedFragment = home;
+                    selectedFrameLayout = flHome;
                     toolBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
                     toolBar.setCustomView(view);
                     break;
                 case R.id.nav_resell:
-                    selectedFragment = resell;
-                    cart.set_cost();
+                    selectedFrameLayout = flResell;
+                    SecondShop.secondShopAdapter.notifyDataSetChanged();
                     toolBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE);
                     toolBarTitle = "Resell";
                     break;
                 case R.id.nav_shopping_cart:
-                    selectedFragment = cart;
+                    //selectedFragment = shop;
+                    selectedFrameLayout = flCart;
+                    cart.set_cost();
+                    Cart.cartAdapter.notifyDataSetChanged();
                     toolBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE);
                     toolBarTitle = "Shopping cart";
                     break;
                 case R.id.nav_bag:
-                    selectedFragment = bag;
+                    selectedFrameLayout = flBag;
+                    Bag.bagAdapter.notifyDataSetChanged();
                     toolBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE);
                     toolBarTitle = "Bag";
                     break;
                 case R.id.nav_account:
-                    selectedFragment = accountPage;
+                    //selectedFragment = account;
+                    selectedFrameLayout = flAccount;
                     toolBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE);
                     toolBarTitle = "Account";
                     break;
             }
             toolBar.setTitle(toolBarTitle);
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).show(selectedFragment).commit();
+            //getSupportFragmentManager().beginTransaction().replace(R.id.flHome, selectedFragment).show(selectedFragment).commit();
+            //ft.hide(home).hide(shop).hide(account);
+            //ft.show(selectedFragment);
+            //ft.add(R.id.fragment_container, selectedFragment);
+            //ft.commit();
+
+            flHome.setVisibility(View.INVISIBLE);
+            flResell.setVisibility(View.INVISIBLE);
+            flCart.setVisibility(View.INVISIBLE);
+            flBag.setVisibility(View.INVISIBLE);
+            flAccount.setVisibility(View.INVISIBLE);
+
+
+            selectedFrameLayout.setVisibility(View.VISIBLE);
+
             return true;
         }
     }
@@ -71,15 +95,36 @@ public class Bottom_Nav extends AppCompatActivity {
         setContentView(R.layout.activity_bottom_nav);
         toolBar = getSupportActionBar();
 
+        flHome = findViewById(R.id.flHome);
+        flResell = findViewById(R.id.flResell);
+        flCart = findViewById(R.id.flCart);
+        flBag = findViewById(R.id.flBag);
+        flAccount = findViewById(R.id.flAccount);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).show(selectedFragment).commit();
+        flHome.setVisibility(View.VISIBLE);
+        flResell.setVisibility(View.INVISIBLE);
+        flCart.setVisibility(View.INVISIBLE);
+        flBag.setVisibility(View.INVISIBLE);
+        flAccount.setVisibility(View.INVISIBLE);
+
+        selectedFrameLayout = flHome;
+
+        //getSupportFragmentManager().beginTransaction().replace(R.id.flHome, selectedFragment).show(selectedFragment).commit();
+        ft = getSupportFragmentManager().beginTransaction();
+        ft.add(R.id.flAccount, account).add(R.id.flHome, home).add(R.id.flBag, bag).add(R.id.flCart, cart).add(R.id.flResell, resell).commit();
 
         setHomeActionBar();
 
         BottomNavigationView botNav = findViewById(R.id.bottom_nav);
         botNav.setOnNavigationItemSelectedListener(new BotNavListener());
 
-
+        EditText txtSearch = view.findViewById(R.id.txtSearch);
+        txtSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), SearchHomePage.class));
+            }
+        });
     }
 
     @Override
@@ -92,15 +137,15 @@ public class Bottom_Nav extends AppCompatActivity {
 
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         view = layoutInflater.inflate(R.layout.activity_home_action_bar, null);
-		
-		EditText txtSearch = (EditText) view.findViewById(R.id.txtSearch);
+
+        EditText txtSearch = view.findViewById(R.id.txtSearch);
         txtSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(Bottom_Nav.this, SearchHomePage.class));
             }
         });
-		
+
         toolBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         toolBar.setCustomView(view);
     }

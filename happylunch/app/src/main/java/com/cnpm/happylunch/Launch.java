@@ -20,6 +20,8 @@ public class Launch extends AppCompatActivity {
         setContentView(R.layout.activity_launch);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        /*
         if(user != null){
             if(user.isEmailVerified()){
                 App.prepareUser();
@@ -29,7 +31,8 @@ public class Launch extends AppCompatActivity {
             }
         }else{
             i = new Intent(Launch.this, Login.class);
-        }
+        }*/
+        i = new Intent(Launch.this, Login.class);
 
         Handler hand = new Handler();
         hand.postDelayed(()->{

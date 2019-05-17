@@ -2,12 +2,11 @@ package com.cnpm.happylunch;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +39,8 @@ class BagRow {
     private String id = "null";
 
     BagRow(){
-
+        this.time = "";
+        this.count = 0;
     }
 
     BagRow(BagRow food){
@@ -78,6 +84,25 @@ class BagRow {
         this.time = time;
         this.count = count;
         this.status = R.drawable.ic_favorite_border_black_24dp;
+    }
+
+
+    public BagRow(BillItem billItem, String time) {
+        this.id = billItem.getId();
+        this.count = billItem.getNum();
+        this.price = billItem.getPrice();
+        this.img = 0;
+        this.name = "Null";
+        this.time = time;
+    }
+
+    public BagRow(FoodResell foodResell) {
+        this.time = foodResell.getTime();
+        this.price = foodResell.getPrice();
+        this.count = foodResell.getNumSell();
+        this.id = foodResell.getIdFood();
+        this.name = "Món ăn nào đó";
+        this.img = 0;
     }
 
     int getImg() {
@@ -201,9 +226,9 @@ public class Bag extends Fragment {
     private ListView lvBag;
 
     public volatile ArrayList<BagRow> arrayBag = new ArrayList<>();
-    private BagAdapter bagAdapter;
+    public static BagAdapter bagAdapter;
     private View view;
-
+    private DatabaseReference mData;
 
     @Nullable
     @Override
@@ -219,6 +244,46 @@ public class Bag extends Fragment {
         lvBag.setAdapter(bagAdapter);
 
 
+        mData = FirebaseDatabase.getInstance().getReference();
+        mData.child("Bill").child(App.user.getMssv()).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                Bill bill = dataSnapshot.getValue(Bill.class);
+                assert bill != null;
+
+                if (bill.getStatus().equals("Đang xử lí")) {
+                    for (int i = 0; i < bill.item.size(); i++) {
+                        arrayBag.add(new BagRow(bill.item.get(i), bill.getTime()));
+                        //arrayBag.get(i).setTime(bill.getTime());
+                    }
+                    bagAdapter.notifyDataSetChanged();
+                }
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
         lvBag.setOnItemClickListener((parent, view, position, id) -> Dialog_click_tra_mon(position));
 
         btn_resell.setOnClickListener(v -> Click_btn_resell());
@@ -228,6 +293,7 @@ public class Bag extends Fragment {
 
     private void Click_btn_resell(){
 
+        /*
         FragmentManager fragmentManager = getFragmentManager();
         assert fragmentManager != null;
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -235,8 +301,15 @@ public class Bag extends Fragment {
 
         /*
         Bottom_Nav.selectedFrameLayout.setVisibility(View.INVISIBLE);
-        Bottom_Nav.flBagResell.setVisibility(View.VISIBLE);*/
-        Bottom_Nav.bagResell.set_cost();
+        Bottom_Nav.flBagResell.setVisibility(View.VISIBLE);
+        Bottom_Nav.bagResell.set_cost();*/
+
+
+        if (BagResell.isCreate){
+            BagResell.bagResellAdapter.notifyDataSetChanged();
+        }
+        BagResell.set_cost();
+        startActivity(new Intent(getContext(), BagResell.class));
     }
 
     private void Dialog_click_tra_mon(final int position){
@@ -277,7 +350,7 @@ public class Bag extends Fragment {
                     BagRow food = new BagRow(arrayBag.get(position));
                     food.setPrice((int)(food.getPrice()*0.9));
                     food.setCount(num[0]);
-                    Bottom_Nav.bagResell.arrayBagRell.add(food);
+                    BagResell.arrayBagResell.add(food);
                     arrayBag.get(position).setCount(arrayBag.get(position).getCount() - num[0]);
                     if (arrayBag.get(position).getCount() == 0) {
                         arrayBag.remove(position);
@@ -301,14 +374,6 @@ public class Bag extends Fragment {
                 "9:30",3,R.drawable.ic_clear_black_18dp));
         arrayBag.add(new BagRow(R.drawable.ck_salad_caron,         "Salad caron",
                 "9:20",1,R.drawable.ic_clear_black_18dp));
-        arrayBag.add(new BagRow(R.drawable.ck_single_banana,       "Single banana",
-                "8:55",1,R.drawable.ic_done_black_18dp));
-        arrayBag.add(new BagRow(R.drawable.ck_trung_cut,           "Trứng cút",
-                "8:45",4,R.drawable.ic_done_black_18dp));
-        arrayBag.add(new BagRow(R.drawable.ck_salad_caron,         "Salad caron",
-                "8:40",1,R.drawable.ic_done_black_18dp));
-        arrayBag.add(new BagRow(R.drawable.ck_salad_caron,         "Salad caron",
-                "8:40",1,R.drawable.ic_done_black_18dp));
         arrayBag.add(new BagRow(R.drawable.ck_single_banana,       "Single banana",
                 "8:30",1,R.drawable.ic_done_black_18dp));
         arrayBag.add(new BagRow(R.drawable.ck_trung_cut,           "Trứng cút",

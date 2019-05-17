@@ -1,19 +1,23 @@
 package com.cnpm.happylunch;
 
-<<<<<<< HEAD
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class FoodDetail extends AppCompatActivity {
 
-    private TextView foodAmount, price, nameFood, bigNameFood;
+    private static TextView foodAmount, price, nameFood, bigNameFood, txt_time, txt_numMax;
     private Button btnAdd, btnSub;
-    private ImageView imgFood;
+    private ImageButton btnFD;
+    private static ImageView imgFood;
+    public volatile  static  Food food;
+    public volatile  static BagRow bag = new BagRow();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,23 +26,24 @@ public class FoodDetail extends AppCompatActivity {
 
         map();
 
-        Intent i = getIntent();
-
-        Food food = (Food) i.getSerializableExtra("Food");
-
+        /*
         price.setText(food.getFoodPrice());
         nameFood.setText(food.getFoodName());
         bigNameFood.setText(food.getFoodName());
         imgFood.setImageResource(food.getFoodImg());
+        */
+
+        set(food);
+
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int numFood = Integer.parseInt(foodAmount.getText().toString());
-                if(numFood >= 10){
-                    return;
+                if(numFood < bag.getCount() || bag.getCount() ==0){
+                    foodAmount.setText(String.valueOf(++numFood));
                 }
-                foodAmount.setText(String.valueOf(++numFood));
+
             }
         });
 
@@ -53,6 +58,45 @@ public class FoodDetail extends AppCompatActivity {
             }
         });
 
+        btnFD.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int num = Integer.valueOf(String.valueOf(foodAmount.getText()));
+                Cart.arrayCart.add(new BagRow(bag, num));
+                Toast.makeText(getBaseContext(),String.format("Bạn đã thêm %s %s vào Cart", num, bag.getName()),Toast.LENGTH_SHORT).show();
+                //final AlertDialog.Builder alertDialog = new AlertDialog.Builder(Objects.requireNonNull(getApplicationContext()));
+                //alertDialog.setTitle("Thông báo");
+                //alertDialog.setMessage(String.format("Bạn đã thêm %s %s vào Cart", num, bag.getName()));
+                //alertDialog.show();
+                //startActivity(new Intent(getBaseContext(), Bottom_Nav.class));
+                //startActivity();
+                onBackPressed();
+                finish();
+            }
+        });
+    }
+
+    public static void set(Food food){
+        bag.setImg(food.getFoodImg());
+        bag.setName(food.getFoodName());
+        bag.setPrice(Integer.valueOf(food.getFoodPrice()));
+        set_bag(bag);
+    }
+
+
+    public static void set_bag(BagRow bagRow){
+        bag = bagRow;
+        imgFood.setImageResource(bag.getImg());
+        nameFood.setText(bag.getName());
+        price.setText(String.valueOf(bag.getPrice()));
+        bigNameFood.setText(bag.getName());
+        if (bag.getTime().length() > 0)
+            txt_time.setText(String.format("Time : %s",bag.getTime()));
+        else txt_time.setText("");
+        if (bag.getCount() > 0)
+            txt_numMax.setText(String.format("NumSell : %s",bag.getCount()));
+        else txt_numMax.setText("");
+        foodAmount.setText("1");
     }
 
     private void map(){
@@ -65,131 +109,10 @@ public class FoodDetail extends AppCompatActivity {
         btnSub = findViewById(R.id.btnSub);
 
         imgFood = findViewById(R.id.imgFood);
+
+        txt_numMax = findViewById(R.id.textView_foodDetail_numMax);
+        txt_time = findViewById(R.id.textView_foodDetail_time);
+        btnFD = findViewById(R.id.btnFD);
     }
 
-=======
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.Objects;
-
-public class FoodDetail extends Fragment {
-
-    private View view;
-    public boolean isCreate = false;
-    private int num = 1;
-
-    private BagRow food = new BagRow();
-
-    private ImageView img_img;
-    private TextView txt_name, txt_price, txt_time, txt_numMax;
-    private EditText txt_num;
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.food_detail, container, false);
-
-        ImageButton btn_back= view.findViewById(R.id.imageButton_foodDetail_back);
-        ImageButton btn_down= view.findViewById(R.id.button_foodDetail_down);
-        ImageButton btn_up  = view.findViewById(R.id.button_foodDetail_up);
-        Button btn_confirm  = view.findViewById(R.id.button_foodDetail);
-
-        img_img    = view.findViewById(R.id.imageView_foodDetail);
-        txt_name   = view.findViewById(R.id.textView_foodDetail_name);
-        txt_price  = view.findViewById(R.id.textView_foodDetail_price);
-        txt_time   = view.findViewById(R.id.textView_foodDetail_time);
-        txt_numMax = view.findViewById(R.id.textView_foodDetail_numMax);
-        txt_num    = view.findViewById(R.id.textView_foodDetail_num);
-
-
-        btn_back.setOnClickListener(v->Click_btn_back());
-        btn_down.setOnClickListener(v->Click_btn_down());
-        btn_up.setOnClickListener(v->Click_btn_up());
-        btn_confirm.setOnClickListener(v->Click_btn_confirm());
-
-        isCreate = true;
-
-        return view;
-    }
-
-    public void set_food(Food food){
-        this.food.setImg(food.getFoodImg());
-        this.food.setName(food.getFoodName());
-        this.food.setPrice(Integer.valueOf(food.getFoodPrice()));
-        this.food.setTime("");
-        this.food.setCount(0);
-        set_bag(this.food);
-    }
-
-    public void set_bag(BagRow bag){
-        this.food = bag;
-        img_img.setImageResource(bag.getImg());
-        txt_name.setText(bag.getName());
-        txt_price.setText(String.valueOf(bag.getPrice()));
-        if (food.getTime().length() > 0)
-            txt_time.setText(String.format("Time : %s",bag.getTime()));
-        else txt_time.setText("");
-        if (food.getCount() > 0)
-            txt_numMax.setText(String.format("NumSell : %s",bag.getCount()));
-        else txt_numMax.setText("");
-        txt_num.setText("1");
-    }
-
-
-    private void Click_btn_back(){
-        num = 1;
-        txt_num.setText("1");
-
-        /*
-        Bottom_Nav.selectedFrameLayout.setVisibility(View.VISIBLE);
-        Bottom_Nav.flFoodDetail.setVisibility(View.INVISIBLE);
-        */
-
-
-
-        FragmentManager fragmentManager = getFragmentManager();
-        assert fragmentManager != null;
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container, Bottom_Nav.homePage).commit();
-    }
-
-    private void Click_btn_down(){
-        if (num > 1 ){
-            txt_num.setText(String.valueOf(--num));
-        }
-    }
-    private void Click_btn_up(){
-        if (num < this.food.getCount() || this.food.getCount() ==0)
-            txt_num.setText(String.valueOf(++num));
-    }
-    private void Click_btn_confirm(){
-        num = Integer.valueOf(String.valueOf(txt_num.getText()));
-        if (num > 0 && (num <= food.getCount() || food.getCount() == 0)) {
-
-            Bottom_Nav.cart.arrayCart.add(new BagRow(food, num));
-
-            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-            alertDialog.setMessage(String.format("Bạn đã thêm %s %s vào Cart", num, food.getName()));
-            alertDialog.show();
-        }
-        else{
-            Toast.makeText(getContext(),"Nhập số lượng vừa phải", Toast.LENGTH_LONG).show();
-        }
-        Click_btn_back();
-    }
->>>>>>> 71d06f8fe3d98fe44e4b0b371eff2bc96de6e9b9
 }

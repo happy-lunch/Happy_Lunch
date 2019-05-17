@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,99 +28,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
-class CartBillItem{
-
-    private int num;
-    private int price;
-    private String id;
-    private String status = "Đang xử lí";
-
-    CartBillItem(BagRow food){
-        this.id = food.getId();
-        this.num = food.getCount();
-        this.price = food.getPrice();
-    }
-
-    public int getNum() {
-        return num;
-    }
-
-    public void setNum(int num) {
-        this.num = num;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-}
-
-class CartBill{
-
-    private String id;
-    private int price;
-    private String time;
-    private String status = "Đang xử lí";
-    public List<CartBillItem> item;
-
-    CartBill(String id, int price, String time){
-        this.item = new ArrayList<>();
-        this.id = id;
-        this.price = price;
-        this.time = time;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-}
 
 class CartAdapter extends BaseAdapter {
 
@@ -176,8 +84,8 @@ class CartAdapter extends BaseAdapter {
 
         holder.imgImg.setImageResource(cart.getImg());
         holder.txtName.setText(cart.getName());
-        holder.txtNum.setText(String.valueOf(cart.getCount()));
-        holder.txtPrice.setText(String.valueOf(cart.getPrice()));
+        holder.txtNum.setText(String.format("Num : %s",cart.getCount()));
+        holder.txtPrice.setText(String.format("Price : %s",cart.getPrice()));
 
         return convertView;
     }
@@ -185,9 +93,9 @@ class CartAdapter extends BaseAdapter {
 
 public class Cart extends Fragment {
 
-    private GridView gvCart;
-    public volatile ArrayList<BagRow> arrayCart = new ArrayList<>();
-    private CartAdapter cartAdapter;
+    private ListView gvCart;
+    public static ArrayList<BagRow> arrayCart = new ArrayList<>();
+    public static CartAdapter cartAdapter;
 
     private View view;
 
@@ -195,6 +103,7 @@ public class Cart extends Fragment {
     private TextView txt_cost;
     private int cost = 0;
     private String time = "";
+    Calendar calendar;
 
     private DatabaseReference mData;
 
@@ -203,18 +112,36 @@ public class Cart extends Fragment {
         view = inflater.inflate(R.layout.cart, container, false);
 
         isCreate = true;
-        gvCart = view.findViewById(R.id.grid_cart);
+        gvCart = view.findViewById(R.id.list_cart);
         cartAdapter = new CartAdapter(getContext(), R.layout.cart_element, arrayCart);
         gvCart.setAdapter(cartAdapter);
 
         mData = FirebaseDatabase.getInstance().getReference();
+
 
         txt_cost = view.findViewById(R.id.textView_cart_cost);
         set_cost();
 
         Button btn_order = view.findViewById(R.id.button_cart_order);
 
-        btn_order.setOnClickListener(v -> Click_btn_order());
+        btn_order.setOnClickListener(v -> {
+
+            if (cost > App.user.getHPCoin()){
+                AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                dialog.setMessage("Không đủ Happy Coin để thực hiện giao dịch");
+                dialog.show();
+            }
+            else{
+                if (cost == 0){
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    dialog.setMessage("Không có gì để giao dịch");
+                    dialog.show();
+                }
+                else
+                    Click_btn_order();
+            }
+
+        });
         gvCart.setOnItemClickListener((parent, view, position, id) -> Dialog_click_item(position));
 
         return view;
@@ -235,7 +162,7 @@ public class Cart extends Fragment {
     }
 
     void Click_btn_order(){
-        final Dialog dialog = new Dialog(Objects.requireNonNull(getContext()));
+        Dialog dialog = new Dialog(Objects.requireNonNull(getContext()));
         dialog.setContentView(R.layout.cart_dialog);
         dialog.setTitle("Nhập giờ lấy hàng");
 
@@ -250,7 +177,7 @@ public class Cart extends Fragment {
         EditText txt_minute = dialog.findViewById(R.id.editText_cartDialog_minute);
         Button btn_order    = dialog.findViewById(R.id.button_cartDialog_order);
 
-        Calendar calendar = Calendar.getInstance();
+        calendar = Calendar.getInstance();
 
         final int[] day = {calendar.get(Calendar.DATE)};
         final int[] hour = {calendar.get(Calendar.HOUR_OF_DAY)};
@@ -289,20 +216,32 @@ public class Cart extends Fragment {
             day[0] = Integer.valueOf(String.valueOf(txt_day.getText()));
             hour[0] = Integer.valueOf(String.valueOf(txt_hour.getText()));
             minute[0] = Integer.valueOf(String.valueOf(txt_minute.getText()));
-            isValid(day[0], hour[0], minute[0]);
+
             time = String.format("%sd%sh%sp", day[0], hour[0], minute[0]);
-            Dialog_click_order();
+
+            if (isValid(day[0], hour[0], minute[0]))
+                Dialog_click_order();
+            else{
+                AlertDialog.Builder dialog0 = new AlertDialog.Builder(getContext());
+                dialog0.setMessage("Thời gian không chính xác");
+                dialog0.show();
+            }
         });
 
         dialog.show();
     }
 
-    private void isValid(int day, int hour, int minute){
+    private boolean isValid(int day, int hour, int minute){
 
+        long temp = 1440*calendar.get(Calendar.DATE) + 60*calendar.get(Calendar.HOUR_OF_DAY) + calendar.get(Calendar.MINUTE);
+        if (temp <= 1440*day + 60*hour + minute)
+            return true;
+        else
+            return false;
     }
 
     private void Dialog_click_order(){
-        final AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
         dialog.setTitle("Xác nhận nhận đặt hàng");
         dialog.setMessage(String.format("Bạn chắc chắn đặt vào ngày %s với giá %s VNĐ", time, cost));
 
@@ -310,10 +249,6 @@ public class Cart extends Fragment {
 
             Push_db();
 
-            for (int i = 0; i < arrayCart.size(); i++) {
-                arrayCart.get(i).setTime(time);
-                Bottom_Nav.bag.arrayBag.add(new BagRow(arrayCart.get(i)));
-            }
             arrayCart.removeAll(arrayCart);
             cartAdapter.notifyDataSetChanged();
 
@@ -327,20 +262,27 @@ public class Cart extends Fragment {
     }
 
     private void Push_db(){
-        String key = mData.getRoot().child("Bill").child(App.user.getMssv()).push().getKey();
-        CartBill bill = new CartBill(key, cost, time);
+        String key = mData.child("Bill").child(App.user.getMssv()).push().getKey();
+        Bill bill = new Bill(key, cost, time);
 
-        ArrayList<CartBillItem> arrayItem = new ArrayList<>();
+        ArrayList<BillItem> arrayItem = new ArrayList<>();
         for (int i = 0; i < arrayCart.size(); i ++)
-            arrayItem.add(new CartBillItem(arrayCart.get(i)));
+            arrayItem.add(new BillItem(arrayCart.get(i)));
 
         bill.item.addAll(arrayItem);
         assert key != null;
         mData.getRoot().child("Bill").child(App.user.getMssv()).child(key).setValue(bill);
 
-        final AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+
+        //Lỗi tính tiền
+        //mData.child("Customers").child(App.user.getUid()).child("hpcoin").setValue(100000);
+
+
+
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
         dialog.setMessage("Bạn đã đặt hàng thành công");
         dialog.show();
+
     }
 
     private void Dialog_click_item(int position){

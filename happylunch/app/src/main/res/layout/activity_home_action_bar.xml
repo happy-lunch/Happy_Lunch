@@ -8,7 +8,7 @@
     >
 
     <EditText
-		android:id="@+id/txtSearch"
+        android:id="@+id/txtSearch"
         android:layout_width="265dp"
         android:layout_height="40dp"
         android:layout_marginLeft="10dp"
