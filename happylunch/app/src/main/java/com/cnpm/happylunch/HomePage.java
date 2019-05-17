@@ -30,7 +30,7 @@ public class HomePage extends Fragment {
             KindOfFood.Com, KindOfFood.Mi, KindOfFood.Banh_Bao, KindOfFood.Banh_Mi, KindOfFood.Sandwich, KindOfFood.Trang_Mieng
     };
 
-    private static int currentItem;
+    private int currentItem;
 
     private LinearLayout linearCategary;
 
@@ -214,7 +214,7 @@ public class HomePage extends Fragment {
         dots[0].setImageResource(R.drawable.active_dot);
 
         //-------------------------------------------------------------------------
-        /*/Auto swipe
+        //Auto swipe
         final ViewPager VP = view.findViewById(R.id.viewPager);
 
         final Handler hand = new Handler();
@@ -233,7 +233,7 @@ public class HomePage extends Fragment {
                 hand.post(run);
             }
         },5000 ,5000);
-        /*///---------------------------------------------------------------------------
+        ////---------------------------------------------------------------------------
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
