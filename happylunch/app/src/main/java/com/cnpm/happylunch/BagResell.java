@@ -244,7 +244,7 @@ public class BagResell extends AppCompatActivity {
 
                     BagRow food = new BagRow(arrayBagResell.get(position));
                     food.setCount(num[0]);
-                    Bottom_Nav.bag.arrayBag.add(food);
+                    Bag.arrayBag.add(food);
 
                     arrayBagResell.get(position).setCount(arrayBagResell.get(position).getCount() - num[0]);
                     if (arrayBagResell.get(position).getCount() == 0) {

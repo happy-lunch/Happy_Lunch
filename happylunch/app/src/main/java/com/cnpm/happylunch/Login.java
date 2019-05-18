@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,12 +31,15 @@ public class Login extends AppCompatActivity {
     private ProgressDialog progressBar;
 
     private TextView forgotPassword;
+    private CheckBox check;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
+
+        check = findViewById(R.id.isEmployee);
 
         progressBar = new ProgressDialog(this);
         progressBar.setMessage("Đăng nhập");
@@ -79,7 +83,11 @@ public class Login extends AppCompatActivity {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 App.user = dataSnapshot.getValue(User.class);
-                                startActivity(new Intent(Login.this, Bottom_Nav.class));
+                                if (check.isChecked()) {
+                                    startActivity(new Intent(Login.this, AdBottom_Nav.class));
+                                }
+                                else
+                                    startActivity(new Intent(Login.this, Bottom_Nav.class));
                             }
 
                             @Override

@@ -20,13 +20,13 @@ public class Bottom_Nav extends AppCompatActivity {
     private ActionBar toolBar;
     //private EditText toolBarEditText;
 
-    private FragmentTransaction ft;
     private HomePage home = new HomePage();
     private AccountPage account = new AccountPage();
-    public static Cart cart = new Cart();
-    public static Bag bag = new Bag();
-    public static SecondShop resell = new SecondShop();
+    private Cart cart = new Cart();
+    private Bag bag = new Bag();
+    private SecondShop resell = new SecondShop();
 
+    private FragmentTransaction ft;
     private FrameLayout selectedFrameLayout;
     private FrameLayout flHome, flResell, flCart, flBag, flAccount;
     private View view;

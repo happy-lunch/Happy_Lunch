@@ -148,7 +148,7 @@ public class Cart extends Fragment {
     }
 
     public void set_cost(){
-        if (Bottom_Nav.cart.isCreate) {
+        if (this.isCreate) {
             cost();
             txt_cost.setText(String.format("Tổng đơn hàng : %s", cost));
         }

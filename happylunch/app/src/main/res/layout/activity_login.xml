@@ -49,12 +49,13 @@
             android:layout_height="wrap_content" >
 
             <CheckBox
-                android:layout_gravity="left|center"
-                android:onClick="isRememberMe"
-                android:text="Employee"
-                android:layout_weight="1"
+                android:id="@+id/isEmployee"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center"
+                android:layout_weight="1"
+                android:onClick="isRememberMe"
+                android:text="Employee" />
 
             <TextView
                 android:layout_gravity="right|center"

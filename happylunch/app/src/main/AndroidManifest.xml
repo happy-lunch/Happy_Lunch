@@ -48,7 +48,8 @@
             android:name=".AdBottom_Nav"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing"/>
-        <activity android:name=".ListFoodsInCategory"/>
+        <activity
+            android:name=".ListFoodsInCategory"/>
         <activity
             android:name=".AccountBill"
             android:screenOrientation="portrait"

@@ -225,7 +225,7 @@ public class Bag extends Fragment {
 
     private ListView lvBag;
 
-    public volatile ArrayList<BagRow> arrayBag = new ArrayList<>();
+    public volatile static ArrayList<BagRow> arrayBag = new ArrayList<>();
     public static BagAdapter bagAdapter;
     private View view;
     private DatabaseReference mData;
