@@ -1,35 +1,58 @@
 package com.cnpm.happylunch;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Bill extends AppCompatActivity {
 
-    //Toolbar toolbarhoadon;
-    Button btnhoadon;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hoa_don);
-        Anhxa();
-        controlbutton();
+public class Bill {
+
+    private String id;
+    private int price;
+    private String time;
+    private String status = "Đang xử lí";
+    public List<BillItem> item;
+
+    public Bill(){
+
     }
 
-    private void controlbutton() {
-        btnhoadon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent account = new Intent(Bill.this,AdBottom_Nav.class);
-                startActivity(account);
-            }
-        });
+    public Bill(String id, int price, String time){
+        this.item = new ArrayList<>();
+        this.id = id;
+        this.price = price;
+        this.time = time;
     }
 
-    private void Anhxa() {
-        //toolbarhoadon = (Toolbar) findViewById(R.id.toolbarhoadon);
-        btnhoadon = (Button) findViewById(R.id.btnquaylai);
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
+

@@ -1,5 +1,6 @@
 package com.cnpm.happylunch;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -43,7 +44,9 @@ public class AccountPage extends Fragment {
     private Button btnLogOut;
     private TextView txtName, txtID;
     private ImageView avaUser;
+    private Boolean isCreate = false;
 
+    @SuppressLint("SetTextI18n")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -51,8 +54,7 @@ public class AccountPage extends Fragment {
 
         map();
 
-        txtName.setText(App.user.getFirstName() + " " + App.user.getLastName());
-        txtID.setText(App.user.getMssv());
+
 
         btnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,12 +81,21 @@ public class AccountPage extends Fragment {
             }
         });
 
-        if(!App.user.getAvaName().equals("")){
-            avaUser.setImageResource(R.drawable.dang_tai);
-            downloadAvaUser();
-        }else{
-            //Toast.makeText(getActivity(), "NULL", Toast.LENGTH_SHORT).show();
+        if(isCreate){
+            txtName.setText(App.user.getFirstName() + " " + App.user.getLastName());
+            txtID.setText(App.user.getMssv());
+
+            if(!App.user.getAvaName().equals("")){
+                avaUser.setImageResource(R.drawable.dang_tai);
+                downloadAvaUser();
+            }else{
+                //Toast.makeText(getActivity(), "NULL", Toast.LENGTH_SHORT).show();
+            }
         }
+
+        isCreate = true;
+
+
 
         return view;
     }

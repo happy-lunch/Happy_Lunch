@@ -20,8 +20,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-		<activity
+        <activity
             android:name=".FoodDetail"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".BagResell"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
@@ -44,9 +48,10 @@
             android:name=".AdBottom_Nav"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing"/>
-        <activity android:name=".ListFoodsInCategory"/>
         <activity
-            android:name=".Bill"
+            android:name=".ListFoodsInCategory"/>
+        <activity
+            android:name=".AccountBill"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity

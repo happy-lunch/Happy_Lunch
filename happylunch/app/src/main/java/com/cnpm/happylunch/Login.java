@@ -2,26 +2,21 @@ package com.cnpm.happylunch;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.SystemClock;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,12 +31,15 @@ public class Login extends AppCompatActivity {
     private ProgressDialog progressBar;
 
     private TextView forgotPassword;
+    private CheckBox check;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
+
+        check = findViewById(R.id.isEmployee);
 
         progressBar = new ProgressDialog(this);
         progressBar.setMessage("Đăng nhập");
@@ -85,7 +83,11 @@ public class Login extends AppCompatActivity {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 App.user = dataSnapshot.getValue(User.class);
-                                startActivity(new Intent(Login.this, Bottom_Nav.class));
+                                if (check.isChecked()) {
+                                    startActivity(new Intent(Login.this, AdBottom_Nav.class));
+                                }
+                                else
+                                    startActivity(new Intent(Login.this, Bottom_Nav.class));
                             }
 
                             @Override

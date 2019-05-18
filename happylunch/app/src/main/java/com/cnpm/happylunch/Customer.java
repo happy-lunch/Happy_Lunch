@@ -79,7 +79,7 @@ public class Customer extends Fragment {
         btnhoadon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent hoadon = new Intent(getContext(),Bill.class);
+                Intent hoadon = new Intent(getContext(),AccountBill.class);
                 startActivity(hoadon);
             }
         });
