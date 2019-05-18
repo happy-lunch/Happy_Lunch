@@ -79,15 +79,11 @@ public class Login extends AppCompatActivity {
                     if (mAuth.getCurrentUser().isEmailVerified()) {
                         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
                         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                        databaseReference.child("Customers").child(mAuth.getUid()).addValueEventListener(new ValueEventListener() {
+                        databaseReference.child("Customers").child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 App.user = dataSnapshot.getValue(User.class);
-                                if (check.isChecked()) {
-                                    startActivity(new Intent(Login.this, AdBottom_Nav.class));
-                                }
-                                else
-                                    startActivity(new Intent(Login.this, Bottom_Nav.class));
+                                startActivity(new Intent(Login.this, Bottom_Nav.class));
                             }
 
                             @Override
