@@ -14,6 +14,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,7 +103,7 @@ class Food_Detail{
     }
 }
 
-public class Food_detail_frag extends Fragment {
+public class Food_detail_frag extends AppCompatActivity {
 
     TextView food_Name, food_Price, food_Description;
     ImageView food_Image;
@@ -114,30 +115,33 @@ public class Food_detail_frag extends Fragment {
     DatabaseReference foods;
 
 
-    private View view;
+    //private View view;
 
     @Override
 
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_food_detail_show);
+    //public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.activity_food_detail_show, container, false);
+        //view = inflater.inflate(R.layout.activity_food_detail_show, container, false);
         foods = FirebaseDatabase.getInstance().getReference("foods");
 
 
 
-        food_Description = (TextView) view.findViewById(R.id.food_description);
-        food_Name = (TextView) view.findViewById(R.id.food_name);
-        food_Price = (TextView) view.findViewById(R.id.food_price);
-        food_Image = (ImageView) view.findViewById(R.id.img_food);
+        food_Description = (TextView) findViewById(R.id.food_description);
+        food_Name = (TextView) findViewById(R.id.food_name);
+        food_Price = (TextView) findViewById(R.id.food_price);
+        food_Image = (ImageView) findViewById(R.id.img_food);
 
-        rb = (RatingBar) view.findViewById(R.id.ratingBar);
+        rb = (RatingBar) findViewById(R.id.ratingBar);
 
 
-        collapsingToolbarLayout = (CollapsingToolbarLayout) view.findViewById(R.id.collapsing);
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing);
         collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppbar);
         collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppbar);
         getDetailFood(CurrentVariables.foodId);
-        return view;
+        //return view;
     }
     private void getDetailFood(String foodID)
     {
@@ -147,7 +151,7 @@ public class Food_detail_frag extends Fragment {
                 Food_Detail food= dataSnapshot.getValue(Food_Detail.class);
 
                 //set Image
-                Picasso.with(getContext()).load(food.getImg()).into(food_Image);
+                Picasso.with(getBaseContext()).load(food.getImg()).into(food_Image);
 
                 collapsingToolbarLayout.setTitle(food.getName());
                 food_Price.setText(food.getPrice());

@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,6 +29,16 @@ public class ListFoodsInCategory extends AppCompatActivity {
         getFoodsInCategory();
         gridViewFoodsInCategory = (GridView) findViewById(R.id.gridViewFoodsInCategory);
         gridViewFoodsInCategory.setAdapter(new FoodAdapter(this, foodsInCategory));
+
+
+        gridViewFoodsInCategory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                FoodDetail.food = foodsInCategory.get(position);
+                startActivity(new Intent(getBaseContext(), FoodDetail.class));
+                finish();
+            }
+        });
 
         //Set title ActionBar
         setActionBar();

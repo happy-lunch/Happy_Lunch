@@ -1,10 +1,9 @@
 package com.cnpm.happylunch;
 
 import android.content.Intent;
-import android.os.Handler;
-import android.os.SystemClock;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,6 +20,8 @@ public class Launch extends AppCompatActivity {
         setContentView(R.layout.activity_launch);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        /*
         if(user != null){
             if(user.isEmailVerified()){
                 App.prepareUser();
@@ -30,12 +31,13 @@ public class Launch extends AppCompatActivity {
             }
         }else{
             i = new Intent(Launch.this, Login.class);
-        }
+        }*/
+        i = new Intent(Launch.this, Login.class);
 
         Handler hand = new Handler();
         hand.postDelayed(()->{
             startActivity(i);
-        }, 3000);
+        }, 2000);
 
     }
 }

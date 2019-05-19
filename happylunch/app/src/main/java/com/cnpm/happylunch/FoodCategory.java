@@ -168,14 +168,16 @@ public class FoodCategory extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getContext(),"Chuyển sang danh sách món ăn " , Toast.LENGTH_SHORT).show();
                 foodFragment=new food_info();
-                CurrentVariables.menuId= categoryAdapter.getRef(position).getKey();
+                CurrentVariables.menuId = categoryAdapter.getRef(position).getKey();
                 CurrentVariables.stillInFragment=true;
+                /*
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                         ft
                         .replace(R.id.ad_fragment_container, foodFragment)
                                 .addToBackStack("my_fragment")
                         .show(foodFragment)
-                        .commit();
+                        .commit();*/
+                startActivity(new Intent(getContext(), food_info.class));
                 //Option(position);
                 //Dialog_click_item(position);
             }

@@ -14,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,9 @@ import android.widget.Toast;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -124,7 +128,7 @@ class foods {
     }
 }
 
-public class food_info extends Fragment {
+public class food_info extends AppCompatActivity {
     private Food_detail_frag food_detail_frag;
     private ListView lvAdItem;
 
@@ -132,7 +136,7 @@ public class food_info extends Fragment {
     private ImageButton search, add;
     private String txtSearch;
 
-    private View view;
+    //private View view;
 
     //database
     private DatabaseReference foodRef;
@@ -150,12 +154,15 @@ public class food_info extends Fragment {
     Button btnSelect;
     Button btnUpload;
 
+
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.ad_item);
+    //public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //view = inflater.inflate(R.layout.ad_item, container, false);
 
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.ad_item, container, false);
-
-        lvAdItem = view.findViewById(R.id.list_item_in_cat);
+        lvAdItem = findViewById(R.id.list_item_in_cat);
 
 
         foodRef= FirebaseDatabase.getInstance().getReference("foods");
@@ -165,10 +172,7 @@ public class food_info extends Fragment {
 
 
 
-
-
-
-        adItemAdapter= new FirebaseListAdapter<foods>(getActivity(), foods.class,
+        adItemAdapter= new FirebaseListAdapter<foods>(this, foods.class,
                 R.layout.ad_item_element,foodRef.orderByChild("menuId").equalTo(CurrentVariables.menuId)) {
             @Override
             protected void populateView(View v, foods foodInCat, int position) {
@@ -177,7 +181,7 @@ public class food_info extends Fragment {
                 TextView txtPrice = v.findViewById(R.id.txtViewInCat2);
                 ImageView imgIconMore= v.findViewById(R.id.iconToShowInCat);
 
-                Picasso.with(getContext()).load(foodInCat.getImg()).into(imgImg);
+                Picasso.with(getParent()).load(foodInCat.getImg()).into(imgImg);
                 txtName.setText(foodInCat.getName());
                 txtPrice.setText(String.format("Price : %s", String.valueOf(foodInCat.getPrice())));
 
@@ -194,7 +198,9 @@ public class food_info extends Fragment {
         adItemAdapter.notifyDataSetChanged();
         lvAdItem.setAdapter(adItemAdapter);
 
-        search = view.findViewById(R.id.imageButton_adItem_search);
+
+
+        search = findViewById(R.id.imageButton_adItem_search);
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -202,7 +208,7 @@ public class food_info extends Fragment {
             }
         });
 
-        add = view.findViewById(R.id.imageButton_adItem_add);
+        add = findViewById(R.id.imageButton_adItem_add);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -213,25 +219,28 @@ public class food_info extends Fragment {
         lvAdItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(),"Chuyễn sang food_detail " , Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(),"Chuyễn sang food_detail " , Toast.LENGTH_SHORT).show();
                 food_detail_frag=new Food_detail_frag();
                 CurrentVariables.foodId= adItemAdapter.getRef(position).getKey();
                 CurrentVariables.stillInFragment=true;
+
+                startActivity(new Intent(getBaseContext(), Food_detail_frag.class));
+                /*
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft
                         .replace(R.id.ad_fragment_container, food_detail_frag)
                         .addToBackStack("my_fragment")
                         .show(food_detail_frag)
-                        .commit();
+                        .commit();*/
             }
         });
 
-        return view;
+        //return view;
     }
 
     private void Search(){
-        txtSearch = ((EditText)view.findViewById(R.id.editText_adItem_search)).getText().toString();
-        Toast.makeText(getContext(), "Tìm kiếm " + txtSearch, Toast.LENGTH_SHORT).show();
+        txtSearch = ((EditText)findViewById(R.id.editText_adItem_search)).getText().toString();
+        Toast.makeText(getBaseContext(), "Tìm kiếm " + txtSearch, Toast.LENGTH_SHORT).show();
     }
 
     private void Add(){
@@ -239,7 +248,7 @@ public class food_info extends Fragment {
     }
 
     private void Dialog_click_item(String key, foods item){
-        final Dialog dialog = new Dialog(getContext());
+        final Dialog dialog = new Dialog(getBaseContext());
         dialog.setContentView(R.layout.ad_item_dialog);
         dialog.setTitle("Bạn muốn làm gì ?");
 
@@ -275,7 +284,7 @@ public class food_info extends Fragment {
     }
 
     private void Dialog_click_delete(final String key, foods item){
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getBaseContext());
         alertDialog.setTitle("Cảnh báo!!!");
         alertDialog.setMessage("Bạn chắc chắn muốn xóa "  + "???");
 
@@ -288,18 +297,18 @@ public class food_info extends Fragment {
                 photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(getContext(),"image deleted " , Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getBaseContext(),"image deleted " , Toast.LENGTH_SHORT).show();
                     }
                 });
                 foodRef.child(key).removeValue();
-                Toast.makeText(getContext(),"Bạn đã xóa item " , Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(),"Bạn đã xóa item " , Toast.LENGTH_SHORT).show();
             }
         });
 
         alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getContext(),"Cẩn thận đấy!!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(),"Cẩn thận đấy!!!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -307,7 +316,7 @@ public class food_info extends Fragment {
     }
 
     private void showDialogAdd(){
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getBaseContext());
         alertDialog.setTitle("Add new Item");
         alertDialog.setMessage("Please fill full information");
 
@@ -346,7 +355,7 @@ public class food_info extends Fragment {
                     String foodId= foodRef.push().getKey();
                     newFood.setFoodId(foodId);
                     foodRef.child(foodId).setValue(newFood);
-                    View v=getActivity().findViewById(R.id.ad_item_layout);
+                    View v= findViewById(R.id.ad_item_layout);
                     Snackbar.make(v,"New food: "+newFood.getName()+" was added",Snackbar.LENGTH_SHORT).show();
                 }
             }
@@ -380,7 +389,7 @@ public class food_info extends Fragment {
     private void uploadImage(){
         if(saveUrl != null)
         {
-            ProgressDialog nDialog = new ProgressDialog(getContext());
+            ProgressDialog nDialog = new ProgressDialog(getBaseContext());
             nDialog.setMessage("Uploading...");
             nDialog.show();
             String imageName = UUID.randomUUID().toString();
@@ -390,7 +399,7 @@ public class food_info extends Fragment {
                         @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                 nDialog.dismiss();
-                                Toast.makeText(getContext(), "Uploaded", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getBaseContext(), "Uploaded", Toast.LENGTH_SHORT).show();
                                 btnUpload.setText("Uploaded");
                                 imageFolder.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
@@ -405,7 +414,7 @@ public class food_info extends Fragment {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             nDialog.dismiss();
-                            Toast.makeText(getContext(),""+ e.getMessage(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getBaseContext(),""+ e.getMessage(),Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -416,10 +425,10 @@ public class food_info extends Fragment {
                         }
                     })
             ;
-        };
+        }
     }
     private void showDialogUpdate(String key, foods item){
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getBaseContext());
         alertDialog.setTitle("Edit food detail");
         alertDialog.setMessage("Please fill full information");
 
@@ -477,7 +486,7 @@ public class food_info extends Fragment {
         if(saveUrl != null)
         {
             //show dialog
-            ProgressDialog nDialog = new ProgressDialog(getContext());
+            ProgressDialog nDialog = new ProgressDialog(getBaseContext());
             nDialog.setMessage("Uploading...");
             nDialog.show();
 
@@ -488,7 +497,7 @@ public class food_info extends Fragment {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             nDialog.dismiss();
-                            Toast.makeText(getContext(), "Uploaded", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getBaseContext(), "Uploaded", Toast.LENGTH_SHORT).show();
                             btnUpload.setText("Uploaded");
 
                             imageFolder.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -500,7 +509,7 @@ public class food_info extends Fragment {
                                     photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
-                                            Toast.makeText(getContext(),"image changed " , Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getBaseContext(),"image changed " , Toast.LENGTH_SHORT).show();
                                         }
                                     });
                                     item.setImg(uri.toString());
@@ -512,7 +521,7 @@ public class food_info extends Fragment {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             nDialog.dismiss();
-                            Toast.makeText(getContext(),""+ e.getMessage(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getBaseContext(),""+ e.getMessage(),Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {

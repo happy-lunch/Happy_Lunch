@@ -1,45 +1,90 @@
 package com.cnpm.happylunch;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 class BagRow {
     private int img;
     private String name;
     private String time;
     private int count;
-    private int status;
+    private String status = "Đang xử lí";
+    private int price;
+    private String id = "null";
 
-
-    BagRow(int img, String name, String time, int count, int status) {
-        this.img = img;
-        this.name = name;
-        this.time = time;
-        this.count = count;
-        this.status = status;
+    BagRow(){
+        this.time = "";
+        this.count = 0;
     }
+
+    BagRow(BagRow food){
+        this.img = food.getImg();
+        this.name = food.getName();
+        this.time = food.time;
+        this.count = food.count;
+        this.price = food.getPrice();
+    }
+
+    BagRow(BagRow food, int num){
+        this.img = food.getImg();
+        this.name = food.getName();
+        this.time = food.time;
+        this.count = num;
+        this.price = food.getPrice();
+    }
+
 
     BagRow(int img, String name, String time, int count) {
         this.img = img;
         this.name = name;
         this.time = time;
         this.count = count;
-        this.status = R.drawable.ic_favorite_border_black_24dp;
+        this.status = "Đang xử lí";
+    }
+
+
+    public BagRow(BillItem billItem, String time) {
+        this.id = billItem.getId();
+        this.count = billItem.getNum();
+        this.price = billItem.getPrice();
+        this.img = 0;
+        this.name = "Null";
+        this.time = time;
+    }
+
+    public BagRow(FoodResell foodResell) {
+        this.time = foodResell.getTime();
+        this.price = foodResell.getPrice();
+        this.count = foodResell.getNumSell();
+        this.id = foodResell.getIdFood();
+        this.name = "Món ăn nào đó";
+        this.img = 0;
     }
 
     int getImg() {
@@ -74,13 +119,25 @@ class BagRow {
         this.count = count;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public void setId(String id) {this.id = id;}
+
+    public String getId(){return id;}
 }
 
 class BagAdapter extends BaseAdapter {
@@ -129,7 +186,6 @@ class BagAdapter extends BaseAdapter {
             holder.txtName   = convertView.findViewById(R.id.textView_bag_name);
             holder.txtTime   = convertView.findViewById(R.id.textView_bag_time);
             holder.txtCount  = convertView.findViewById(R.id.textView_bag_count);
-            holder.imgStatus = convertView.findViewById(R.id.imageView_bag_status);
             convertView.setTag(holder);
         }
         else{
@@ -142,7 +198,6 @@ class BagAdapter extends BaseAdapter {
         holder.txtName.setText(bag.getName());
         holder.txtTime.setText(bag.getTime());
         holder.txtCount.setText(String.valueOf(bag.getCount()));
-        holder.imgStatus.setImageResource(bag.getStatus());
 
         return convertView;
     }
@@ -151,91 +206,172 @@ class BagAdapter extends BaseAdapter {
 public class Bag extends Fragment {
 
     private ListView lvBag;
-    private ArrayList<BagRow> arrayBag ;
-    private BagAdapter bagAdapter;
 
+    public volatile static ArrayList<BagRow> arrayBag = new ArrayList<>();
+    public static BagAdapter bagAdapter;
     private View view;
+    private DatabaseReference mData;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_bag, container, false);
 
-        lvBag = view.findViewById(R.id.list_bag);
-        arrayBag = new ArrayList<>();
-        AnhXa();
         bagAdapter = new BagAdapter(getContext(), R.layout.element_bag, arrayBag);
+        lvBag = view.findViewById(R.id.list_bag);
+
+        //AnhXa();
+        Button btn_resell = view.findViewById(R.id.button_bag_resell);
+
         lvBag.setAdapter(bagAdapter);
 
 
-        lvBag.setOnItemClickListener((parent, view, position, id) -> {
-            if (arrayBag.get(position).getStatus() == R.drawable.ic_clear_black_18dp){
-                Dialog_click_tra_mon(position);
+        mData = FirebaseDatabase.getInstance().getReference();
+        mData.child("Bill").child(App.user.getMssv()).child("Order").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                Bill bill = dataSnapshot.getValue(Bill.class);
+                if (bill!=null){
+                    if (bill.getStatus().equals("Đang xử lí")) {
+                        for (int i = 0; i < bill.item.size(); i++) {
+                            arrayBag.add(new BagRow(bill.item.get(i), bill.getTime()));
+                        }
+                        bagAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
             }
-            else {
-                Dialog_click_chuyen_mon(position);
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
 
+
+        lvBag.setOnItemClickListener((parent, view, position, id) -> Dialog_click_tra_mon(position));
+
+        btn_resell.setOnClickListener(v -> Click_btn_resell());
 
         return view;
     }
 
+    private void Click_btn_resell(){
+
+        /*
+        FragmentManager fragmentManager = getFragmentManager();
+        assert fragmentManager != null;
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, Bottom_Nav.bagResell).commit();
+
+        /*
+        Bottom_Nav.selectedFrameLayout.setVisibility(View.INVISIBLE);
+        Bottom_Nav.flBagResell.setVisibility(View.VISIBLE);
+        Bottom_Nav.bagResell.set_cost();*/
+
+
+        if (arrayBag.size() == 0) {
+            Toast.makeText(getContext(), "Không có gì để bán lại", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            if (BagResell.isCreate){
+                BagResell.bagResellAdapter.notifyDataSetChanged();
+            }
+            if (BagResell.arrayBagResell.size() == 0){
+                Toast.makeText(getContext(), "Vui lòng thêm item muốn bán lại", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            else {
+                BagResell.set_cost();
+                startActivity(new Intent(getContext(), BagResell.class));
+            }
+
+        }
+
+    }
+
     private void Dialog_click_tra_mon(final int position){
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-        alertDialog.setTitle("Cảnh báo!!!");
-        alertDialog.setMessage("Bạn chắc chắn muốn trả lại " + arrayBag.get(position).getCount() + " " + arrayBag.get(position).getName() + "???");
+        final Dialog dialog = new Dialog(Objects.requireNonNull(getContext()));
+        dialog.setContentView(R.layout.bag_dialog);
+        dialog.setTitle("Chọn số lượng muốn trả");
 
-        alertDialog.setPositiveButton("Yes", (dialog, which) -> {
-            Toast.makeText(getContext(),"Bạn đã trả lại " + arrayBag.get(position).getCount() + " " + arrayBag.get(position).getName(), Toast.LENGTH_SHORT).show();
-            arrayBag.remove(position);
-            bagAdapter.notifyDataSetChanged();
+        ImageButton btn_down= dialog.findViewById(R.id.button_bagDialog_down);
+        ImageButton btn_up  = dialog.findViewById(R.id.button_bagDialog_up);
+        Button btn_confirm  = dialog.findViewById(R.id.button_bagDialog);
+        TextView txt        = dialog.findViewById(R.id.editText_bagDialog);
+
+        final int[] num = {0};
+
+        //txt.setText(0);
+
+
+        btn_down.setOnClickListener(v -> {
+            if (num[0] > 0)
+                txt.setText(String.valueOf(--num[0]));
         });
 
-        alertDialog.setNegativeButton("No", (dialog, which) -> Toast.makeText(getContext(),"Cẩn thận đấy!!!", Toast.LENGTH_SHORT).show());
-
-        alertDialog.show();
-    }
-
-    private void Dialog_click_chuyen_mon(final int position){
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-        alertDialog.setTitle("Cảnh báo!!!");
-        alertDialog.setMessage("Đồ bạn đặt đã được Circle K làm xong, bạn không thể trả. Bạn có muốn bán lại " + arrayBag.get(position).getCount() + " " + arrayBag.get(position).getName() + "???");
-
-        alertDialog.setPositiveButton("Yes", (dialog, which) -> {
-            Toast.makeText(getContext(),"Bạn đã bán lại " + arrayBag.get(position).getCount() + " " + arrayBag.get(position).getName(), Toast.LENGTH_SHORT).show();
-            arrayBag.remove(position);
-            bagAdapter.notifyDataSetChanged();
+        btn_up.setOnClickListener(v -> {
+            if (num[0] < arrayBag.get(position).getCount()){
+                txt.setText(String.valueOf(++num[0]));
+            }
         });
 
-        alertDialog.setNegativeButton("No", (dialog, which) -> Toast.makeText(getContext(),"Cẩn thận đấy!!!", Toast.LENGTH_SHORT).show());
+        btn_confirm.setOnClickListener(v -> {
+            num[0] = Integer.valueOf(String.valueOf(txt.getText()));
+            if (num[0] > arrayBag.get(position).getCount()){
+                Toast.makeText(getContext(),"Số lượng trả lại không lớn hơn " + arrayBag.get(position).getCount(), Toast.LENGTH_SHORT).show();
+            }
+            else {
+                if (num[0] > 0) {
+                    Toast.makeText(getContext(), "Bạn sẵn sàng trả " + num[0] + " " + arrayBag.get(position).getName(), Toast.LENGTH_SHORT).show();
 
-        alertDialog.show();
+                    BagRow food = new BagRow(arrayBag.get(position));
+                    food.setPrice((int)(food.getPrice()*0.9));
+                    food.setCount(num[0]);
+                    BagResell.arrayBagResell.add(food);
+                    arrayBag.get(position).setCount(arrayBag.get(position).getCount() - num[0]);
+                    if (arrayBag.get(position).getCount() == 0) {
+                        arrayBag.remove(position);
+                    }
+                    bagAdapter.notifyDataSetChanged();
+                }
+                dialog.cancel();
+            }
+        });
+
+        dialog.show();
     }
+
 
     private void AnhXa(){
         arrayBag.add(new BagRow(R.drawable.ck_banh_bao_ba_xiu_2,   "Bánh bao xá xíu 2",
-                "9:50",3,R.drawable.ic_clear_black_18dp));
+                "9:50",3));
         arrayBag.add(new BagRow(R.drawable.ck_com_chien,           "Cơm chiên",
-                "9:45",2,R.drawable.ic_clear_black_18dp));
+                "9:45",2));
         arrayBag.add(new BagRow(R.drawable.ck_fruit_whole_nodish,  "Fruit whole nodish",
-                "9:30",3,R.drawable.ic_clear_black_18dp));
+                "9:30",3));
         arrayBag.add(new BagRow(R.drawable.ck_salad_caron,         "Salad caron",
-                "9:20",1,R.drawable.ic_clear_black_18dp));
+                "9:20",1));
         arrayBag.add(new BagRow(R.drawable.ck_single_banana,       "Single banana",
-                "8:55",1,R.drawable.ic_done_black_18dp));
+                "8:30",1));
         arrayBag.add(new BagRow(R.drawable.ck_trung_cut,           "Trứng cút",
-                "8:45",4,R.drawable.ic_done_black_18dp));
+                "8:20",4));
         arrayBag.add(new BagRow(R.drawable.ck_salad_caron,         "Salad caron",
-                "8:40",1,R.drawable.ic_done_black_18dp));
-        arrayBag.add(new BagRow(R.drawable.ck_salad_caron,         "Salad caron",
-                "8:40",1,R.drawable.ic_done_black_18dp));
-        arrayBag.add(new BagRow(R.drawable.ck_single_banana,       "Single banana",
-                "8:30",1,R.drawable.ic_done_black_18dp));
-        arrayBag.add(new BagRow(R.drawable.ck_trung_cut,           "Trứng cút",
-                "8:20",4,R.drawable.ic_done_black_18dp));
-        arrayBag.add(new BagRow(R.drawable.ck_salad_caron,         "Salad caron",
-                "8:00",1,R.drawable.ic_done_black_18dp));
+                "8:00",1));
     }
 }
