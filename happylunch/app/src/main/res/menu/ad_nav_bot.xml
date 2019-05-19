@@ -10,7 +10,7 @@
     <item
         android:id="@+id/navigation_shop"
         android:icon="@drawable/ic_shop_black_24dp"
-        android:title="@string/title_shop" />
+        android:title="Item" />
 
     <item
         android:id="@+id/navigation_customers"
@@ -20,6 +20,6 @@
     <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/ic_profile_black_24dp"
-        android:title="@string/title_profile" />
+        android:title="Setting" />
 
 </menu>
