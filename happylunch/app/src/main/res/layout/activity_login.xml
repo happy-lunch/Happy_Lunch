@@ -3,6 +3,18 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_weight="3"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
     <LinearLayout
         android:gravity="center"
@@ -10,65 +22,53 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:cropToPadding="false"
-            android:src="@drawable/ic_login" />
-
         <EditText
+            android:padding="8dp"
             android:id="@+id/txtUsername"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
             android:drawableLeft="@drawable/ic_user_input"
             android:drawablePadding="10dp"
             android:hint="Email"
-            android:inputType="text"
             android:maxLines="1"
-            android:padding="8dp"
-            android:text="datai28599@gmail.com" />
-
-        <EditText
-            android:id="@+id/txtPassword"
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:inputType="text"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:selectAllOnFocus="true"
+
+            android:id="@+id/txtPassword"
             android:drawableLeft="@drawable/ic_lock"
             android:drawablePadding="10dp"
             android:hint="Password"
-            android:inputType="textPassword"
             android:maxLines="1"
-            android:selectAllOnFocus="true"
-            android:text="1713015" />
-        <FrameLayout
+            android:inputType="textPassword"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:weightSum="2"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <CheckBox
                 android:id="@+id/isEmployee"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left|center"
-                android:layout_weight="1"
-                android:checked="true"
                 android:onClick="isRememberMe"
-                android:text="Employee" />
-
-            <TextView
-                android:layout_gravity="right|center"
-                android:id="@+id/txtForgotPassword"
-                android:text="Quên mật khẩu?"
+                android:text="Employee"
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-        </FrameLayout>
+            <TextView
+                android:gravity="right"
+                android:text="Forgot Password?"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
         <Button
             android:onClick="eventLogin"
             android:textColor="#FFFFFF"

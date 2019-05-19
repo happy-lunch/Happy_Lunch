@@ -1,10 +1,6 @@
 package com.cnpm.happylunch;
 
-import com.google.firebase.database.Exclude;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class User {
     private String uid;
@@ -28,11 +24,6 @@ public class User {
         this.email = email;
         this.HPCoin = HPCoin;
         this.avaName = avaName;
-    }
-
-    public User(String mssv, String firstName, String lastName){
-        this.lastName = lastName;
-        this.mssv = mssv;
     }
 
     public String getUid() {
@@ -93,13 +84,5 @@ public class User {
 
     public void setListFood(List<Food> listFood) {
         this.listFood = listFood;
-    }
-
-    @Exclude
-    public Map<String, Object> toMap() {
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("coin", HPCoin);
-
-        return result;
     }
 }

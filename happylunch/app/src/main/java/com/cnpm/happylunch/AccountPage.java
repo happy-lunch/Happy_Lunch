@@ -1,6 +1,5 @@
 package com.cnpm.happylunch;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -20,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,9 +44,7 @@ public class AccountPage extends Fragment {
     private Button btnLogOut;
     private TextView txtName, txtID;
     private ImageView avaUser;
-    private Boolean isCreate = false;
 
-    @SuppressLint("SetTextI18n")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -54,7 +52,8 @@ public class AccountPage extends Fragment {
 
         map();
 
-
+        txtName.setText(App.user.getFirstName() + " " + App.user.getLastName());
+        txtID.setText(App.user.getMssv());
 
         btnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,30 +80,18 @@ public class AccountPage extends Fragment {
             }
         });
 
-        if(isCreate){
-            txtName.setText(App.user.getFirstName() + " " + App.user.getLastName());
-            txtID.setText(App.user.getMssv());
-
-            if(!App.user.getAvaName().equals("")){
-                avaUser.setImageResource(R.drawable.dang_tai);
-                downloadAvaUser();
-            }else{
-                //Toast.makeText(getActivity(), "NULL", Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        isCreate = true;
-
-
-
         return view;
     }
 
-    /*@Override
+    @Override
     public void onStart() {
-
+        /*if(!App.user.getAvaName().equals("")){
+            downloadAvaUser();
+        }else{
+            Toast.makeText(getActivity(), "NULL", Toast.LENGTH_SHORT).show();
+        }*/
         super.onStart();
-    }*/
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -167,20 +154,9 @@ public class AccountPage extends Fragment {
     private void downloadAvaUser(){
         StorageReference avaStorage = storageReference.child("Avatar_User").child(App.user.getAvaName());
 
-        final long TEN_MEGABYTE = 10*1024*1024;
-        avaStorage.getBytes(TEN_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                Bitmap avatar = BitmapFactory.decodeByteArray(bytes, 0 ,bytes.length);
-
-                avaUser.setImageBitmap(avatar);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getActivity(), "Download Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+        Glide.with(this /* context */)
+                .load(avaStorage)
+                .into(avaUser);
     }
 
 }

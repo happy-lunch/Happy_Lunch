@@ -2,7 +2,6 @@ package com.cnpm.happylunch;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,8 +15,6 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 
 public class HomePage extends Fragment {
@@ -31,7 +28,7 @@ public class HomePage extends Fragment {
             KindOfFood.Com, KindOfFood.Mi, KindOfFood.Banh_Bao, KindOfFood.Banh_Mi, KindOfFood.Sandwich, KindOfFood.Trang_Mieng
     };
 
-    private int currentItem;
+    private static int currentItem;
 
     private LinearLayout linearCategary;
 
@@ -57,21 +54,12 @@ public class HomePage extends Fragment {
 
         setUpPopularView();
 
-        linearCategary = view.findViewById(R.id.linearCategory);
+        linearCategary = (LinearLayout) view.findViewById(R.id.linearCategory);
+        //itemCategoriesView = inflater.inflate(R.layout.item_category_layout, null);
         setUpCategories();
-
-        grid.setOnItemClickListener((parent, view, position, id) -> Order(foods.get(position)));
 
         return view;
     }
-
-    public void Order(Food food){
-
-        FoodDetail.food = food;
-        startActivity(new Intent(getContext(), FoodDetail.class));
-
-    }
-
 
     private static List<Food> getData(){
 
@@ -79,11 +67,11 @@ public class HomePage extends Fragment {
 
         //Com
 
-        Food com1 = new Food(R.drawable.ck_com_chien, "Cơm chiên", "15000", 10 ,KindOfFood.Com);
-        Food com2 = new Food(R.drawable.ck_com_chien_2, "Cơm chiên 2", "15000", 10 ,KindOfFood.Com);
-        Food com3 = new Food(R.drawable.ck_com_tron, "Cơm trộn", "15000", 10 ,KindOfFood.Com);
-        Food com4 = new Food(R.drawable.ck_com_trung_xuc_xich_lon, "Cơm trứng xúc xích lớn", "15000", 10 ,KindOfFood.Com);
-        Food com5 = new Food(R.drawable.ck_comtrung_sardine, "Cơm trứng sardine", "15000", 10 ,KindOfFood.Com);
+        Food com1 = new Food(R.drawable.com_1, "Mi xao bo", "15.000", 10 ,KindOfFood.Com);
+        Food com2 = new Food(R.drawable.com_2, "Mi xao bo", "15.000", 10 ,KindOfFood.Com);
+        Food com3 = new Food(R.drawable.com_3, "Mi xao bo", "15.000", 10 ,KindOfFood.Com);
+        Food com4 = new Food(R.drawable.com_4, "Mi xao bo", "15.000", 10 ,KindOfFood.Com);
+        Food com5 = new Food(R.drawable.com_5, "Mi xao bo", "15.000", 10 ,KindOfFood.Com);
 
         foods.add(com1);
         foods.add(com2);
@@ -93,32 +81,49 @@ public class HomePage extends Fragment {
 
         //Mi
 
-        Food mi1 = new Food(R.drawable.ck_mi_tron_nem_nuong, "Mì trộn nem nướng", "10000", 10 ,KindOfFood.Mi);
-        Food mi2 = new Food(R.drawable.ck_mi_tron_xa_xiu, "Mì trộn xá xíu", "10000", 10 ,KindOfFood.Mi);
-        Food mi3 = new Food(R.drawable.ck_mi_y_2, "Mì ý", "10000", 10 ,KindOfFood.Mi);
+        Food mi1 = new Food(R.drawable.mi_1, "Mi xao bo", "15.000", 10 ,KindOfFood.Mi);
+        Food mi2 = new Food(R.drawable.mi_2, "Mi xao bo", "15.000", 10 ,KindOfFood.Mi);
+        Food mi3 = new Food(R.drawable.mi_3, "Mi xao bo", "15.000", 10 ,KindOfFood.Mi);
+        Food mi4 = new Food(R.drawable.mi_4, "Mi xao bo", "15.000", 10 ,KindOfFood.Mi);
+        Food mi5 = new Food(R.drawable.mi_5, "Mi xao bo", "15.000", 10 ,KindOfFood.Mi);
+        Food mi6 = new Food(R.drawable.mi_6, "Mi xao bo", "15.000", 10 ,KindOfFood.Mi);
+        Food mi7 = new Food(R.drawable.mi_7, "Mi xao bo", "15.000", 10 ,KindOfFood.Mi);
+        Food mi8 = new Food(R.drawable.mi_8, "Mi xao bo", "15.000", 10 ,KindOfFood.Mi);
 
         foods.add(mi1);
         foods.add(mi2);
         foods.add(mi3);
+        foods.add(mi4);
+        foods.add(mi5);
+        foods.add(mi6);
+        foods.add(mi7);
+        foods.add(mi8);
 
         //Banh bao
 
-        Food banhbao1 = new Food(R.drawable.ck_banh_bao_ba_xiu_2, "Bánh bao xá xíu", "13000", 10 ,KindOfFood.Banh_Bao);
-        Food banhbao2 = new Food(R.drawable.ck_banh_bao_hoang_kim, "Bánh bao hoàng kim", "13000", 10 ,KindOfFood.Banh_Bao);
-        Food banhbao3 = new Food(R.drawable.ck_banh_gio, "Bánh giò", "13000", 10 ,KindOfFood.Banh_Bao);
+        Food banhbao1 = new Food(R.drawable.banh_bao_1, "Mi xao bo", "15.000", 10 ,KindOfFood.Banh_Bao);
+        Food banhbao2 = new Food(R.drawable.banh_bao_2, "Mi xao bo", "15.000", 10 ,KindOfFood.Banh_Bao);
+        Food banhbao3 = new Food(R.drawable.banh_bao_3, "Mi xao bo", "15.000", 10 ,KindOfFood.Banh_Bao);
+        Food banhbao4 = new Food(R.drawable.banh_bao_4, "Mi xao bo", "15.000", 10 ,KindOfFood.Banh_Bao);
+        Food banhbao5 = new Food(R.drawable.banh_bao_5, "Mi xao bo", "15.000", 10 ,KindOfFood.Banh_Bao);
+        Food banhbao6 = new Food(R.drawable.banh_bao_6, "Mi xao bo", "15.000", 10 ,KindOfFood.Banh_Bao);
 
         foods.add(banhbao1);
         foods.add(banhbao2);
         foods.add(banhbao3);
+        foods.add(banhbao4);
+        foods.add(banhbao5);
+        foods.add(banhbao6);
 
         //Banh mi
 
-        Food banhmi1 = new Food(R.drawable.ck_banh_mi, "Mi xao bo", "12000", 10 ,KindOfFood.Banh_Mi);
-        Food banhmi2 = new Food(R.drawable.ck_banh_mi_2, "Mi xao bo", "12000", 10 ,KindOfFood.Banh_Mi);
-        Food banhmi3 = new Food(R.drawable.ck_banh_mi_ca_hop, "Mi xao bo", "12000", 10 ,KindOfFood.Banh_Mi);
-        Food banhmi4 = new Food(R.drawable.ck_banh_mi_nem_nuong, "Mi xao bo", "12000", 10 ,KindOfFood.Banh_Mi);
-        Food banhmi5 = new Food(R.drawable.ck_banh_mi_que, "Mi xao bo", "12000", 10 ,KindOfFood.Banh_Mi);
-        Food banhmi6 = new Food(R.drawable.ck_banh_mi_xa_xiu, "Mi xao bo", "12000", 10 ,KindOfFood.Banh_Mi);
+        Food banhmi1 = new Food(R.drawable.banh_mi_1, "Mi xao bo", "15.000", 10 ,KindOfFood.Banh_Mi);
+        Food banhmi2 = new Food(R.drawable.banh_mi_2, "Mi xao bo", "15.000", 10 ,KindOfFood.Banh_Mi);
+        Food banhmi3 = new Food(R.drawable.banh_mi_3, "Mi xao bo", "15.000", 10 ,KindOfFood.Banh_Mi);
+        Food banhmi4 = new Food(R.drawable.banh_mi_4, "Mi xao bo", "15.000", 10 ,KindOfFood.Banh_Mi);
+        Food banhmi5 = new Food(R.drawable.banh_mi_5, "Mi xao bo", "15.000", 10 ,KindOfFood.Banh_Mi);
+        Food banhmi6 = new Food(R.drawable.banh_mi_6, "Mi xao bo", "15.000", 10 ,KindOfFood.Banh_Mi);
+        Food banhmi7 = new Food(R.drawable.banh_mi_7, "Mi xao bo", "15.000", 10 ,KindOfFood.Banh_Mi);
 
         foods.add(banhmi1);
         foods.add(banhmi2);
@@ -126,10 +131,11 @@ public class HomePage extends Fragment {
         foods.add(banhmi4);
         foods.add(banhmi5);
         foods.add(banhmi6);
+        foods.add(banhmi7);
 
         //Sandwich
 
-        Food sandwich1 = new Food(R.drawable.ck_sandwich_bacon_egg_vegetable, "Mi xao bo", "15.000", 10 ,KindOfFood.Sandwich);
+        Food sandwich1 = new Food(R.drawable.sandwich_1, "Mi xao bo", "15.000", 10 ,KindOfFood.Sandwich);
         Food sandwich2 = new Food(R.drawable.sandwich_2, "Mi xao bo", "15.000", 10 ,KindOfFood.Sandwich);
         Food sandwich3 = new Food(R.drawable.sandwich_3, "Mi xao bo", "15.000", 10 ,KindOfFood.Sandwich);
         Food sandwich4 = new Food(R.drawable.sandwich_4, "Mi xao bo", "15.000", 10 ,KindOfFood.Sandwich);
@@ -191,7 +197,7 @@ public class HomePage extends Fragment {
         dots[0].setImageResource(R.drawable.active_dot);
 
         //-------------------------------------------------------------------------
-        //Auto swipe
+        /*/Auto swipe
         final ViewPager VP = view.findViewById(R.id.viewPager);
 
         final Handler hand = new Handler();
@@ -209,8 +215,8 @@ public class HomePage extends Fragment {
             public void run() {
                 hand.post(run);
             }
-        },2000 ,3000);
-        ///---------------------------------------------------------------------------
+        },5000 ,5000);
+        /*///---------------------------------------------------------------------------
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

@@ -1,56 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/imageView_adItem_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ck_banh_bao_ba_xiu_2" />
+  <ImageView
+      android:scaleType="centerCrop"
+      android:id="@+id/imgViewItemInCat"
+      android:layout_width="115dp"
+      android:layout_height="72dp"
+      android:layout_alignParentStart="true"
+      android:layout_alignParentLeft="true"
+      android:layout_alignParentTop="true"
+      android:layout_marginLeft="5dp"
+      android:layout_marginTop="5dp"
+      android:layout_marginRight="5dp"
+      android:src="@drawable/banh_mi_7" />
 
-    <TextView
-        android:id="@+id/textView_adItem_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Name of item"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_adItem_img" />
+  <TextView
+      android:id="@+id/txtViewInCat1"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentTop="true"
+      android:layout_alignParentEnd="true"
+      android:layout_alignParentRight="true"
+      android:layout_marginStart="5dp"
+      android:layout_marginLeft="5dp"
 
-    <TextView
-        android:id="@+id/textView_adItem_price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Price of item"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_adItem_name" />
-
-    <TextView
-        android:id="@+id/textView_adItem_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Count of item"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_adItem_price" />
+      android:layout_marginTop="5dp"
+      android:layout_marginEnd="60dp"
+      android:layout_marginRight="60dp"
+      android:layout_marginBottom="5dp"
+      android:layout_toEndOf="@+id/imgViewItemInCat"
+      android:layout_toRightOf="@+id/imgViewItemInCat"
+      android:fontFamily="monospace"
+      android:text="Food Name"
+      android:textAppearance="?android:attr/textAppearanceLarge"
+      android:textSize="30sp"
+      android:textStyle="bold"
+      android:typeface="normal"
 
 
-</android.support.constraint.ConstraintLayout>
+      />
+
+  <TextView
+      android:id="@+id/txtViewInCat2"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/txtViewInCat1"
+      android:layout_alignParentEnd="true"
+      android:layout_alignParentRight="true"
+      android:layout_marginStart="5dp"
+      android:layout_marginLeft="5dp"
+      android:layout_marginTop="8dp"
+      android:layout_marginEnd="60dp"
+      android:layout_marginRight="60dp"
+      android:layout_marginBottom="5dp"
+      android:layout_toEndOf="@+id/imgViewItemInCat"
+      android:layout_toRightOf="@+id/imgViewItemInCat"
+      android:text="Price ..."
+      android:textSize="20dp"
+      android:textAppearance="?android:attr/textAppearanceSmall"
+      />
+
+
+  <ImageView
+      android:id="@+id/iconToShowInCat"
+      android:layout_width="24dp"
+      android:layout_height="24dp"
+      android:layout_alignParentTop="true"
+      android:layout_alignParentEnd="true"
+      android:layout_alignParentRight="true"
+      android:layout_gravity="top|end"
+      android:layout_marginTop="28dp"
+      android:layout_marginEnd="22dp"
+      android:layout_marginRight="22dp"
+      android:layout_toLeftOf="@+id/txtViewInCat1"
+      android:scaleType="centerCrop"
+      android:src="@drawable/three_dots" />
+</RelativeLayout>

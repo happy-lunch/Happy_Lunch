@@ -1,8 +1,6 @@
 package com.cnpm.happylunch;
 
-import java.io.Serializable;
-
-public class Food implements Serializable {
+public class Food {
     private int foodImg;
     private String foodName;
     private String foodPrice;
@@ -10,15 +8,17 @@ public class Food implements Serializable {
     private int numSold;
     private KindOfFood kind;
 
-    public Food(){
-
+    public Food(int foodImg, String foodName, String foodPrice) {
+        this.foodImg = foodImg;
+        this.foodName = foodName;
+        this.foodPrice = foodPrice;
     }
 
     public Food(int foodImg, String foodName, String foodPrice, int numSold, KindOfFood kind) {
         this.foodImg = foodImg;
         this.foodName = foodName;
         this.foodPrice = foodPrice;
-        this.numSold = 1;
+        this.numSold = numSold;
         this.kind = kind;
     }
 
