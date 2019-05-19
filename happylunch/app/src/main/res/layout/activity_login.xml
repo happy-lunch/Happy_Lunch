@@ -18,30 +18,33 @@
             android:src="@drawable/ic_login" />
 
         <EditText
-            android:padding="8dp"
             android:id="@+id/txtUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
             android:drawableLeft="@drawable/ic_user_input"
             android:drawablePadding="10dp"
             android:hint="Email"
-            android:maxLines="1"
             android:inputType="text"
+            android:maxLines="1"
+            android:padding="8dp"
+            android:text="datai28599@gmail.com" />
+
+        <EditText
+            android:id="@+id/txtPassword"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <EditText
-            android:selectAllOnFocus="true"
-
-            android:id="@+id/txtPassword"
             android:drawableLeft="@drawable/ic_lock"
             android:drawablePadding="10dp"
             android:hint="Password"
-            android:maxLines="1"
             android:inputType="textPassword"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:maxLines="1"
+            android:selectAllOnFocus="true"
+            android:text="1713015" />
         <FrameLayout
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
@@ -54,6 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center"
                 android:layout_weight="1"
+                android:checked="true"
                 android:onClick="isRememberMe"
                 android:text="Employee" />
 

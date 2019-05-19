@@ -20,6 +20,8 @@ public class Bottom_Nav extends AppCompatActivity {
     private ActionBar toolBar;
     //private EditText toolBarEditText;
 
+    public static BottomNavigationView botNav;
+
     private HomePage home = new HomePage();
     private AccountPage account = new AccountPage();
     private Cart cart = new Cart();
@@ -27,8 +29,8 @@ public class Bottom_Nav extends AppCompatActivity {
     private SecondShop resell = new SecondShop();
 
     private FragmentTransaction ft;
-    private FrameLayout selectedFrameLayout;
-    private FrameLayout flHome, flResell, flCart, flBag, flAccount;
+    private static FrameLayout selectedFrameLayout;
+    private static FrameLayout flHome, flResell, flCart, flBag, flAccount;
     private View view;
     private String toolBarTitle;
     private class BotNavListener implements BottomNavigationView.OnNavigationItemSelectedListener{
@@ -101,13 +103,7 @@ public class Bottom_Nav extends AppCompatActivity {
         flBag = findViewById(R.id.flBag);
         flAccount = findViewById(R.id.flAccount);
 
-        flHome.setVisibility(View.VISIBLE);
-        flResell.setVisibility(View.INVISIBLE);
-        flCart.setVisibility(View.INVISIBLE);
-        flBag.setVisibility(View.INVISIBLE);
-        flAccount.setVisibility(View.INVISIBLE);
-
-        selectedFrameLayout = flHome;
+        go_home();
 
         //getSupportFragmentManager().beginTransaction().replace(R.id.flHome, selectedFragment).show(selectedFragment).commit();
         ft = getSupportFragmentManager().beginTransaction();
@@ -115,7 +111,7 @@ public class Bottom_Nav extends AppCompatActivity {
 
         setHomeActionBar();
 
-        BottomNavigationView botNav = findViewById(R.id.bottom_nav);
+        botNav = findViewById(R.id.bottom_nav);
         botNav.setOnNavigationItemSelectedListener(new BotNavListener());
 
         EditText txtSearch = view.findViewById(R.id.txtSearch);
@@ -148,6 +144,16 @@ public class Bottom_Nav extends AppCompatActivity {
 
         toolBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         toolBar.setCustomView(view);
+    }
+
+    public static void go_home(){
+        flHome.setVisibility(View.VISIBLE);
+        flResell.setVisibility(View.INVISIBLE);
+        flCart.setVisibility(View.INVISIBLE);
+        flBag.setVisibility(View.INVISIBLE);
+        flAccount.setVisibility(View.INVISIBLE);
+
+        selectedFrameLayout = flHome;
     }
 
 }

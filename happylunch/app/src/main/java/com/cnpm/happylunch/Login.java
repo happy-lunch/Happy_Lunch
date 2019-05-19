@@ -83,7 +83,11 @@ public class Login extends AppCompatActivity {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 App.user = dataSnapshot.getValue(User.class);
-                                startActivity(new Intent(Login.this, Bottom_Nav.class));
+                                if (check.isChecked()) {
+                                    startActivity(new Intent(Login.this, AdBottom_Nav.class));
+                                }
+                                else
+                                    startActivity(new Intent(Login.this, Bottom_Nav.class));
                             }
 
                             @Override

@@ -111,6 +111,8 @@ public class Cart extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.cart, container, false);
 
+        calendar = Calendar.getInstance();
+
         isCreate = true;
         gvCart = view.findViewById(R.id.list_cart);
         cartAdapter = new CartAdapter(getContext(), R.layout.cart_element, arrayCart);
@@ -137,8 +139,10 @@ public class Cart extends Fragment {
                     dialog.setMessage("Không có gì để giao dịch");
                     dialog.show();
                 }
-                else
+                else{
                     Click_btn_order();
+                }
+
             }
 
         });
@@ -176,8 +180,6 @@ public class Cart extends Fragment {
         EditText txt_hour   = dialog.findViewById(R.id.editText_cartDialog_hour);
         EditText txt_minute = dialog.findViewById(R.id.editText_cartDialog_minute);
         Button btn_order    = dialog.findViewById(R.id.button_cartDialog_order);
-
-        calendar = Calendar.getInstance();
 
         final int[] day = {calendar.get(Calendar.DATE)};
         final int[] hour = {calendar.get(Calendar.HOUR_OF_DAY)};
@@ -254,6 +256,7 @@ public class Cart extends Fragment {
 
             cost();
             txt_cost.setText(String.format("Tổng đơn hàng : %s", cost));
+            Bottom_Nav.botNav.setSelectedItemId(R.id.nav_home);
         });
 
         dialog.setNegativeButton("No", (dialog1, which) -> Toast.makeText(getContext(),"Cẩn thận đấy!!!", Toast.LENGTH_SHORT).show());
@@ -262,7 +265,7 @@ public class Cart extends Fragment {
     }
 
     private void Push_db(){
-        String key = mData.child("Bill").child(App.user.getMssv()).push().getKey();
+        String key = mData.child("Bill").child(App.user.getMssv()).child("Order").push().getKey();
         Bill bill = new Bill(key, cost, time);
 
         ArrayList<BillItem> arrayItem = new ArrayList<>();
@@ -271,13 +274,16 @@ public class Cart extends Fragment {
 
         bill.item.addAll(arrayItem);
         assert key != null;
-        mData.getRoot().child("Bill").child(App.user.getMssv()).child(key).setValue(bill);
+        mData.child("Bill").child(App.user.getMssv()).child("Order").child(key).setValue(bill);
+
+        String key1 = mData.child("Order").push().getKey();
+        assert key1 != null;
+        Order order = new Order(key1,App.user.getMssv(), key , time);
+        mData.child("Order").child(key1).setValue(order);
 
 
-        //Lỗi tính tiền
-        //mData.child("Customers").child(App.user.getUid()).child("hpcoin").setValue(100000);
-
-
+        App.user.setHPCoin(App.user.getHPCoin() - cost);
+        mData.child("Customers").child(App.user.getUid()).setValue(App.user);
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
         dialog.setMessage("Bạn đã đặt hàng thành công");
@@ -294,7 +300,7 @@ public class Cart extends Fragment {
         ImageButton btn_down= dialog.findViewById(R.id.button_bagDialog_down);
         ImageButton btn_up  = dialog.findViewById(R.id.button_bagDialog_up);
         Button btn_confirm  = dialog.findViewById(R.id.button_bagDialog);
-        EditText txt        = dialog.findViewById(R.id.editText_bagDialog);
+        TextView txt        = dialog.findViewById(R.id.editText_bagDialog);
 
         final int[] num = {0};
 
