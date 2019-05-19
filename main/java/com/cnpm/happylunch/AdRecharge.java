@@ -29,6 +29,13 @@ class AdRechargeElement {
         this.name = name;
     }
 
+    public void setMssv(int iMssv) {
+        mssv = iMssv;
+    }
+
+    public void setName(String iName) {
+        name = iName;
+    }
     public int getMssv() {
         return mssv;
     }
@@ -95,6 +102,7 @@ public class AdRecharge extends Fragment {
     private GridView gvAdRecharge;
     private ArrayList<AdRechargeElement> arrayAdRecharge;
     private AdRechargeAdapter adRechargeAdapter;
+    private DatabaseReference mData;
     private int mssv;
     private int money;
 
@@ -110,7 +118,46 @@ public class AdRecharge extends Fragment {
         mssv = view.findViewById(R.id.editText_adRecharge_mssv).getBaseline();
         money = view.findViewById(R.id.editText_adRecharge_money).getBaseline();
 
-        AnhXa();
+
+        //AnhXa();
+        mData = FirebaseDatabase.getInstance().getReference();
+        mData.child("Customers").child(App.user.getMssv()).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                User user = dataSnapshot.getValue(User.class);
+                assert user != null;
+                //user.setHPCoin(user.getHPCoin() + money);
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    String fullName  = user.firstName + " " + user.lastName;
+                    AdRecharge.add(new AdRechargeElement(user.mssv, fullname));
+                }
+                insertionSort(AdRecharge);
+                adRechargeAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         adRechargeAdapter = new AdRechargeAdapter(getContext(), R.layout.ad_recharge_element, arrayAdRecharge);
         gvAdRecharge.setAdapter(adRechargeAdapter);
@@ -152,6 +199,31 @@ public class AdRecharge extends Fragment {
         alertDialog.show();
     }
 
+    public static void insertionSort(ArrayList<AdRechargeElement> Array) {
+
+        int i,j;
+
+        for (i = 1; i < Array.size(); i++) {
+            AdRechargeElement key = new AdRechargeElement(0, " ");
+            key.setMssv(Array.get(i).mssv);
+            key.setName(Array.get(i).name);
+            j = i;
+            while((j > 0) && (Array.get(j - 1).mssv > key.mssv)) {
+                Array.set(j,Array.get(j - 1));
+                j--;
+            }
+            Array.set(j,key);
+        }
+    }
+
+    /*private boolean updateMoney(String uId, int money) {
+        //getting the specified artist reference
+        DatabaseReference dR = FirebaseDatabase.getInstance().getReference("Customers").child(id);
+
+        //updating artist
+        User user = new User();
+        return true;
+    }*/
 
 
     private void AnhXa() {
