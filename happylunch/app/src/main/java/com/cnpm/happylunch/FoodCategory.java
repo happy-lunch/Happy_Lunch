@@ -44,6 +44,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 class FoodCategoryInfo {
@@ -263,9 +264,8 @@ public class FoodCategory extends Fragment {
 
 
     private void showDialogUpdate(String key, FoodCategoryInfo item){
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+        Dialog alertDialog = new Dialog(getContext());
         alertDialog.setTitle("Edit Category");
-        alertDialog.setMessage("Please fill full information");
 
         LayoutInflater inflater = this.getLayoutInflater();
         View add_new_food_layout= inflater.inflate(R.layout.dialog_add_new_category_layout_,null);
@@ -284,20 +284,22 @@ public class FoodCategory extends Fragment {
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeImage(item);
+                changeImage(item, key);
+                alertDialog.cancel();
+
             }
         });
 
-        alertDialog.setView(add_new_food_layout);
-        alertDialog.setIcon(R.drawable.ic_shopping_cart_nav);
 
+        alertDialog.setContentView(add_new_food_layout);
+
+
+        /*
         alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 item.setName(edtName.getText().toString());
-
-
                 catRef.child(key).setValue(item);
 
             }
@@ -307,13 +309,12 @@ public class FoodCategory extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
-        });
+        });*/
         alertDialog.show();
     }
     private void showDialogAdd(){
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+        Dialog alertDialog = new Dialog(Objects.requireNonNull(getContext()));
         alertDialog.setTitle("Add new Category");
-        alertDialog.setMessage("Please fill full information");
 
         LayoutInflater inflater = this.getLayoutInflater();
         View add_new_food_layout= inflater.inflate(R.layout.dialog_add_new_category_layout_,null);
@@ -333,12 +334,13 @@ public class FoodCategory extends Fragment {
             @Override
             public void onClick(View v) {
                 uploadImage();
+                alertDialog.cancel();
             }
         });
 
-        alertDialog.setView(add_new_food_layout);
-        alertDialog.setIcon(R.drawable.ic_shopping_cart_nav);
+        alertDialog.setContentView(add_new_food_layout);
 
+        /*
         alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -346,7 +348,7 @@ public class FoodCategory extends Fragment {
                 if (newCat != null){
                     catRef.push().setValue(newCat);
 
-                    View v=getActivity().findViewById(R.id.list_item_category);
+                    View v= Objects.requireNonNull(getActivity()).findViewById(R.id.list_item_category);
                     Snackbar.make(v,"New food: "+newCat.getName()+" was added",Snackbar.LENGTH_SHORT).show();
                 }
             }
@@ -356,7 +358,7 @@ public class FoodCategory extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
-        });
+        });*/
         alertDialog.show();
     }
 
@@ -399,6 +401,7 @@ public class FoodCategory extends Fragment {
                                     @Override
                                         public void onSuccess(Uri uri) {
                                             newCat= new FoodCategoryInfo(edtName.getText().toString(),uri.toString());
+                                            catRef.push().setValue(newCat);
                                          }
                                 });
                             }
@@ -421,7 +424,7 @@ public class FoodCategory extends Fragment {
             ;
         };
     }
-    private void changeImage( FoodCategoryInfo item){
+    private void changeImage( FoodCategoryInfo item, String key){
         if(saveUrl != null)
         {
             //show dialog
@@ -449,6 +452,8 @@ public class FoodCategory extends Fragment {
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             Toast.makeText(getContext(),"image changed " , Toast.LENGTH_SHORT).show();
+                                            item.setName(Objects.requireNonNull(edtName.getText()).toString());
+                                            catRef.child(key).setValue(item);
                                         }
                                     });
                                     item.setImg(uri.toString());

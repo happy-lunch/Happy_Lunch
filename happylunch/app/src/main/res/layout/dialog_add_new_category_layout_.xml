@@ -35,16 +35,15 @@
 
             <Button
                 android:id="@+id/btnCategorySelect"
-                android:text="Select"
-                android:textColor="@color/white"
-                android:layout_marginRight="8dp"
-                android:layout_marginLeft="8dp"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
                 android:background="@color/colorPrimary"
-                ></Button>
+                android:text="Image"
+                android:textColor="@color/white"></Button>
 
             <Button
                 android:id="@+id/btnCategoryUpload"
