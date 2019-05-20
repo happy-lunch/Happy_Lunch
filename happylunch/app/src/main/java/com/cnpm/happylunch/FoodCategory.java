@@ -454,6 +454,7 @@ public class FoodCategory extends Fragment {
                                             Toast.makeText(getContext(),"image changed " , Toast.LENGTH_SHORT).show();
                                             item.setName(Objects.requireNonNull(edtName.getText()).toString());
                                             catRef.child(key).setValue(item);
+                                            catRef.child(key).child("id").setValue(key);
                                         }
                                     });
                                     item.setImg(uri.toString());

@@ -57,11 +57,13 @@ class foods {
     //private int count;
     private String foodId;
     private String description;
-    private String name;
+    private String name = "Món ăn gì đó";
     private String price;
     private String img;
     private String menuId;
     private float rating;
+    private int timeFinish = name.length()/2;
+    private int numSold = name.length();
 
 
     public foods(){}
@@ -74,6 +76,8 @@ class foods {
         this.description=des;
         this.menuId=menuId;
         this.rating=rating;
+        this.timeFinish = name.length()/2;
+        this.numSold = name.length();
     }
 
 
@@ -83,6 +87,8 @@ class foods {
 
     public void setName(String name) {
         this.name = name;
+        this.timeFinish = name.length()/2;
+        this.numSold = name.length();
     }
 
     public String getPrice() {
@@ -131,6 +137,22 @@ class foods {
 
     public void setFoodId(String foodId) {
         this.foodId = foodId;
+    }
+
+    public int getTimeFinish() {
+        return timeFinish;
+    }
+
+    public void setTimeFinish(int timeFinish) {
+        this.timeFinish = timeFinish;
+    }
+
+    public int getNumSold() {
+        return numSold;
+    }
+
+    public void setNumSold(int numSold) {
+        this.numSold = numSold;
     }
 }
 
@@ -540,6 +562,7 @@ class DialogUpdate extends AppCompatDialogFragment {
         food_info.edtName.setText(item.getName());
         food_info.edtDes.setText(item.getDescription());
         food_info.edtPrice.setText(item.getPrice());
+        item.setImg(item.getImg());
 
         food_info.btnSelect.setOnClickListener(new View.OnClickListener() {
             @Override

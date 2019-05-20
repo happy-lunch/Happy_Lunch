@@ -46,7 +46,7 @@ public class AdWork extends Fragment {
 
         lvAdWork = view.findViewById(R.id.list_adWork);
 
-        //AnhXa();
+        AnhXa();
         adWorkAdapter = new BagAdapter(getContext(), R.layout.element_bag, arrayAdWork);
         lvAdWork.setAdapter(adWorkAdapter);
 
