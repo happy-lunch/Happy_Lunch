@@ -21,7 +21,7 @@ public class AdBottom_Nav extends AppCompatActivity {
     private ActionBar toolBar;
 
     private AdWork adWork = new AdWork();
-    private AdItem adItem = new AdItem();
+    private FoodCategory adItem = new FoodCategory();
     private AdRecharge adRecharge = new AdRecharge();
     private Customer adProfile = new Customer();
 
@@ -38,7 +38,7 @@ public class AdBottom_Nav extends AppCompatActivity {
                 case R.id.navigation_ordered:
                     selectedFrameLayout = flOder;
                     toolBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE);
-                    toolBarTitle = "Oder";
+                    toolBarTitle = "Order";
                     break;
                 case R.id.navigation_shop:
                     selectedFrameLayout = flItem;
@@ -46,20 +46,17 @@ public class AdBottom_Nav extends AppCompatActivity {
                     toolBarTitle = "Item";
                     break;
                 case R.id.navigation_customers:
-                    //selectedFragment = adRecharge;
                     selectedFrameLayout = flRecharge;
                     toolBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE);
                     toolBarTitle = "Recharge";
                     break;
                 case R.id.navigation_profile:
-                    //selectedFragment = adProfile;
                     selectedFrameLayout = flSetting;
                     toolBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE);
                     toolBarTitle = "Setting";
                     break;
             }
             toolBar.setTitle(toolBarTitle);
-            //getSupportFragmentManager().beginTransaction().replace(R.id.ad_fragment_container, selectedFragment).show(selectedFragment).commit();
 
             flOder.setVisibility(View.INVISIBLE);
             flItem.setVisibility(View.INVISIBLE);

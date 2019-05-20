@@ -22,7 +22,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 class AdRechargeAdapter extends BaseAdapter {
@@ -70,8 +72,8 @@ class AdRechargeAdapter extends BaseAdapter {
 
         User adRecharge = adRechargeList.get(position);
 
-        holder.txtMssv.setText(String.format("MSSV : %s", String.valueOf(adRecharge.getMssv())));
-        holder.txtName.setText(String.format("%s", adRecharge.getLastName()));
+        holder.txtMssv.setText(String.format("%s", String.valueOf(adRecharge.getMssv())));
+        holder.txtName.setText(String.format("%s %s", adRecharge.getFirstName(), adRecharge.getLastName()));
 
         return convertView;
     }
@@ -107,9 +109,10 @@ public class AdRecharge extends Fragment {
         mData.child("Customers").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                User temp = dataSnapshot.getValue(User.class);
-                assert temp != null;
-                arrayAdRecharge.add(temp);
+                User user = dataSnapshot.getValue(User.class);
+                assert user != null;
+                arrayAdRecharge.add(user);
+                insertionSort(arrayAdRecharge);
                 adRechargeAdapter.notifyDataSetChanged();
             }
 
@@ -135,14 +138,55 @@ public class AdRecharge extends Fragment {
         });
 
         gvAdRecharge.setOnItemClickListener((parent, view, position, id) -> {
-            //Toast.makeText(getBaseContext(),"Chỉnh sửa item " + arrayAdItem.get(position).getName(), Toast.LENGTH_SHORT).show();
-            //Option(position);
+            if (isMoneyValid()){
+                Dialog_click_item(position);
+            }
 
-
-            Dialog_click_item(position);
         });
 
         return view;
+    }
+
+    private boolean isMoneyValid(){
+        String temp = txtMoney.getText().toString();
+        if (temp.length() < 1){
+            AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+            dialog.setMessage("Chưa nhập money");
+            dialog.show();
+        }
+        else{
+            money = Integer.valueOf(temp);
+            if (money%10000 != 0){
+                if (money == 0){
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    dialog.setMessage("Money phải là lớn hơn 0");
+                    dialog.show();
+                }
+                else{
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    dialog.setMessage("Money phải là bội số của 10.000");
+                    dialog.show();
+                }
+            }
+            else{
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void insertionSort(ArrayList<User> arrayList) {
+
+        int i,j;
+        for (i = 1; i < arrayList.size(); i++) {
+            User key = arrayList.get(i);
+            j = i;
+            while((j > 0) && (Integer.valueOf(arrayList.get(j - 1).getMssv()) > Integer.valueOf(key.getMssv()))) {
+                arrayList.set(j,arrayList.get(j - 1));
+                j--;
+            }
+            arrayList.set(j,key);
+        }
     }
 
     private void Dialog_click_item(final int position){
@@ -153,12 +197,7 @@ public class AdRecharge extends Fragment {
         alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mssv = String.valueOf(txtMssv.getText());
-                money = 0;
-                money = Integer.valueOf(txtMoney.getText().toString());
-                Nap_tien(position);
-                //Toast.makeText(getContext(),"Bạn nạp tiền thành công cho " + arrayAdRecharge.get(position).getName() + money, Toast.LENGTH_SHORT).show();
-            }
+                Nap_tien(position);}
         });
 
         alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -176,9 +215,7 @@ public class AdRecharge extends Fragment {
         Toast.makeText(getContext(),"Giao dịch thành cômg", Toast.LENGTH_SHORT).show();
 
         User u = arrayAdRecharge.get(position);
-
         u.setHPCoin(u.getHPCoin() + money);
-
         mData.child("Customers").child(u.getUid()).setValue(u);
 
 

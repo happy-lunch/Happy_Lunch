@@ -23,6 +23,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+
 class AdItemElement {
 
     private int img;
@@ -69,6 +71,7 @@ class AdItemElement {
         this.count = count;
     }
 }
+
 
 class AdItemAdapter extends BaseAdapter {
 
@@ -143,6 +146,7 @@ public class AdItem extends Fragment {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ad_item);
     */
+/*
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.ad_item, container, false);
 
@@ -217,6 +221,7 @@ public class AdItem extends Fragment {
                 arrayAdItem.remove(position);
                 adItemAdapter.notifyDataSetChanged();
                 */
+/*
                 dialog.cancel();
             }
         });
@@ -277,3 +282,4 @@ public class AdItem extends Fragment {
                 15000, 5));
     }
 }
+*/

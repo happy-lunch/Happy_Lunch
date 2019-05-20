@@ -6,11 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:id="@+id/ad_item_layout">
-
+    android:id="@+id/list_item_category"
+    >
 
     <ImageButton
-        android:id="@+id/imageButton_adItem_search"
+        android:id="@+id/imgBtnSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -22,7 +22,7 @@
         app:srcCompat="@drawable/ic_search_black_18dp" />
 
     <EditText
-        android:id="@+id/editText_adItem_search"
+        android:id="@+id/edtSearch"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -32,13 +32,13 @@
         android:layout_marginRight="8dp"
         android:ems="10"
         android:hint="Search"
-        app:layout_constraintBottom_toBottomOf="@+id/imageButton_adItem_search"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton_adItem_add"
-        app:layout_constraintStart_toEndOf="@+id/imageButton_adItem_search"
+        app:layout_constraintBottom_toBottomOf="@+id/imgBtnSearch"
+        app:layout_constraintEnd_toStartOf="@+id/imgBtnAdd"
+        app:layout_constraintStart_toEndOf="@+id/imgBtnSearch"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/imageButton_adItem_add"
+        android:id="@+id/imgBtnAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -50,7 +50,7 @@
         app:srcCompat="@drawable/ic_add_circle_black_18dp" />
 
     <ListView
-        android:id="@+id/list_item_in_cat"
+        android:id="@+id/list_category_item"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
@@ -65,6 +65,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton_adItem_search" />
+        app:layout_constraintTop_toBottomOf="@+id/imgBtnSearch" />
 
 </android.support.constraint.ConstraintLayout>

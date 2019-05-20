@@ -34,7 +34,7 @@ class BagRow {
     private String name;
     private String time;
     private int count;
-    private int status;
+    private String status = "Đang xử lí";
     private int price;
     private String id = "null";
 
@@ -48,7 +48,6 @@ class BagRow {
         this.name = food.getName();
         this.time = food.time;
         this.count = food.count;
-        this.status = R.drawable.ic_clear_black_18dp;
         this.price = food.getPrice();
     }
 
@@ -57,33 +56,16 @@ class BagRow {
         this.name = food.getName();
         this.time = food.time;
         this.count = num;
-        this.status = R.drawable.ic_clear_black_18dp;
         this.price = food.getPrice();
     }
 
-    BagRow(Food food, int num){
-        this.img = food.getFoodImg();
-        this.name = food.getFoodName();
-        this.time = "10:11";
-        this.count = num;
-        this.status = R.drawable.ic_clear_black_18dp;
-        this.price = Integer.valueOf(food.getFoodPrice());
-    }
-
-    BagRow(int img, String name, String time, int count, int status) {
-        this.img = img;
-        this.name = name;
-        this.time = time;
-        this.count = count;
-        this.status = status;
-    }
 
     BagRow(int img, String name, String time, int count) {
         this.img = img;
         this.name = name;
         this.time = time;
         this.count = count;
-        this.status = R.drawable.ic_favorite_border_black_24dp;
+        this.status = "Đang xử lí";
     }
 
 
@@ -137,11 +119,11 @@ class BagRow {
         this.count = count;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -245,21 +227,19 @@ public class Bag extends Fragment {
 
 
         mData = FirebaseDatabase.getInstance().getReference();
-        mData.child("Bill").child(App.user.getMssv()).addChildEventListener(new ChildEventListener() {
+        mData.child("Bill").child(App.user.getMssv()).child("Order").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
                 Bill bill = dataSnapshot.getValue(Bill.class);
-                assert bill != null;
-
-                if (bill.getStatus().equals("Đang xử lí")) {
-                    for (int i = 0; i < bill.item.size(); i++) {
-                        arrayBag.add(new BagRow(bill.item.get(i), bill.getTime()));
-                        //arrayBag.get(i).setTime(bill.getTime());
+                if (bill!=null){
+                    if (bill.getStatus().equals("Đang xử lí")) {
+                        for (int i = 0; i < bill.item.size(); i++) {
+                            arrayBag.add(new BagRow(bill.item.get(i), bill.getTime()));
+                        }
+                        bagAdapter.notifyDataSetChanged();
                     }
-                    bagAdapter.notifyDataSetChanged();
                 }
-
             }
 
             @Override
@@ -305,11 +285,24 @@ public class Bag extends Fragment {
         Bottom_Nav.bagResell.set_cost();*/
 
 
-        if (BagResell.isCreate){
-            BagResell.bagResellAdapter.notifyDataSetChanged();
+        if (arrayBag.size() == 0) {
+            Toast.makeText(getContext(), "Không có gì để bán lại", Toast.LENGTH_SHORT).show();
         }
-        BagResell.set_cost();
-        startActivity(new Intent(getContext(), BagResell.class));
+        else{
+            if (BagResell.isCreate){
+                BagResell.bagResellAdapter.notifyDataSetChanged();
+            }
+            if (BagResell.arrayBagResell.size() == 0){
+                Toast.makeText(getContext(), "Vui lòng thêm item muốn bán lại", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            else {
+                BagResell.set_cost();
+                startActivity(new Intent(getContext(), BagResell.class));
+            }
+
+        }
+
     }
 
     private void Dialog_click_tra_mon(final int position){
@@ -320,7 +313,7 @@ public class Bag extends Fragment {
         ImageButton btn_down= dialog.findViewById(R.id.button_bagDialog_down);
         ImageButton btn_up  = dialog.findViewById(R.id.button_bagDialog_up);
         Button btn_confirm  = dialog.findViewById(R.id.button_bagDialog);
-        EditText txt        = dialog.findViewById(R.id.editText_bagDialog);
+        TextView txt        = dialog.findViewById(R.id.editText_bagDialog);
 
         final int[] num = {0};
 
@@ -367,18 +360,18 @@ public class Bag extends Fragment {
 
     private void AnhXa(){
         arrayBag.add(new BagRow(R.drawable.ck_banh_bao_ba_xiu_2,   "Bánh bao xá xíu 2",
-                "9:50",3,R.drawable.ic_clear_black_18dp));
+                "9:50",3));
         arrayBag.add(new BagRow(R.drawable.ck_com_chien,           "Cơm chiên",
-                "9:45",2,R.drawable.ic_clear_black_18dp));
+                "9:45",2));
         arrayBag.add(new BagRow(R.drawable.ck_fruit_whole_nodish,  "Fruit whole nodish",
-                "9:30",3,R.drawable.ic_clear_black_18dp));
+                "9:30",3));
         arrayBag.add(new BagRow(R.drawable.ck_salad_caron,         "Salad caron",
-                "9:20",1,R.drawable.ic_clear_black_18dp));
+                "9:20",1));
         arrayBag.add(new BagRow(R.drawable.ck_single_banana,       "Single banana",
-                "8:30",1,R.drawable.ic_done_black_18dp));
+                "8:30",1));
         arrayBag.add(new BagRow(R.drawable.ck_trung_cut,           "Trứng cút",
-                "8:20",4,R.drawable.ic_done_black_18dp));
+                "8:20",4));
         arrayBag.add(new BagRow(R.drawable.ck_salad_caron,         "Salad caron",
-                "8:00",1,R.drawable.ic_done_black_18dp));
+                "8:00",1));
     }
 }
