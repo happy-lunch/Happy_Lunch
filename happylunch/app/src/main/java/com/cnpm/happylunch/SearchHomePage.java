@@ -17,7 +17,9 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public class SearchHomePage extends AppCompatActivity {
-
+	
+	public static boolean isFromSearchPage = false;
+	
     private ListView listView;
     private ArrayList<Food> matchFood;
 
@@ -30,6 +32,9 @@ public class SearchHomePage extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				
+				isFromSearchPage = true;
+				
                 Intent i = new Intent(SearchHomePage.this, FoodDetail.class);
                 i.putExtra("Food", (Food)matchFood.get(position));
                 startActivity(i);
@@ -38,6 +43,20 @@ public class SearchHomePage extends AppCompatActivity {
         matchFood = new ArrayList<Food>();
 
         final EditText edtSearch = findViewById(R.id.edtSearch);
+		
+		edtSearch.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(keyCode == KeyEvent.KEYCODE_ENTER){
+                    Intent i = new Intent(SearchHomePage.this, SearchResult.class);
+                    i.putExtra("Content", edtSearch.getText().toString().trim());
+                    startActivity(i);
+                    finish();
+                }
+                return false;
+            }
+        });
+		
         edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -51,13 +70,10 @@ public class SearchHomePage extends AppCompatActivity {
                 matchFood = (ArrayList<Food>) HomePage.foods.stream().filter(f -> f.getFoodName().toLowerCase().contains(edtSearch.getText().toString().toLowerCase())).collect(Collectors.toList());
                 if(matchFood.isEmpty() || edtSearch.getText().toString().equals("")){
                     listView.setAdapter(null);
-                    //Toast.makeText(SearchHomePage.this, "Empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 ArrayAdapter<Food> listViewAdapter = new ArrayAdapter<Food>(SearchHomePage.this, android.R.layout.simple_list_item_1, matchFood);
                 listView.setAdapter(listViewAdapter);
-
-                //Toast.makeText(SearchHomePage.this, String.valueOf(matchFood.size()), Toast.LENGTH_SHORT).show();
             }
 
             @Override

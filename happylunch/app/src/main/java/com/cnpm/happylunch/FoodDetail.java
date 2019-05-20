@@ -25,15 +25,15 @@ public class FoodDetail extends AppCompatActivity {
         setContentView(R.layout.activity_food_detail);
 
         map();
-
-        /*
-        price.setText(food.getFoodPrice());
-        nameFood.setText(food.getFoodName());
-        bigNameFood.setText(food.getFoodName());
-        imgFood.setImageResource(food.getFoodImg());
-        */
-
-        set(food);
+		if(SearchHomePage.isFromSearchPage){
+			price.setText(food.getFoodPrice());
+			nameFood.setText(food.getFoodName());
+			bigNameFood.setText(food.getFoodName());
+			imgFood.setImageResource(food.getFoodImg());
+			isFromSearchPage = false;
+		}else{
+			set(food);
+		}
 
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
