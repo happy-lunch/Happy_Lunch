@@ -1,67 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".setting_account"
-    android:orientation="vertical">
-<android.support.v7.widget.Toolbar
-    android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
-    app:title="Account"
-    app:titleTextColor="#f001"
-    android:background="#f20"
-    android:id="@+id/toolbarsetacc">
-</android.support.v7.widget.Toolbar>
+   app:cardElevation="10dp">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
         android:orientation="vertical">
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="numberPassword"
-            android:id="@+id/edittxtmatkhauhientai"
+            android:inputType="textEmailAddress"
+            android:id="@+id/edtEmail"
             android:textStyle="bold"
-            android:textSize="30dp"
+            android:textSize="24sp"
             android:layout_marginTop="10dp"
-            android:hint="Nhap mat khau hien tai: "/>
+            android:hint="Email"
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/colorPrimary"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="numberPassword"
+            android:inputType="textPassword"
+            android:id="@+id/edtPassword"
             android:textStyle="bold"
-            android:id="@+id/edittxtmatkhauthaydoi"
-            android:textSize="30dp"
+            android:textSize="24sp"
             android:layout_marginTop="10dp"
-            android:hint="Nhap mat khau thay doi: "/>
+            android:hint="Password"
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/colorPrimary"/>
+
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="numberPassword"
-            android:id="@+id/edittxtnhaplaimatkhau"
+            android:inputType="textPassword"
             android:textStyle="bold"
-            android:textSize="30dp"
+            android:id="@+id/edtNewpassword"
+            android:textSize="24sp"
             android:layout_marginTop="10dp"
-            android:hint="Nhap lai mat khau : "/>
-        <Button
+            android:hint="New Password "
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/colorPrimary"/>
+        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/btnhuy"
-            android:background="#4CAF50"
-            android:text="Huy"
+            android:inputType="textPassword"
+            android:id="@+id/edtRepeatPassword"
             android:textStyle="bold"
-            android:textSize="30dp" />
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnxacnhan"
-            android:text="xac nhan"
-            android:textStyle="bold"
-            android:textSize="30dp"
-            android:layout_marginTop="5dp"
-            android:background="#4CAF50"/>
+            android:textSize="24sp"
+            android:layout_marginTop="10dp"
+            android:hint="Repeat Password "
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/colorPrimary"/>
     </LinearLayout>
 
-</LinearLayout>
+</android.support.v7.widget.CardView>
