@@ -55,6 +55,9 @@ dependencies {
 
     implementation 'com.firebaseui:firebase-ui:0.6.0'
 
+	implementation 'com.android.support:recyclerview-v7:27.1.1'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+	
     //vy add
     implementation 'info.hoang8f:fbutton:1.0.5'
     implementation 'com.stepstone.apprating:app-rating:2.0.0'
