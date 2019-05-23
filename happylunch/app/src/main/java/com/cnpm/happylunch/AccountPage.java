@@ -41,7 +41,7 @@ public class AccountPage extends Fragment {
 
     private final int REQUEST_CODE_IMAGE = 10;
     private View view;
-    private Button btnLogOut;
+    private Button btnLogOut, btnSet;
     private TextView txtName, txtID;
     private ImageView avaUser;
     private Boolean isCreate = false;
@@ -54,14 +54,19 @@ public class AccountPage extends Fragment {
 
         map();
 
-
-
         btnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
                 App.user = null;
                 startActivity(new Intent(getActivity(), Login.class));
+            }
+        });
+        btnSet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), Setting_account.class);
+                startActivity(intent);
             }
         });
 
@@ -132,6 +137,7 @@ public class AccountPage extends Fragment {
         txtName = view.findViewById(R.id.txtTenUser);
         txtID = view.findViewById(R.id.txtID);
         avaUser = view.findViewById(R.id.avaUser);
+        btnSet = view.findViewById(R.id.btnCaiDatTK);
     }
 
     private void uploadAvaUser(){
