@@ -13,13 +13,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+
 public class popularViewPagerAdapter extends PagerAdapter {
     private Context context;
+    private ArrayList<Food> popularFood = new ArrayList<Food>();
     private LayoutInflater inflater;
-    private int size = HomePage.numPopularItem;
+    private int size;
 
-    public popularViewPagerAdapter(Context context) {
+    public popularViewPagerAdapter(Context context, ArrayList<Food> popularFood) {
         this.context = context;
+        this.popularFood = popularFood;
+        size = popularFood.size();
         inflater = LayoutInflater.from(context);
     }
 
@@ -44,8 +51,10 @@ public class popularViewPagerAdapter extends PagerAdapter {
 
         ImageView imageView = (ImageView) v.findViewById(R.id.img);
         TextView text = (TextView) v.findViewById(R.id.textView);
-        imageView.setImageResource(HomePage.foods.get(position%getSize()).getFoodImg());
-        text.setText(HomePage.foods.get(position%getSize()).getFoodName());
+        //imageView.setImageBitmap(App.foods.get(position%getSize()).getImgBitmap());
+        Picasso.get().load(popularFood.get(position%getSize()).getImg()).into(imageView);
+        text.setText(popularFood.get(position % getSize()).getName());
+        //============================================================================
 
         ViewPager viewPager = (ViewPager) container;
 

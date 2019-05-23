@@ -10,10 +10,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class App {
-    private App(){
+    public volatile static User user;
+	
+	public static ArrayList<Food> foods = new ArrayList<Food>();
+    public static ArrayList<Category> categories = new ArrayList<Category>();
+	
+	private App(){
 
     }
-    public volatile static User user;
+	
     public static void prepareUser(){
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();

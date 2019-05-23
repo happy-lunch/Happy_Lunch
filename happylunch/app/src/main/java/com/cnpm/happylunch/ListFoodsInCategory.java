@@ -3,32 +3,41 @@ package com.cnpm.happylunch;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.Inflater;
 
 public class ListFoodsInCategory extends AppCompatActivity {
 
-    private List<Food> foodsInCategory = new ArrayList<Food>();
+    private ArrayList<Food> foodsInCategory = new ArrayList<Food>();
     private GridView gridViewFoodsInCategory;
+    private Category category;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_foods_in_category);
 
+        Intent i = getIntent();
+        category = (Category) i.getSerializableExtra("KindOfFood");
+
         getFoodsInCategory();
         gridViewFoodsInCategory = (GridView) findViewById(R.id.gridViewFoodsInCategory);
-        gridViewFoodsInCategory.setAdapter(new FoodAdapter(this, foodsInCategory));
+        if(!foodsInCategory.isEmpty()) {
+            gridViewFoodsInCategory.setAdapter(new FoodAdapter(this, foodsInCategory));
+        }else{
+            gridViewFoodsInCategory.setAdapter(null);
+        }
 
 
         gridViewFoodsInCategory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -47,9 +56,7 @@ public class ListFoodsInCategory extends AppCompatActivity {
 
     private void setActionBar(){
         ActionBar actionBar = getSupportActionBar();
-        /*actionBar.setTitle(getTittleActionBar());
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        //actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE);*/
+
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.RED));
 
         LayoutInflater layoutInflater = LayoutInflater.from(this);
@@ -62,7 +69,7 @@ public class ListFoodsInCategory extends AppCompatActivity {
             }
         });
         TextView actionBarTittle = (TextView) view.findViewById(R.id.titleActionBar);
-        actionBarTittle.setText(getTittleActionBar());
+        actionBarTittle.setText(category.getName());
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         actionBar.setCustomView(view);
     }
@@ -74,41 +81,11 @@ public class ListFoodsInCategory extends AppCompatActivity {
     }
 
     private void getFoodsInCategory(){
-        Intent i = getIntent();
-        KindOfFood k = (KindOfFood)i.getSerializableExtra("KindOfFood");
-        for(Food f:HomePage.foods){
-            if(f.getKind() == k){
+        for(Food f:App.foods){
+            if(f.getMenuId().equals(category.getId())){
                 foodsInCategory.add(f);
             }
         }
     }
 
-    private String getTittleActionBar(){
-        Intent i = getIntent();
-        KindOfFood k = (KindOfFood)i.getSerializableExtra("KindOfFood");
-
-        String tittle = null;
-        switch (k) {
-            case Com:
-                tittle = "Cơm";
-                break;
-            case Mi:
-                tittle = "Mì";
-                break;
-            case Banh_Bao:
-                tittle = "Bánh Bao";
-                break;
-            case Banh_Mi:
-                tittle = "Bánh Mì";
-                break;
-            case Sandwich:
-                tittle = "Sandwich";
-                break;
-            case Trang_Mieng:
-                tittle = "Trang Mieng";
-                break;
-                default: tittle = "NULL";
-        }
-        return tittle;
-    }
 }

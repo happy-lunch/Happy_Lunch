@@ -2,75 +2,96 @@ package com.cnpm.happylunch;
 
 import java.io.Serializable;
 
-public class Food implements Serializable {
-    private int foodImg;
-    private String foodName;
-    private String foodPrice;
-    private double numStar;
+public class Food implements Serializable{
+    private String description;
+    private String foodId;
+    private String img;
+    private String menuId;
+    private String name;
     private int numSold;
-    private KindOfFood kind;
+    private String price;
+    private int rating;
+    private int timeFinish;
 
-    public Food(){
+    public Food() {
 
     }
 
-    public Food(int foodImg, String foodName, String foodPrice, int numSold, KindOfFood kind) {
-        this.foodImg = foodImg;
-        this.foodName = foodName;
-        this.foodPrice = foodPrice;
-        this.numSold = 1;
-        this.kind = kind;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public void setNumStar(double numStar) {
-        this.numStar = numStar;
+    public void setFoodId(String foodId) {
+        this.foodId = foodId;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public void setMenuId(String menuId) {
+        this.menuId = menuId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setNumSold(int numSold) {
         this.numSold = numSold;
     }
 
-    public void setKind(KindOfFood kind) {
-        this.kind = kind;
+    public void setPrice(String price) {
+        this.price = price;
     }
 
-    public void setFoodImg(int foodImg) {
-        this.foodImg = foodImg;
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 
-    public void setFoodName(String foodName) {
-        this.foodName = foodName;
+    public void setTimeFinish(int timeFinish) {
+        this.timeFinish = timeFinish;
     }
 
-    public void setFoodPrice(String foodPrice) {
-        this.foodPrice = foodPrice;
+    public String getDescription() {
+        return description;
     }
 
-    public int getFoodImg() {
-        return foodImg;
+    public String getFoodId() {
+        return foodId;
     }
 
-    public String getFoodName() {
-        return foodName;
+    public String getImg() {
+        return img;
     }
 
-    public String getFoodPrice() {
-        return foodPrice;
+    public String getMenuId() {
+        return menuId;
     }
 
-    public double getNumStar() {
-        return numStar;
+    public String getName() {
+        return name;
     }
 
     public int getNumSold() {
         return numSold;
     }
 
-    public KindOfFood getKind() {
-        return kind;
+    public String getPrice() {
+        return price;
     }
-}
 
-enum KindOfFood {
-    Com, Mi, Banh_Mi, Banh_Bao, An_Nhe, Sandwich, Trang_Mieng
+    public int getRating() {
+        return rating;
+    }
+
+    public int getTimeFinish() {
+        return timeFinish;
+    }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
+
 }
