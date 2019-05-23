@@ -1,25 +1,26 @@
 package com.cnpm.happylunch;
 
 import android.content.Context;
+import android.widget.ImageView;
 
 public class FoodImageView extends android.support.v7.widget.AppCompatImageView {
 
-    private KindOfFood kind;
+    private Category cate;
 
-    public FoodImageView(Context context, KindOfFood kind) {
+    public FoodImageView(Context context, Category cate) {
         super(context);
-        this.kind = kind;
+        this.cate = cate;
     }
 
     public FoodImageView(Context context) {
         super(context);
     }
 
-    public void setKind(KindOfFood kind) {
-        this.kind = kind;
+    public Category getCate() {
+        return cate;
     }
 
-    public KindOfFood getKind() {
-        return kind;
+    public void setCate(Category cate) {
+        this.cate = cate;
     }
 }
