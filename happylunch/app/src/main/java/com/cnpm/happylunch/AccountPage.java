@@ -138,6 +138,7 @@ public class AccountPage extends Fragment {
         txtName = view.findViewById(R.id.txtTenUser);
         txtID = view.findViewById(R.id.txtID);
         avaUser = view.findViewById(R.id.avaUser);
+		btnSet = view.findViewById(R.id.btnCaiDatTK);
     }
 
     private void uploadAvaUser(){
