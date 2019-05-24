@@ -203,7 +203,7 @@
             android:layout_height="350dp"
             android:fitsSystemWindows="true"
             app:contentScrim="#FFFFFF"
-            app:expandedTitleTextAppearance="@android:color/transparent"
+            app:expandedTitleTextAppearance="@style/CollapsingToolbarLayoutExpandedTextStyle"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
