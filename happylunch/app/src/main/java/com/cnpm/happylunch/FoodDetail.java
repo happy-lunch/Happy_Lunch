@@ -101,6 +101,14 @@ public class FoodDetail extends AppCompatActivity {
                 finish();
             }
         });*/
+		
+		btnCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+            }
+        });
+		
     }
 
     private void map(){
