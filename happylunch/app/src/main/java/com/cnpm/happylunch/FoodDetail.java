@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 public class FoodDetail extends AppCompatActivity {
 
     private static TextView foodAmount, price, nameFood, bigNameFood, txt_time, txt_numMax;
@@ -17,6 +19,7 @@ public class FoodDetail extends AppCompatActivity {
     private static ImageView imgFood;
     public volatile  static  Food food;
     public volatile  static BagRow bag = new BagRow();
+    public volatile  static Boolean isSet = false;
 
 
     @Override
@@ -33,7 +36,11 @@ public class FoodDetail extends AppCompatActivity {
         imgFood.setImageResource(food.getFoodImg());
         */
 
-        set(food);
+        if(isSet){
+            set_bag(bag);
+        }
+        else
+            set(food);
 
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
@@ -77,16 +84,28 @@ public class FoodDetail extends AppCompatActivity {
     }
 
     public static void set(Food food){
-        bag.setImg(food.getFoodImg());
-        bag.setName(food.getFoodName());
-        bag.setPrice(Integer.valueOf(food.getFoodPrice()));
+        bag.setImg(food.getImg());
+        bag.setName(food.getName());
+        bag.setPrice(Integer.valueOf(food.getPrice()));
+        bag.setId(food.getFoodId());
         set_bag(bag);
     }
 
+    public static void setBag(BagRow bagRow){
+        isSet = true;
+        bag.setId(bagRow.getId());
+        bag.setCount(bagRow.getCount());
+        bag.setTime(bagRow.getTime());
+        bag.setPrice(bagRow.getPrice());
+        bag.setStatus(bagRow.getStatus());
+        bag.setName(bagRow.getName());
+        //set_bag(bag);
+    }
 
     public static void set_bag(BagRow bagRow){
         bag = bagRow;
-        imgFood.setImageResource(bag.getImg());
+        //imgFood.setImageResource(bag.getImg());
+        Picasso.get().load(bagRow.getImg()).into(imgFood);
         nameFood.setText(bag.getName());
         price.setText(String.valueOf(bag.getPrice()));
         bigNameFood.setText(bag.getName());

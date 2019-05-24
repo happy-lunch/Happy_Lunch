@@ -208,7 +208,7 @@ public class food_info extends AppCompatActivity {
                 TextView txtPrice = v.findViewById(R.id.txtViewInCat2);
                 ImageView imgIconMore= v.findViewById(R.id.iconToShowInCat);
 
-                Picasso.with(getParent()).load(foodInCat.getImg()).into(imgImg);
+                Picasso.get().load(foodInCat.getImg()).into(imgImg);
                 txtName.setText(foodInCat.getName());
                 txtPrice.setText(String.format("Price : %s", String.valueOf(foodInCat.getPrice())));
 

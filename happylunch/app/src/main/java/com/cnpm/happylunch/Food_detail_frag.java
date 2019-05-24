@@ -151,7 +151,7 @@ public class Food_detail_frag extends AppCompatActivity {
                 Food_Detail food= dataSnapshot.getValue(Food_Detail.class);
 
                 //set Image
-                Picasso.with(getBaseContext()).load(food.getImg()).into(food_Image);
+                Picasso.get().load(food.getImg()).into(food_Image);
 
                 collapsingToolbarLayout.setTitle(food.getName());
                 food_Price.setText(food.getPrice());

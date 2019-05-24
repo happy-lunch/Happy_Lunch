@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 import java.nio.BufferUnderflowException;
 import java.util.ArrayList;
@@ -83,7 +84,8 @@ class BagResellAdapter extends BaseAdapter {
 
         BagRow bagResell = bagResellList.get(position);
 
-        holder.imgImg.setImageResource(bagResell.getImg());
+        //holder.imgImg.setImageResource(bagResell.getImg());
+        Picasso.get().load(bagResell.getImg()).into(holder.imgImg);
         holder.txtName.setText(bagResell.getName());
         holder.txtNum.setText(String.format("%s", String.valueOf(bagResell.getCount())));
         holder.txtPrice.setText(String.format("%s", String.valueOf(bagResell.getPrice())));
@@ -171,7 +173,7 @@ public class BagResell extends AppCompatActivity {
 
                     onBackPressed();
                     finish();
-                    Toast.makeText(getBaseContext(),"Đã thêm các món ăn vào trang Resell", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getBaseContext(),"Đã thêm các món ăn vào trang Resell", Toast.LENGTH_SHORT).show();
                 }
             }
             else {

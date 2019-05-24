@@ -19,6 +19,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +78,8 @@ class SecondShopAdapter extends BaseAdapter {
 
         BagRow secondShop = secondShopList.get(position);
 
-        holder.imgImg.setImageResource(secondShop.getImg());
+        //holder.imgImg.setImageResource(secondShop.getImg());
+        Picasso.get().load(secondShop.getImg()).into(holder.imgImg);
         holder.txtName.setText(secondShop.getName());
         holder.txtPrice.setText(String.format("Price : %s", String.valueOf(secondShop.getPrice())));
         holder.txtTime.setText(String.format("Time : %s", secondShop.getTime()));
@@ -117,7 +119,6 @@ public class SecondShop extends Fragment {
                 assert foodResell != null;
                 arraySecondShop.add(new BagRow(foodResell));
                 secondShopAdapter.notifyDataSetChanged();
-
             }
 
             @Override
@@ -147,21 +148,9 @@ public class SecondShop extends Fragment {
     }
 
     void Order(BagRow food){
+        FoodDetail.setBag(food);
+        startActivity(new Intent(getContext(), FoodDetail.class));
 
-        /*
-        FragmentManager fragmentManager = getFragmentManager();
-        assert fragmentManager != null;
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        //fragmentTransaction.replace(R.id.fragment_container, Bottom_Nav.foodDetail).commitNow();
-
-        //Bottom_Nav.selectedFrameLayout.setVisibility(View.INVISIBLE);
-        //Bottom_Nav.flFoodDetail.setVisibility(View.VISIBLE);
-        //Bottom_Nav.foodDetail.set_bag(food);*/
-
-        //FoodDetail.bag = ;
-
-        //FoodDetail.set_bag(food);
-        //startActivity(new Intent(getContext(), FoodDetail.class));
     }
 
 

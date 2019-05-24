@@ -24,13 +24,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 class BagRow {
-    private int img;
+    private String img;
     private String name;
     private String time;
     private int count;
@@ -49,6 +50,7 @@ class BagRow {
         this.time = food.time;
         this.count = food.count;
         this.price = food.getPrice();
+        this.id = food.getId();
     }
 
     BagRow(BagRow food, int num){
@@ -57,10 +59,11 @@ class BagRow {
         this.time = food.time;
         this.count = num;
         this.price = food.getPrice();
+        this.id = food.getId();
     }
 
 
-    BagRow(int img, String name, String time, int count) {
+    BagRow(String img, String name, String time, int count) {
         this.img = img;
         this.name = name;
         this.time = time;
@@ -73,9 +76,18 @@ class BagRow {
         this.id = billItem.getId();
         this.count = billItem.getNum();
         this.price = billItem.getPrice();
-        this.img = 0;
-        this.name = "Null";
+        this.status = billItem.getStatus();
         this.time = time;
+        int i = get_food(billItem.getId());
+        this.img = App.foods.get(i).getImg();
+        this.name = App.foods.get(i).getName();
+    }
+
+    private int get_food(String id){
+        for (int i = 0; i < App.foods.size(); i++){
+            if (App.foods.get(i).getFoodId().equals(id)) return i;
+        }
+        return -1;
     }
 
     public BagRow(FoodResell foodResell) {
@@ -83,15 +95,16 @@ class BagRow {
         this.price = foodResell.getPrice();
         this.count = foodResell.getNumSell();
         this.id = foodResell.getIdFood();
-        this.name = "Món ăn nào đó";
-        this.img = 0;
+        int i = get_food(foodResell.getIdFood());
+        this.img = App.foods.get(i).getImg();
+        this.name = App.foods.get(i).getName();
     }
 
-    int getImg() {
+    String getImg() {
         return img;
     }
 
-    public void setImg(int img) {
+    public void setImg(String img) {
         this.img = img;
     }
 
@@ -194,7 +207,8 @@ class BagAdapter extends BaseAdapter {
 
         BagRow bag = bagList.get(position);
 
-        holder.imgImg.setImageResource(bag.getImg());
+        //holder.imgImg.setImageResource(bag.getImg());
+        Picasso.get().load(bag.getImg()).into(holder.imgImg);
         holder.txtName.setText(bag.getName());
         holder.txtTime.setText(bag.getTime());
         holder.txtCount.setText(String.valueOf(bag.getCount()));
@@ -358,6 +372,7 @@ public class Bag extends Fragment {
     }
 
 
+    /*
     private void AnhXa(){
         arrayBag.add(new BagRow(R.drawable.ck_banh_bao_ba_xiu_2,   "Bánh bao xá xíu 2",
                 "9:50",3));
@@ -373,5 +388,5 @@ public class Bag extends Fragment {
                 "8:20",4));
         arrayBag.add(new BagRow(R.drawable.ck_salad_caron,         "Salad caron",
                 "8:00",1));
-    }
+    }*/
 }

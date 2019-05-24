@@ -46,17 +46,22 @@ public class AdWork extends Fragment {
 
         lvAdWork = view.findViewById(R.id.list_adWork);
 
-        AnhXa();
+
         adWorkAdapter = new BagAdapter(getContext(), R.layout.element_bag, arrayAdWork);
         lvAdWork.setAdapter(adWorkAdapter);
+
+        //Duyệt tạm chưa sài db
+        //AnhXa();
 
         mData = FirebaseDatabase.getInstance().getReference();
         mData.child("Order").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                //Lấy mảng order về và sort theo time
                 Order order = dataSnapshot.getValue(Order.class);
                 if (order != null){
                     arrayOrder.add(order);
+                    sortTime(arrayOrder);
                 }
             }
 
@@ -82,14 +87,8 @@ public class AdWork extends Fragment {
         });
 
         lvAdWork.setOnItemClickListener((parent, view, position, id) -> {
-            if (arrayAdWork.get(position).getStatus() == "Đang chế biến"){
-                Toast.makeText(getContext(),"Đã hoàn thành " + arrayAdWork.get(position).getCount() + " " + arrayAdWork.get(position).getName(), Toast.LENGTH_SHORT).show();
-                arrayAdWork.remove(position);
-            }
-            else {
+            Dialog_click_item(position);
 
-                Dialog_click_item(position);
-            }
 
         });
 
@@ -99,19 +98,25 @@ public class AdWork extends Fragment {
         return view;
     }
 
-    private void insertionSort(ArrayList<Order> arrayList) {
+    private void sortTime(ArrayList<Order> arrayList) {
 
         int i,j;
         for (i = 1; i < arrayList.size(); i++) {
             Order key = arrayList.get(i);
             j = i;
-            //int time0 = Integer.valueOf(arrayList.get(j-1).getTime().getChars(););
-            while((j > 0) && (Integer.valueOf(arrayList.get(j - 1).getTime()) > Integer.valueOf(key.getTime()))) {
+
+            int time0 = get_time(arrayList.get(j-1).getTime());
+            int time1 = get_time(arrayList.get(i).getTime());
+            while((j > 0) && (time0 > time1)) {
                 arrayList.set(j,arrayList.get(j - 1));
-                j--;
+                time0 = get_time(arrayList.get(--j-1).getTime());
             }
             arrayList.set(j,key);
         }
+    }
+
+    private int get_time(String s){
+        return 24*60*Integer.valueOf(s.substring(0, 2)) + 60*Integer.valueOf(s.substring(3, 5)) + Integer.valueOf(s.substring(6, 8));
     }
 
     private void Dialog_click_item(final int position){
@@ -150,10 +155,15 @@ public class AdWork extends Fragment {
             if (count[0] > 0){
                 BagRow new_row = new BagRow(temp.getImg(), temp.getName(), temp.getTime(), count[0]);
                 if (count[0] == temp.getCount()){
-                    AdWork.arrayAdWork.remove(position);
+                    arrayAdWork.remove(position);
                 }
-                AdWork.arrayAdWork.add(0,new_row);
-                AdWork.adWorkAdapter.notifyDataSetChanged();
+                else {
+                    arrayAdWork.get(position).setCount(temp.getCount() - count[0]);
+                }
+                adWorkAdapter.notifyDataSetChanged();
+
+                AdMyWork.arrayAdMyWork.add(new_row);
+                AdMyWork.adMyWorkAdapter.notifyDataSetChanged();
             }
 
             dialog.cancel();
@@ -162,6 +172,7 @@ public class AdWork extends Fragment {
         dialog.show();
     }
 
+    /*
     private void AnhXa(){
         arrayAdWork.add(new BagRow(R.drawable.ck_banh_bao_ba_xiu_2,   "Bánh bao xá xíu 2",
                 "9:50",3));
@@ -173,5 +184,5 @@ public class AdWork extends Fragment {
                 "9:20",5));
         arrayAdWork.add(new BagRow(R.drawable.ck_single_banana,       "Single banana",
                 "8:55",1));
-    }
+    }*/
 }

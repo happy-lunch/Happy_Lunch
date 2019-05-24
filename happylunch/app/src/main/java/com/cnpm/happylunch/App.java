@@ -9,16 +9,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class App {
     public volatile static User user;
-	
-	public static ArrayList<Food> foods = new ArrayList<Food>();
+
+    public static ArrayList<Food> foods = new ArrayList<Food>();
     public static ArrayList<Category> categories = new ArrayList<Category>();
-	
-	private App(){
+
+    private App(){
 
     }
-	
+
     public static void prepareUser(){
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();

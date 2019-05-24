@@ -20,14 +20,17 @@ public class AdBottom_Nav extends AppCompatActivity {
 
     private ActionBar toolBar;
 
+    public volatile static BottomNavigationView botNav;
+
     private AdWork adWork = new AdWork();
+    private AdMyWork adMyWork = new AdMyWork();
     private FoodCategory adItem = new FoodCategory();
     private AdRecharge adRecharge = new AdRecharge();
     private Customer adProfile = new Customer();
 
     private FragmentTransaction ft;
     private FrameLayout selectedFrameLayout;
-    private FrameLayout flOder, flItem, flRecharge, flSetting;
+    private FrameLayout flWork,flMyWork, flItem, flRecharge, flSetting;
     private View view;
     private String toolBarTitle;
     private class adBotNavListener implements BottomNavigationView.OnNavigationItemSelectedListener{
@@ -36,9 +39,14 @@ public class AdBottom_Nav extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
             switch (menuItem.getItemId()){
                 case R.id.navigation_ordered:
-                    selectedFrameLayout = flOder;
+                    selectedFrameLayout = flWork;
                     toolBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE);
-                    toolBarTitle = "Order";
+                    toolBarTitle = "Work";
+                    break;
+                case R.id.navigation_bag:
+                    selectedFrameLayout = flMyWork;
+                    toolBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE);
+                    toolBarTitle = "My work";
                     break;
                 case R.id.navigation_shop:
                     selectedFrameLayout = flItem;
@@ -58,7 +66,8 @@ public class AdBottom_Nav extends AppCompatActivity {
             }
             toolBar.setTitle(toolBarTitle);
 
-            flOder.setVisibility(View.INVISIBLE);
+            flWork.setVisibility(View.INVISIBLE);
+            flMyWork.setVisibility(View.INVISIBLE);
             flItem.setVisibility(View.INVISIBLE);
             flRecharge.setVisibility(View.INVISIBLE);
             flSetting.setVisibility(View.INVISIBLE);
@@ -75,24 +84,26 @@ public class AdBottom_Nav extends AppCompatActivity {
         setContentView(R.layout.ad_main);
         toolBar = getSupportActionBar();
 
-        flOder = findViewById(R.id.flOder);
-        flItem = findViewById(R.id.flItem);
-        flRecharge = findViewById(R.id.flCustomers);
-        flSetting = findViewById(R.id.flSetting);
+        flWork = findViewById(R.id.flAdWork);
+        flMyWork = findViewById(R.id.flAdMyWork);
+        flItem = findViewById(R.id.flAdItem);
+        flRecharge = findViewById(R.id.flAdCustomers);
+        flSetting = findViewById(R.id.flAdSetting);
 
-        flOder.setVisibility(View.VISIBLE);
+        flWork.setVisibility(View.VISIBLE);
+        flMyWork.setVisibility(View.INVISIBLE);
         flItem.setVisibility(View.INVISIBLE);
         flRecharge.setVisibility(View.INVISIBLE);
         flSetting.setVisibility(View.INVISIBLE);
 
-        selectedFrameLayout = flOder;
+        selectedFrameLayout = flWork;
 
         ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.flOder, adWork).add(R.id.flItem, adItem).add(R.id.flCustomers, adRecharge).add(R.id.flSetting, adProfile).commit();
+        ft.add(R.id.flAdWork, adWork).add(R.id.flAdMyWork, adMyWork).add(R.id.flAdItem, adItem).add(R.id.flAdCustomers, adRecharge).add(R.id.flAdSetting, adProfile).commit();
 
         setHomeActionBar();
 
-        BottomNavigationView botNav = findViewById(R.id.ad_bottom_nav);
+        botNav = findViewById(R.id.ad_bottom_nav);
         botNav.setOnNavigationItemSelectedListener(new adBotNavListener());
     }
 

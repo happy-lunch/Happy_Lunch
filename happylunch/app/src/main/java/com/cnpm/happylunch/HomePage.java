@@ -14,6 +14,8 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -26,8 +28,8 @@ public class HomePage extends Fragment {
 
     public static final int numCategories = App.categories.size();
 
-	private ArrayList<FoodImageView> imgFoodInCategory ;
-	
+    private ArrayList<FoodImageView> imgFoodInCategory ;
+
     private int currentItem;
 
     private LinearLayout linearCategary;
@@ -48,7 +50,7 @@ public class HomePage extends Fragment {
         view = inflater.inflate(R.layout.fragment_home_page, container, false);
 
         GridView grid = (GridView) view.findViewById(R.id.gridView);
-        grid.setAdapter(new FoodAdapter(getActivity(), foods));
+        grid.setAdapter(new FoodAdapter(getActivity(), App.foods));
 
         //---------------------------------------------------------------
 
@@ -57,7 +59,7 @@ public class HomePage extends Fragment {
         linearCategary = view.findViewById(R.id.linearCategory);
         setUpCategories();
 
-        grid.setOnItemClickListener((parent, view, position, id) -> Order(foods.get(position)));
+        grid.setOnItemClickListener((parent, view, position, id) -> Order(App.foods.get(position)));
 
         return view;
     }
@@ -71,13 +73,14 @@ public class HomePage extends Fragment {
 
     private void setUpPopularView(){
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+        /*
         App.foods.sort((f1,f2)->{
             if(f1.getNumSold() < f2.getNumSold()){
                 return 1;
             }else{
                 return -1;
             }
-        });
+        });*/
         ArrayList<Food> popularFood = new ArrayList<Food>();
         for(int i=0; i < numPopularItem; i++){
             popularFood.add(App.foods.get(i));
@@ -158,7 +161,7 @@ public class HomePage extends Fragment {
             params.setMargins(8,8,8,8);
 
             final int index = i;
-            
+
             Picasso.get().load(imgFoodInCategory.get(i).getCate().getImg()).into(imgFoodInCategory.get(i));
             imgFoodInCategory.get(i).setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -129,7 +129,7 @@ public class FoodCategory extends Fragment {
                 txt.setText(foodCat.getName());
 
                 ImageView img=v.findViewById(R.id.imageViewCategory);
-                Picasso.with(getContext()).load(foodCat.getImg()).into(img);
+                Picasso.get().load(foodCat.getImg()).into(img);
 
                 ImageView imgIconMore= v.findViewById(R.id.iconToShow);
                 imgIconMore.setOnClickListener(new View.OnClickListener() {

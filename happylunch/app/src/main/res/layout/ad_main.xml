@@ -7,28 +7,35 @@
     android:layout_height="match_parent">
 
     <FrameLayout
-        android:id="@+id/flOder"
+        android:id="@+id/flAdWork"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_nav"
         />
 
     <FrameLayout
-        android:id="@+id/flItem"
+        android:id="@+id/flAdMyWork"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_nav"
         />
 
     <FrameLayout
-        android:id="@+id/flCustomers"
+        android:id="@+id/flAdItem"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_nav"
         />
 
     <FrameLayout
-        android:id="@+id/flSetting"
+        android:id="@+id/flAdCustomers"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_nav"
+        />
+
+    <FrameLayout
+        android:id="@+id/flAdSetting"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_nav"

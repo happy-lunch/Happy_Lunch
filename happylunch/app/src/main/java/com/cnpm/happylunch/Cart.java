@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -82,7 +83,8 @@ class CartAdapter extends BaseAdapter {
 
         BagRow cart = cartList.get(position);
 
-        holder.imgImg.setImageResource(cart.getImg());
+        //holder.imgImg.setImageResource(cart.getImg());
+        Picasso.get().load(cart.getImg()).into(holder.imgImg);
         holder.txtName.setText(cart.getName());
         holder.txtNum.setText(String.format("Num : %s",cart.getCount()));
         holder.txtPrice.setText(String.format("Price : %s",cart.getPrice()));

@@ -68,4 +68,3 @@ public class popularViewPagerAdapter extends PagerAdapter {
         //container.removeView((View) object);
     }
 }
-
