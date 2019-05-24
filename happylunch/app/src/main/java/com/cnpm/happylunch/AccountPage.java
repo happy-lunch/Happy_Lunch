@@ -41,7 +41,7 @@ public class AccountPage extends Fragment {
 
     private final int REQUEST_CODE_IMAGE = 10;
     private View view;
-    private Button btnLogOut;
+    private Button btnLogOut, btnSet;
     private TextView txtName, txtID;
     private ImageView avaUser;
     private Boolean isCreate = false;
@@ -53,7 +53,13 @@ public class AccountPage extends Fragment {
         view = inflater.inflate(R.layout.fragment_account_page, container, false);
 
         map();
-
+        btnSet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), Setting_account.class);
+                startActivity(i);
+            }
+        });
 
 
         btnLogOut.setOnClickListener(new View.OnClickListener() {
