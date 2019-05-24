@@ -1,7 +1,7 @@
 package com.cnpm.happylunch;
 
 public class FoodResell {
-    private String id, idFood, idUser, time;
+    private String id, idFood, idUser, idBill, time;
     private int price, numSell;
 
     public FoodResell(){
@@ -12,9 +12,11 @@ public class FoodResell {
         this.id = key;
         this.idFood = bagRow.getId();
         this.idUser = idUser;
+        this.idBill = bagRow.getIdBIll();
         this.time = bagRow.getTime();
         this.price = bagRow.getPrice();
         this.numSell = bagRow.getCount();
+        this.idBill = bagRow.getIdBIll();
     }
 
     public String getId() {
@@ -63,5 +65,13 @@ public class FoodResell {
 
     public void setNumSell(int numSell) {
         this.numSell = numSell;
+    }
+
+    public String getIdBill() {
+        return idBill;
+    }
+
+    public void setIdBill(String idBill) {
+        this.idBill = idBill;
     }
 }

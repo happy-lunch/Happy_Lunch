@@ -155,7 +155,7 @@ public class BagResell extends AppCompatActivity {
                     mData.child("Customers").child(App.user.getUid()).setValue(App.user);
 
                     String key0 = mData.child("Bill").child(App.user.getMssv()).child("Resell").push().getKey();
-                    mData.child("Bill").child(App.user.getMssv()).child("Resell").child(key0).child("id").setValue(key0);
+                    mData.child("Bill").child(App.user.getMssv()).child("Resell").child(Objects.requireNonNull(key0)).child("id").setValue(key0);
                     mData.child("Bill").child(App.user.getMssv()).child("Resell").child(key0).child("cost").setValue(cost);
                     String time = String.format("%sd%sh%sp", calendar.get(Calendar.DATE), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
                     mData.child("Bill").child(App.user.getMssv()).child("Resell").child(key0).child("time").setValue(time);
@@ -163,7 +163,9 @@ public class BagResell extends AppCompatActivity {
                         String key = mData.child("Resell").push().getKey();
                         FoodResell foodResell = new FoodResell(key, arrayBagResell.get(i), App.user.getUid());
                         mData.child("Resell").push().setValue(foodResell);
-                        mData.child("Bill").child(App.user.getMssv()).child("Resell").child(key0).child("item").child(String.valueOf(i)).setValue(key);
+                        mData.child("Bill").child(App.user.getMssv()).child("Resell").child(key0).child("item").child(String.valueOf(i)).child("idResell").setValue(key);
+                        mData.child("Bill").child(App.user.getMssv()).child("Resell").child(key0).child("item").child(String.valueOf(i)).child("idBill").setValue(arrayBagResell.get(i).getIdBIll());
+                        //mData.child("Bill").child(App.user.getMssv()).child("Order").child(arrayBagResell.get(i).getIdBIll())
                     }
 
                     arrayBagResell.removeAll(arrayBagResell);

@@ -1,6 +1,7 @@
 package com.cnpm.happylunch;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
@@ -49,14 +50,26 @@ public class popularViewPagerAdapter extends PagerAdapter {
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         View v = inflater.inflate(R.layout.popular_food_layout, null);
 
+        Food food = popularFood.get(position%getSize());
+
         ImageView imageView = (ImageView) v.findViewById(R.id.img);
         TextView text = (TextView) v.findViewById(R.id.textView);
         //imageView.setImageBitmap(App.foods.get(position%getSize()).getImgBitmap());
-        Picasso.get().load(popularFood.get(position%getSize()).getImg()).into(imageView);
-        text.setText(popularFood.get(position % getSize()).getName());
+        Picasso.get().load(food.getImg()).into(imageView);
+        text.setText(food.getName());
         //============================================================================
 
         ViewPager viewPager = (ViewPager) container;
+
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, FoodDetail.class);
+                i.putExtra("Food", food);
+                App.isIntent = true;
+                context.startActivity(i);
+            }
+        });
 
         viewPager.addView(v);
 

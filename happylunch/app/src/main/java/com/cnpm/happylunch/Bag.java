@@ -38,6 +38,7 @@ class BagRow {
     private String status = "Đang xử lí";
     private int price;
     private String id = "null";
+    private String idBIll;
 
     BagRow(){
         this.time = "";
@@ -51,6 +52,7 @@ class BagRow {
         this.count = food.count;
         this.price = food.getPrice();
         this.id = food.getId();
+        this.idBIll = food.idBIll;
     }
 
     BagRow(BagRow food, int num){
@@ -72,7 +74,7 @@ class BagRow {
     }
 
 
-    public BagRow(BillItem billItem, String time) {
+    public BagRow(BillItem billItem, String time, String idBill) {
         this.id = billItem.getId();
         this.count = billItem.getNum();
         this.price = billItem.getPrice();
@@ -81,6 +83,7 @@ class BagRow {
         int i = get_food(billItem.getId());
         this.img = App.foods.get(i).getImg();
         this.name = App.foods.get(i).getName();
+        this.idBIll = idBill;
     }
 
     private int get_food(String id){
@@ -151,6 +154,14 @@ class BagRow {
     public void setId(String id) {this.id = id;}
 
     public String getId(){return id;}
+
+    public String getIdBIll() {
+        return idBIll;
+    }
+
+    public void setIdBIll(String idBIll) {
+        this.idBIll = idBIll;
+    }
 }
 
 class BagAdapter extends BaseAdapter {
@@ -222,6 +233,8 @@ public class Bag extends Fragment {
     private ListView lvBag;
 
     public volatile static ArrayList<BagRow> arrayBag = new ArrayList<>();
+    public volatile static ArrayList<Bill> arrayBill = new ArrayList<>();
+
     public static BagAdapter bagAdapter;
     private View view;
     private DatabaseReference mData;
@@ -248,8 +261,10 @@ public class Bag extends Fragment {
                 Bill bill = dataSnapshot.getValue(Bill.class);
                 if (bill!=null){
                     if (bill.getStatus().equals("Đang xử lí")) {
+                        arrayBill.add(bill);
                         for (int i = 0; i < bill.item.size(); i++) {
-                            arrayBag.add(new BagRow(bill.item.get(i), bill.getTime()));
+                            //arrayBill.get(arrayBag.size() - 1).item.add(arrayBag);
+                            arrayBag.add(new BagRow(bill.item.get(i), bill.getTime(), bill.getId()));
                         }
                         bagAdapter.notifyDataSetChanged();
                     }

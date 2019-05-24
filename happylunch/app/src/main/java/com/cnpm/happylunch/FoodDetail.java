@@ -1,13 +1,19 @@
 package com.cnpm.happylunch;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.squareup.picasso.Picasso;
 
@@ -21,6 +27,16 @@ public class FoodDetail extends AppCompatActivity {
     public volatile  static BagRow bag = new BagRow();
     public volatile  static Boolean isSet = false;
 
+    //=================================================================
+    android.support.v7.widget.Toolbar toolbar;
+    //Toolbar toolbar;
+    TextView food_Name, food_Price, food_Description;
+    ImageView food_Image;
+    CollapsingToolbarLayout collapsingToolbarLayout;
+    FloatingActionButton btnCart;
+    RatingBar rb;
+    FloatingActionButton btnRating;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,19 +45,23 @@ public class FoodDetail extends AppCompatActivity {
 
         map();
 
-        /*
-        price.setText(food.getFoodPrice());
-        nameFood.setText(food.getFoodName());
-        bigNameFood.setText(food.getFoodName());
-        imgFood.setImageResource(food.getFoodImg());
-        */
+        if(App.isIntent){
+            App.isIntent = false;
+            map();
+            Intent i = getIntent();
+            Food f = (Food)i.getSerializableExtra("Food");
 
-        if(isSet){
+            food_Description.setText(f.getDescription());
+            food_Name.setText(f.getName());
+            food_Price.setText(f.getPrice());
+            Picasso.get().load(f.getImg()).into(food_Image);
+            toolbar.setTitle(f.getName().toUpperCase());
+        }else if(isSet){
             set_bag(bag);
         }
-        else
+        else {
             set(food);
-
+        }
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +85,7 @@ public class FoodDetail extends AppCompatActivity {
             }
         });
 
-        btnFD.setOnClickListener(new View.OnClickListener() {
+        /*btnFD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int num = Integer.valueOf(String.valueOf(foodAmount.getText()));
@@ -80,7 +100,36 @@ public class FoodDetail extends AppCompatActivity {
                 onBackPressed();
                 finish();
             }
-        });
+        });*/
+    }
+
+    private void map(){
+        /*foodAmount = findViewById(R.id.txtFoodAmount);
+        price = findViewById(R.id.txtPriceDetail);
+        nameFood = findViewById(R.id.txtNameDetail);
+        bigNameFood = findViewById(R.id.txtBigNameDetail);
+
+        btnAdd = findViewById(R.id.btnAdd);
+        btnSub = findViewById(R.id.btnSub);
+
+        imgFood = findViewById(R.id.imgFood);
+
+        txt_numMax = findViewById(R.id.textView_foodDetail_numMax);
+        txt_time = findViewById(R.id.textView_foodDetail_time);
+        btnFD = findViewById(R.id.btnFD);*/
+
+        btnCart = (FloatingActionButton) findViewById(R.id.btnCart);
+        food_Description= (TextView) findViewById(R.id.food_description);
+        food_Name= (TextView) findViewById(R.id.food_name);
+        food_Price= (TextView) findViewById(R.id.food_price);
+        food_Image= (ImageView) findViewById(R.id.img_food);
+
+        btnAdd = findViewById(R.id.btnAdd);
+        btnSub = findViewById(R.id.btnSub);
+
+        foodAmount = findViewById(R.id.txtFoodAmount);
+
+        toolbar = findViewById(R.id.toolbarFoodName);
     }
 
     public static void set(Food food){
@@ -116,22 +165,6 @@ public class FoodDetail extends AppCompatActivity {
             txt_numMax.setText(String.format("NumSell : %s",bag.getCount()));
         else txt_numMax.setText("");
         foodAmount.setText("1");
-    }
-
-    private void map(){
-        foodAmount = findViewById(R.id.txtFoodAmount);
-        price = findViewById(R.id.txtPriceDetail);
-        nameFood = findViewById(R.id.txtNameDetail);
-        bigNameFood = findViewById(R.id.txtBigNameDetail);
-
-        btnAdd = findViewById(R.id.btnAdd);
-        btnSub = findViewById(R.id.btnSub);
-
-        imgFood = findViewById(R.id.imgFood);
-
-        txt_numMax = findViewById(R.id.textView_foodDetail_numMax);
-        txt_time = findViewById(R.id.textView_foodDetail_time);
-        btnFD = findViewById(R.id.btnFD);
     }
 
 }

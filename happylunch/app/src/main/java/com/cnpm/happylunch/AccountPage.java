@@ -134,11 +134,11 @@ public class AccountPage extends Fragment {
     }
 
     private void map(){
+        btnSet = view.findViewById(R.id.btnCaiDatTK);
         btnLogOut = view.findViewById(R.id.btnLogOut);
         txtName = view.findViewById(R.id.txtTenUser);
         txtID = view.findViewById(R.id.txtID);
         avaUser = view.findViewById(R.id.avaUser);
-		btnSet = view.findViewById(R.id.btnCaiDatTK);
     }
 
     private void uploadAvaUser(){

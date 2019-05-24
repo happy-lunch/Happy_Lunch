@@ -1,6 +1,7 @@
 package com.cnpm.happylunch;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +56,16 @@ public class FoodAdapter extends BaseAdapter {
         Picasso.get().load(food.getImg()).into(imageFood);
         nameFoodTextView.setText(food.getName());
         priceTextView.setText(food.getPrice() + " " + String.valueOf('\u20AB'));
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(c, FoodDetail.class);
+                i.putExtra("Food", food);
+                App.isIntent = true;
+                c.startActivity(i);
+            }
+        });
 
         return convertView;
     }

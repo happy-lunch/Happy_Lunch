@@ -41,7 +41,7 @@ public class Launch extends AppCompatActivity {
         setContentView(R.layout.activity_launch);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if(user == null){
+        if(user != null){
             if(user.isEmailVerified()){
                 i = new Intent(Launch.this, Bottom_Nav.class);
                 isSignIn = true;

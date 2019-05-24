@@ -3,6 +3,7 @@ package com.cnpm.happylunch;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
@@ -78,19 +79,16 @@ public class VerifyEmail extends AppCompatActivity {
         }
 
         mAuth.getCurrentUser().reload();
-        try {
-            Thread.sleep(2000);
-        }catch (Exception e){
-
-        }
-
-        if(mAuth.getCurrentUser().isEmailVerified()){
-            App.prepareUser();
-            startActivity(new Intent(VerifyEmail.this, Bottom_Nav.class));
-        }else{
-            progressBar.cancel();
-            Toast.makeText(this, "Bạn chưa xác nhận email", Toast.LENGTH_SHORT).show();
-        }
+        Handler hand = new Handler();
+        hand.postDelayed(()->{
+            if(mAuth.getCurrentUser().isEmailVerified()){
+                App.prepareUser();
+                startActivity(new Intent(VerifyEmail.this, Bottom_Nav.class));
+            }else{
+                progressBar.cancel();
+                Toast.makeText(this, "Bạn chưa xác nhận email", Toast.LENGTH_SHORT).show();
+            }
+        }, 3000);
     }
 
     private void map(){

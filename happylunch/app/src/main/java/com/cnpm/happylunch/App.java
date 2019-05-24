@@ -17,6 +17,8 @@ public class App {
     public static ArrayList<Food> foods = new ArrayList<Food>();
     public static ArrayList<Category> categories = new ArrayList<Category>();
 
+    public static boolean isIntent = false;
+
     private App(){
 
     }

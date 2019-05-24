@@ -7,4 +7,5 @@
     <color name="overlayActionBar">#0e0d0e</color>
     <color name="bgBottomNavigation">#6539ba</color>
     <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
 </resources>
