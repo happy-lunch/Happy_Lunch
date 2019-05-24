@@ -82,13 +82,25 @@ public class VerifyEmail extends AppCompatActivity {
         Handler hand = new Handler();
         hand.postDelayed(()->{
             if(mAuth.getCurrentUser().isEmailVerified()){
-                App.prepareUser();
-                startActivity(new Intent(VerifyEmail.this, Bottom_Nav.class));
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                databaseReference.child("Customers").child(mAuth.getUid()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        App.user = dataSnapshot.getValue(User.class);
+                        startActivity(new Intent(VerifyEmail.this, Bottom_Nav.class));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
             }else{
                 progressBar.cancel();
                 Toast.makeText(this, "Bạn chưa xác nhận email", Toast.LENGTH_SHORT).show();
             }
-        }, 3000);
+        }, 1000);
     }
 
     private void map(){
