@@ -74,14 +74,14 @@ public class HomePage extends Fragment {
     private void setUpPopularView(){
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
 
-        /*
+
         App.foods.sort((f1,f2)->{
             if(f1.getNumSold() < f2.getNumSold()){
                 return 1;
             }else{
                 return -1;
             }
-        });*/
+        });
         ArrayList<Food> popularFood = new ArrayList<Food>();
         for(int i=0; i < numPopularItem; i++){
             popularFood.add(App.foods.get(i));

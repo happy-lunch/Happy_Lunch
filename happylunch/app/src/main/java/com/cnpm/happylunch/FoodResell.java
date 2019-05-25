@@ -10,7 +10,7 @@ public class FoodResell {
 
     FoodResell(String key, BagRow bagRow, String idUser){
         this.id = key;
-        this.idFood = bagRow.getId();
+        this.idFood = bagRow.getIdFood();
         this.idUser = idUser;
         this.idBill = bagRow.getIdBIll();
         this.time = bagRow.getTime();

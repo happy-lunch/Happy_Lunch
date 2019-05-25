@@ -163,7 +163,8 @@ public class BagResell extends AppCompatActivity {
                     for (int i = 0; i < arrayBagResell.size(); i++){
                         String key = mData.child("Resell").push().getKey();
                         FoodResell foodResell = new FoodResell(key, arrayBagResell.get(i), App.user.getUid());
-                        mData.child("Resell").push().setValue(foodResell);
+                        assert key != null;
+                        mData.child("Resell").child(key).setValue(foodResell);
                         mData.child("Bill").child(App.user.getMssv()).child("Resell").child(key0).child("item")
                                 .child(String.valueOf(i)).child("idResell").setValue(key);
                         mData.child("Bill").child(App.user.getMssv()).child("Resell").child(key0).child("item")
@@ -175,7 +176,7 @@ public class BagResell extends AppCompatActivity {
                         for(int j=0; j < Bag.arrayBill.size(); j++){
                             if (arrayBagResell.get(i).getIdBIll().equals(Bag.arrayBill.get(j).getId())){
                                 for (int k=0; k<Bag.arrayBill.get(j).item.size(); k++){
-                                    if(arrayBagResell.get(i).getId().equals(Bag.arrayBill.get(j).item.get(k).getId())){
+                                    if(arrayBagResell.get(i).getIdFood().equals(Bag.arrayBill.get(j).item.get(k).getId())){
                                         indexBill = j;
                                         indexFood = k;
                                         String status = Bag.arrayBill.get(j).item.get(k).getStatus();
@@ -334,10 +335,10 @@ public class BagResell extends AppCompatActivity {
 
     public static void add(BagRow food){
         for(int i=0; i<arrayBagResell.size(); i++){
-            if (arrayBagResell.get(i).getId().equals(food.getId())){
+            if (arrayBagResell.get(i).getIdFood().equals(food.getIdFood())){
                 arrayBagResell.get(i).setCount(arrayBagResell.get(i).getCount() + food.getCount());
                 //bagResellAdapter.notifyDataSetChanged();
-                return;
+                break;
             }
         }
         arrayBagResell.add(new BagRow(food));

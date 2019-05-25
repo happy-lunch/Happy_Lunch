@@ -70,8 +70,11 @@ public class FoodDetail extends AppCompatActivity {
         dialogRating = new Dialog(this);
         dialogRating.setContentView(R.layout.dialog_rating);
 
+
         if (isSet){
+            isSet = false;
             btnRating.hide();
+            rb.setRating(5);
             set_bag(bag);
         }
         else if(App.isIntent){
@@ -133,6 +136,19 @@ public class FoodDetail extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 int num = Integer.valueOf(String.valueOf(foodAmount.getText()));
+                if(bag.getStatus().equals("Resell")){
+                    for (int i=0;i<SecondShop.arraySecondShop.size();i++){
+                        if (SecondShop.arraySecondShop.get(i).getIdResell().equals(bag.getIdResell())){
+                            int numSell = SecondShop.arraySecondShop.get(i).getCount() - num;
+                            if (numSell ==0){
+                                SecondShop.arraySecondShop.remove(i);
+                            }
+                            else
+                                SecondShop.arraySecondShop.get(i).setCount(numSell);
+                            SecondShop.secondShopAdapter.notifyDataSetChanged();
+                        }
+                    }
+                }
                 Cart.add(bag, num);
                 Toast.makeText(getBaseContext(),String.format("Bạn đã thêm %s %s vào Cart", num, bag.getName()),Toast.LENGTH_SHORT).show();
                 onBackPressed();
@@ -289,7 +305,7 @@ public class FoodDetail extends AppCompatActivity {
 
     public void set_bag(BagRow bagRow){
 
-        bag.setId(bagRow.getId());
+        bag.setIdFood(bagRow.getIdFood());
         bag.setCount(bagRow.getCount());
         bag.setTime(bagRow.getTime());
         bag.setPrice(bagRow.getPrice());

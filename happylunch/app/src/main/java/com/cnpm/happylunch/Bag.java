@@ -37,8 +37,11 @@ class BagRow {
     private int count;
     private String status = "Đang xử lí";
     private int price;
-    private String id = "null";
+    private String id;
+    private String idFood;
     private String idBIll;
+    private String idUser;
+    private String idResell;
 
     BagRow(){
         this.time = "";
@@ -51,19 +54,23 @@ class BagRow {
         this.time = food.time;
         this.count = food.count;
         this.price = food.getPrice();
-        this.id = food.getId();
+        this.idFood = food.getIdFood();
         this.idBIll = food.idBIll;
+        this.status = food.status;
+        this.id = food.getId();
+        this.idResell = food.getIdResell();
+        this.idUser = food.idUser;
     }
+
 
     BagRow(Food food){
         this.img = food.getImg();
         this.name = food.getName();
         this.count = 0;
         this.price = Integer.valueOf(food.getPrice());
-        this.id = food.getFoodId();
+        this.idFood = food.getFoodId();
         this.status = food.getDescription();
     }
-
 
     BagRow(BagRow food, int num){
         this.img = food.getImg();
@@ -71,7 +78,11 @@ class BagRow {
         this.time = food.time;
         this.count = num;
         this.price = food.getPrice();
+        this.idFood = food.getIdFood();
+        this.status = food.status;
         this.id = food.getId();
+        this.idResell = food.getIdResell();
+        this.idUser = food.idUser;
     }
 
 
@@ -85,7 +96,7 @@ class BagRow {
 
 
     public BagRow(BillItem billItem, String time, String idBill) {
-        this.id = billItem.getId();
+        this.idFood = billItem.getId();
         this.count = billItem.getNum();
         this.price = billItem.getPrice();
         this.status = billItem.getStatus();
@@ -108,10 +119,13 @@ class BagRow {
         this.time = foodResell.getTime();
         this.price = foodResell.getPrice();
         this.count = foodResell.getNumSell();
-        this.id = foodResell.getIdFood();
+        this.idFood = foodResell.getIdFood();
         int i = get_food(foodResell.getIdFood());
         this.img = App.foods.get(i).getImg();
         this.name = App.foods.get(i).getName();
+        this.status = "Resell";
+        this.idUser = foodResell.getIdUser();
+        this.idResell = foodResell.getId();
     }
 
     String getImg() {
@@ -172,6 +186,30 @@ class BagRow {
 
     public void setIdBIll(String idBIll) {
         this.idBIll = idBIll;
+    }
+
+    public String getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(String idUser) {
+        this.idUser = idUser;
+    }
+
+    public String getIdFood() {
+        return idFood;
+    }
+
+    public void setIdFood(String idFood) {
+        this.idFood = idFood;
+    }
+
+    public String getIdResell() {
+        return idResell;
+    }
+
+    public void setIdResell(String idResell) {
+        this.idResell = idResell;
     }
 }
 
@@ -403,10 +441,10 @@ public class Bag extends Fragment {
 
     public static void add(BagRow food){
         for(int i=0; i<arrayBag.size(); i++){
-            if (arrayBag.get(i).getId().equals(food.getId())){
+            if (arrayBag.get(i).getIdFood().equals(food.getIdFood())){
                 arrayBag.get(i).setCount(arrayBag.get(i).getCount() + food.getCount());
                 //bagAdapter.notifyDataSetChanged();
-                return;
+                break;
             }
         }
         arrayBag.add(new BagRow(food));

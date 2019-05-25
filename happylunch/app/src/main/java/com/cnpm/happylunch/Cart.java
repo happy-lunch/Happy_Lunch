@@ -246,7 +246,7 @@ public class Cart extends Fragment {
             minute[0] = Integer.valueOf(String.valueOf(txt_minute.getText()));
 
             time = String.format("%sd%sh%sp", day[0], hour[0], minute[0]);
-	    if (String.valueOf(time.charAt(1)).equals("d"))
+            if (String.valueOf(time.charAt(1)).equals("d"))
                 time = "0" + time;
             if (String.valueOf(time.charAt(4)).equals("h"))
                 time = time.substring(0,3) + "0" + time.substring(3);
@@ -303,17 +303,34 @@ public class Cart extends Fragment {
         Bill bill = new Bill(key, cost, time);
 
         ArrayList<BillItem> arrayItem = new ArrayList<>();
+        boolean isReturn =false;
         for (int i = 0; i < arrayCart.size(); i ++){
             arrayItem.add(new BillItem(arrayCart.get(i)));
-            if (!arrayCart.get(i).getStatus().equals("Đang xử lí")){
-                Toast.makeText(getContext(), arrayCart.get(i).getStatus(), Toast.LENGTH_SHORT).show();
+            if (arrayCart.get(i).getStatus().equals("Resell")){
+                Boolean isRemove = true;
                 for(int j=0;j<SecondShop.arraySecondShop.size();j++){
-                    if (SecondShop.arraySecondShop.get(j).getStatus().equals(arrayCart.get(i).getStatus())){
-                        //something
+                    if (SecondShop.arraySecondShop.get(j).getIdResell().equals(arrayCart.get(i).getIdResell())){
+                        isRemove = false;
+                        int num = SecondShop.arraySecondShop.get(j).getCount();
+                        mData.child("Resell").child(arrayCart.get(i).getIdResell()).child("numSell").setValue(num);
+                        int hpcoin=0;
+                        for (int k=0;k<App.customers.size();k++){
+                            if (App.customers.get(k).getUid().equals(SecondShop.arraySecondShop.get(j).getIdUser())){
+                                hpcoin = App.customers.get(k).getHPCoin();
+                            }
+                        }
+                        hpcoin += arrayCart.get(i).getCount()*arrayCart.get(i).getPrice();
+                        mData.child("Customers").child(SecondShop.arraySecondShop.get(j).getIdUser()).child("hpcoin").setValue(hpcoin);
+
+                        isReturn = true;
+                        break;
                     }
                 }
-                mData.child("Resell").child(arrayCart.get(i).getStatus()).removeValue();
+                if(isRemove){
+                    mData.child("Resell").child(arrayCart.get(i).getIdResell()).removeValue();
+                }
             }
+            if (isReturn) break;
         }
 
         bill.item.addAll(arrayItem);
@@ -369,7 +386,26 @@ public class Cart extends Fragment {
                 if (num[0] > 0) {
                     Toast.makeText(getContext(), "Bạn đã trả " + num[0] + " " + arrayCart.get(position).getName(), Toast.LENGTH_SHORT).show();
 
+                    if(arrayCart.get(position).getStatus().equals("Resell")){
+                        Boolean isSuccess = false;
+                        for (int i=0;i<SecondShop.arraySecondShop.size();i++){
+                            if (SecondShop.arraySecondShop.get(i).getIdResell().equals(arrayCart.get(position).getIdResell())){
+                                int numReturn = SecondShop.arraySecondShop.get(i).getCount() + num[0];
+                                SecondShop.arraySecondShop.get(i).setCount(numReturn);
+                                SecondShop.secondShopAdapter.notifyDataSetChanged();
+                                isSuccess = true;
+                            }
+                        }
+                        if (!isSuccess){
+                            BagRow bagRow = new BagRow(arrayCart.get(position));
+                            bagRow.setCount(num[0]);
+                            SecondShop.arraySecondShop.add(bagRow);
+                        }
+
+                    }
+
                     arrayCart.get(position).setCount(arrayCart.get(position).getCount() - num[0]);
+
                     if (arrayCart.get(position).getCount() == 0) {
                         arrayCart.remove(position);
                     }
@@ -387,10 +423,11 @@ public class Cart extends Fragment {
 
     public static void add(BagRow food, int num){
         for(int i=0; i<arrayCart.size(); i++){
-            if (arrayCart.get(i).getId().equals(food.getId())){
-                arrayCart.get(i).setCount(arrayCart.get(i).getCount() + num);
-                //cartAdapter.notifyDataSetChanged();
-                return;
+            if (arrayCart.get(i).getIdFood().equals(food.getIdFood())){
+                if(arrayCart.get(i).getIdResell().equals(food.getIdResell())){
+                    arrayCart.get(i).setCount(arrayCart.get(i).getCount() + num);
+                    break;
+                }
             }
         }
         arrayCart.add(new BagRow(food, num));

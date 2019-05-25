@@ -65,7 +65,7 @@ class BillItem {
     }
 
     BillItem(BagRow food){
-        this.id = food.getId();
+        this.id = food.getIdFood();
         this.num = food.getCount();
         this.price = food.getPrice();
     }
