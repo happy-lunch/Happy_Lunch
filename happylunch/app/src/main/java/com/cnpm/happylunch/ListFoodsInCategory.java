@@ -44,7 +44,7 @@ public class ListFoodsInCategory extends AppCompatActivity {
         gridViewFoodsInCategory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                FoodDetail.food = foodsInCategory.get(position);
+                //FoodDetail.food = foodsInCategory.get(position);
                 startActivity(new Intent(getBaseContext(), FoodDetail.class));
                 finish();
             }

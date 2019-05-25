@@ -148,7 +148,8 @@ public class SecondShop extends Fragment {
     }
 
     void Order(BagRow food){
-        FoodDetail.setBag(food);
+        FoodDetail.bag = new BagRow(food);
+        FoodDetail.isSet = true;
         startActivity(new Intent(getContext(), FoodDetail.class));
 
     }

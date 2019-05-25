@@ -33,8 +33,8 @@ public class FoodDetail extends AppCompatActivity {
     private Button btnAdd, btnSub;
     private ImageButton btnFD;
     private static ImageView imgFood;
-    public volatile  static  Food food;
-    public volatile  static BagRow bag = new BagRow();
+    //public volatile  static  Food food;
+    public volatile  static BagRow bag;// = new BagRow();
     public volatile  static Boolean isSet = false;
 
     //=================================================================
@@ -70,11 +70,17 @@ public class FoodDetail extends AppCompatActivity {
         dialogRating = new Dialog(this);
         dialogRating.setContentView(R.layout.dialog_rating);
 
-        if(App.isIntent){
+        if (isSet){
+            btnRating.hide();
+            set_bag(bag);
+        }
+        else if(App.isIntent){
             App.isIntent = false;
             map();
             Intent i = getIntent();
             f = (Food)i.getSerializableExtra("Food");
+
+            bag = new BagRow(f);
 
             food_Description.setText(f.getDescription());
             food_Name.setText(f.getName());
@@ -82,11 +88,6 @@ public class FoodDetail extends AppCompatActivity {
             rb.setRating(f.getRating());
             Picasso.get().load(f.getImg()).into(food_Image);
             toolbar.setTitle(f.getName().toUpperCase());
-        }else if(isSet){
-            set_bag(bag);
-        }
-        else {
-            set(food);
         }
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
@@ -131,7 +132,11 @@ public class FoodDetail extends AppCompatActivity {
         btnCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                int num = Integer.valueOf(String.valueOf(foodAmount.getText()));
+                Cart.add(bag, num);
+                Toast.makeText(getBaseContext(),String.format("Bạn đã thêm %s %s vào Cart", num, bag.getName()),Toast.LENGTH_SHORT).show();
+                onBackPressed();
+                finish();
             }
         });
 
@@ -282,28 +287,23 @@ public class FoodDetail extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbarFoodName);
     }
 
-    public static void set(Food food){
-        bag.setImg(food.getImg());
-        bag.setName(food.getName());
-        bag.setPrice(Integer.valueOf(food.getPrice()));
-        bag.setId(food.getFoodId());
-        set_bag(bag);
-    }
+    public void set_bag(BagRow bagRow){
 
-    public static void setBag(BagRow bagRow){
-        isSet = true;
         bag.setId(bagRow.getId());
         bag.setCount(bagRow.getCount());
         bag.setTime(bagRow.getTime());
         bag.setPrice(bagRow.getPrice());
         bag.setStatus(bagRow.getStatus());
         bag.setName(bagRow.getName());
-        //set_bag(bag);
-    }
 
-    public static void set_bag(BagRow bagRow){
-        bag = bagRow;
-        //imgFood.setImageResource(bag.getImg());
+        food_Description.setText(bagRow.getStatus());
+        food_Name.setText(bag.getName());
+        food_Price.setText(String.valueOf(bag.getPrice()));
+        rb.setRating(0);
+        Picasso.get().load(bag.getImg()).into(food_Image);
+        toolbar.setTitle(bag.getName().toUpperCase());
+
+        /*
         Picasso.get().load(bagRow.getImg()).into(imgFood);
         nameFood.setText(bag.getName());
         price.setText(String.valueOf(bag.getPrice()));
@@ -314,7 +314,7 @@ public class FoodDetail extends AppCompatActivity {
         if (bag.getCount() > 0)
             txt_numMax.setText(String.format("NumSell : %s",bag.getCount()));
         else txt_numMax.setText("");
-        foodAmount.setText("1");
+        foodAmount.setText("1");*/
     }
 
 }
