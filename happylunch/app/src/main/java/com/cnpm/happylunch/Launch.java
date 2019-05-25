@@ -131,7 +131,8 @@ public class Launch extends AppCompatActivity {
 
             }
         });
-		
+
+        /*
 		databaseReference.child("Customers").child(mAuth.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -142,7 +143,7 @@ public class Launch extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
 
     }
 
