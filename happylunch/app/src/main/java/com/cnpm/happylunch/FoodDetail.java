@@ -1,9 +1,11 @@
 package com.cnpm.happylunch;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,10 +53,17 @@ public class FoodDetail extends AppCompatActivity {
     private boolean isRated = false;
     private boolean isRestart = false;
 
+    ProgressDialog progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_detail);
+
+        progressBar = new ProgressDialog(this);
+        progressBar.setMessage("Đang tải");
+        progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        //rogressBar.setCancelable(true);
 
         map();
 
@@ -196,7 +206,16 @@ public class FoodDetail extends AppCompatActivity {
 
                         dialogRating.cancel();
                         isRestart = true;
-                        onRestart();
+                        progressBar.show();
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                progressBar.cancel();
+                                restart();
+                            }
+                        }, 2000);
+
                     }
                 });
 
@@ -214,6 +233,11 @@ public class FoodDetail extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
 
+
+
+    }
+
+    private void restart(){
         if(isRestart){
             isRestart = false;
             f = App.foods.get(App.foods.indexOf(f));
@@ -224,7 +248,6 @@ public class FoodDetail extends AppCompatActivity {
             Picasso.get().load(f.getImg()).into(food_Image);
             toolbar.setTitle(f.getName().toUpperCase());
         }
-
     }
 
     private void map(){
