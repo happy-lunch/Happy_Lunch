@@ -55,6 +55,16 @@ class BagRow {
         this.idBIll = food.idBIll;
     }
 
+    BagRow(Food food){
+        this.img = food.getImg();
+        this.name = food.getName();
+        this.count = 0;
+        this.price = Integer.valueOf(food.getPrice());
+        this.id = food.getFoodId();
+        this.status = food.getDescription();
+    }
+
+
     BagRow(BagRow food, int num){
         this.img = food.getImg();
         this.name = food.getName();
@@ -85,6 +95,7 @@ class BagRow {
         this.name = App.foods.get(i).getName();
         this.idBIll = idBill;
     }
+
 
     private int get_food(String id){
         for (int i = 0; i < App.foods.size(); i++){
@@ -372,7 +383,7 @@ public class Bag extends Fragment {
                     BagRow food = new BagRow(arrayBag.get(position));
                     food.setPrice((int)(food.getPrice()*0.9));
                     food.setCount(num[0]);
-                    BagResell.arrayBagResell.add(food);
+                    BagResell.add(food);
                     arrayBag.get(position).setCount(arrayBag.get(position).getCount() - num[0]);
                     if (arrayBag.get(position).getCount() == 0) {
                         arrayBag.remove(position);
@@ -386,6 +397,16 @@ public class Bag extends Fragment {
         dialog.show();
     }
 
+    public static void add(BagRow food){
+        for(int i=0; i<arrayBag.size(); i++){
+            if (arrayBag.get(i).getId().equals(food.getId())){
+                arrayBag.get(i).setCount(arrayBag.get(i).getCount() + food.getCount());
+                bagAdapter.notifyDataSetChanged();
+                return;
+            }
+        }
+        arrayBag.add(new BagRow(food));
+    }
 
     /*
     private void AnhXa(){

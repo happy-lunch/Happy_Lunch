@@ -187,6 +187,13 @@ public class Cart extends Fragment {
         final int[] hour = {calendar.get(Calendar.HOUR_OF_DAY)};
         final int[] minute = {calendar.get(Calendar.MINUTE)};
 
+        if (minute[0] >= 40){
+            minute[0] = 0;
+            hour[0]++;
+        }
+        else
+            minute[0] = minute[0] - minute[0]%20 + 20;
+
         txt_day.setText(String.valueOf(day[0]));
         txt_hour.setText(String.valueOf(hour[0]));
         txt_minute.setText(String.valueOf(minute[0]));
@@ -208,11 +215,28 @@ public class Cart extends Fragment {
         });
 
         btn_minute_add.setOnClickListener(v -> {
-            if (day[0] < 60) txt_minute.setText(String.valueOf(++minute[0]));
+            if (minute[0] == 40){
+                minute[0] = 0;
+                txt_hour.setText(String.valueOf(++hour[0]));
+                txt_minute.setText(String.valueOf(minute[0]));
+            }
+            else{
+                minute[0] += 20;
+                txt_minute.setText(String.valueOf(minute[0]));
+            }
+
         });
 
         btn_minute_remove.setOnClickListener(v -> {
-            if (day[0] > 0) txt_minute.setText(String.valueOf(--minute[0]));
+            if (minute[0] == 0){
+                minute[0] = 40;
+                txt_hour.setText(String.valueOf(--hour[0]));
+                txt_minute.setText(String.valueOf(minute[0]));
+            }
+            else{
+                minute[0] -= 20;
+                txt_minute.setText(String.valueOf(minute[0]));
+            }
         });
 
         btn_order.setOnClickListener(v -> {
@@ -341,5 +365,16 @@ public class Cart extends Fragment {
         });
 
         dialog.show();
+    }
+
+    public static void add(BagRow food, int num){
+        for(int i=0; i<arrayCart.size(); i++){
+            if (arrayCart.get(i).getId().equals(food.getId())){
+                arrayCart.get(i).setCount(arrayCart.get(i).getCount() + num);
+                cartAdapter.notifyDataSetChanged();
+                return;
+            }
+        }
+        arrayCart.add(new BagRow(food, num));
     }
 }

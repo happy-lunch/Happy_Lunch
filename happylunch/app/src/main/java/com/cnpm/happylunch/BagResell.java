@@ -275,7 +275,7 @@ public class BagResell extends AppCompatActivity {
 
                     BagRow food = new BagRow(arrayBagResell.get(position));
                     food.setCount(num[0]);
-                    Bag.arrayBag.add(food);
+                    Bag.add(food);
 
                     arrayBagResell.get(position).setCount(arrayBagResell.get(position).getCount() - num[0]);
                     if (arrayBagResell.get(position).getCount() == 0) {
@@ -291,6 +291,17 @@ public class BagResell extends AppCompatActivity {
         });
 
         dialog.show();
+    }
+
+    public static void add(BagRow food){
+        for(int i=0; i<arrayBagResell.size(); i++){
+            if (arrayBagResell.get(i).getId().equals(food.getId())){
+                arrayBagResell.get(i).setCount(arrayBagResell.get(i).getCount() + food.getCount());
+                bagResellAdapter.notifyDataSetChanged();
+                return;
+            }
+        }
+        arrayBagResell.add(new BagRow(food));
     }
 }
 
