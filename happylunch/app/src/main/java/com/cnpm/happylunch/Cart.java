@@ -371,7 +371,7 @@ public class Cart extends Fragment {
         for(int i=0; i<arrayCart.size(); i++){
             if (arrayCart.get(i).getId().equals(food.getId())){
                 arrayCart.get(i).setCount(arrayCart.get(i).getCount() + num);
-                cartAdapter.notifyDataSetChanged();
+                //cartAdapter.notifyDataSetChanged();
                 return;
             }
         }

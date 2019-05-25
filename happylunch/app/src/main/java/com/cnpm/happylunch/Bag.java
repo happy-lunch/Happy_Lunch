@@ -274,8 +274,12 @@ public class Bag extends Fragment {
                     if (bill.getStatus().equals("Đang xử lí")) {
                         arrayBill.add(bill);
                         for (int i = 0; i < bill.item.size(); i++) {
-                            //arrayBill.get(arrayBag.size() - 1).item.add(arrayBag);
-                            arrayBag.add(new BagRow(bill.item.get(i), bill.getTime(), bill.getId()));
+                            int numResell = 0;
+                            if (bill.item.get(i).getStatus().substring(0,6).equals("Resell"))
+                                numResell = Integer.valueOf(bill.item.get(i).getStatus().substring(7));
+                            bill.item.get(i).setNum(bill.item.get(i).getNum() - numResell);
+                            if (bill.item.get(i).getNum() > 0)
+                                arrayBag.add(new BagRow(bill.item.get(i), bill.getTime(), bill.getId()));
                         }
                         bagAdapter.notifyDataSetChanged();
                     }
@@ -401,7 +405,7 @@ public class Bag extends Fragment {
         for(int i=0; i<arrayBag.size(); i++){
             if (arrayBag.get(i).getId().equals(food.getId())){
                 arrayBag.get(i).setCount(arrayBag.get(i).getCount() + food.getCount());
-                bagAdapter.notifyDataSetChanged();
+                //bagAdapter.notifyDataSetChanged();
                 return;
             }
         }

@@ -8,6 +8,7 @@ import android.support.constraint.Barrier;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -130,7 +131,7 @@ public class BagResell extends AppCompatActivity {
         gvBagResell.setOnItemClickListener((parent, view, position, id) -> {
             //Dialog_click_item(position)
             BagDialog dialog = new BagDialog();
-            dialog.position = position;
+            BagDialog.position = position;
             dialog.show(getSupportFragmentManager(), "Dialog");
         });
 
@@ -163,9 +164,47 @@ public class BagResell extends AppCompatActivity {
                         String key = mData.child("Resell").push().getKey();
                         FoodResell foodResell = new FoodResell(key, arrayBagResell.get(i), App.user.getUid());
                         mData.child("Resell").push().setValue(foodResell);
-                        mData.child("Bill").child(App.user.getMssv()).child("Resell").child(key0).child("item").child(String.valueOf(i)).child("idResell").setValue(key);
-                        mData.child("Bill").child(App.user.getMssv()).child("Resell").child(key0).child("item").child(String.valueOf(i)).child("idBill").setValue(arrayBagResell.get(i).getIdBIll());
-                        //mData.child("Bill").child(App.user.getMssv()).child("Order").child(arrayBagResell.get(i).getIdBIll())
+                        mData.child("Bill").child(App.user.getMssv()).child("Resell").child(key0).child("item")
+                                .child(String.valueOf(i)).child("idResell").setValue(key);
+                        mData.child("Bill").child(App.user.getMssv()).child("Resell").child(key0).child("item")
+                                .child(String.valueOf(i)).child("idBill").setValue(arrayBagResell.get(i).getIdBIll());
+
+                        int indexBill = 0, indexFood = 0;
+                        int numResell = 0;
+                        boolean isReturn = false;
+                        for(int j=0; j < Bag.arrayBill.size(); j++){
+                            if (arrayBagResell.get(i).getIdBIll().equals(Bag.arrayBill.get(j).getId())){
+                                for (int k=0; k<Bag.arrayBill.get(j).item.size(); k++){
+                                    if(arrayBagResell.get(i).getId().equals(Bag.arrayBill.get(j).item.get(k).getId())){
+                                        indexBill = j;
+                                        indexFood = k;
+                                        String status = Bag.arrayBill.get(j).item.get(k).getStatus();
+                                        if (status.substring(0,6).equals("Resell"))
+                                            numResell = Integer.valueOf(status.substring(7));
+                                        /*
+                                        Bag.arrayBill
+                                                .get(indexBill)
+                                                .item
+                                                .get(indexFood)
+                                                .setStatus(String.format("Resell %s",arrayBagResell.get(i).getCount()+numResell));*/
+                                        isReturn = true;
+                                        break;
+                                    }
+
+                                }
+                                if (isReturn) break;
+                            }
+                        }
+
+
+                        mData.child("Bill")
+                                .child(App.user.getMssv())
+                                .child("Order")
+                                .child(arrayBagResell.get(i).getIdBIll())
+                                .child("item")
+                                .child(String.valueOf(indexFood))
+                                .child("status")
+                                .setValue(String.format("Resell %s",arrayBagResell.get(i).getCount()+ numResell));
                     }
 
                     arrayBagResell.removeAll(arrayBagResell);
@@ -297,7 +336,7 @@ public class BagResell extends AppCompatActivity {
         for(int i=0; i<arrayBagResell.size(); i++){
             if (arrayBagResell.get(i).getId().equals(food.getId())){
                 arrayBagResell.get(i).setCount(arrayBagResell.get(i).getCount() + food.getCount());
-                bagResellAdapter.notifyDataSetChanged();
+                //bagResellAdapter.notifyDataSetChanged();
                 return;
             }
         }
