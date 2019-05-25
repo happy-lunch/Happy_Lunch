@@ -246,6 +246,12 @@ public class Cart extends Fragment {
             minute[0] = Integer.valueOf(String.valueOf(txt_minute.getText()));
 
             time = String.format("%sd%sh%sp", day[0], hour[0], minute[0]);
+	    if (String.valueOf(time.charAt(1)).equals("d"))
+                time = "0" + time;
+            if (String.valueOf(time.charAt(4)).equals("h"))
+                time = time.substring(0,3) + "0" + time.substring(3);
+            if (String.valueOf(time.charAt(7)).equals("p"))
+                time = time.substring(0,6) + "0" + time.substring(6);
 
             if (isValid(day[0], hour[0], minute[0]))
                 Dialog_click_order();
@@ -275,6 +281,8 @@ public class Cart extends Fragment {
 
         dialog.setPositiveButton("Yes", (dialog1, which) -> {
 
+
+
             Push_db();
 
             arrayCart.removeAll(arrayCart);
@@ -295,8 +303,18 @@ public class Cart extends Fragment {
         Bill bill = new Bill(key, cost, time);
 
         ArrayList<BillItem> arrayItem = new ArrayList<>();
-        for (int i = 0; i < arrayCart.size(); i ++)
+        for (int i = 0; i < arrayCart.size(); i ++){
             arrayItem.add(new BillItem(arrayCart.get(i)));
+            if (!arrayCart.get(i).getStatus().equals("Đang xử lí")){
+                Toast.makeText(getContext(), arrayCart.get(i).getStatus(), Toast.LENGTH_SHORT).show();
+                for(int j=0;j<SecondShop.arraySecondShop.size();j++){
+                    if (SecondShop.arraySecondShop.get(j).getStatus().equals(arrayCart.get(i).getStatus())){
+                        //something
+                    }
+                }
+                mData.child("Resell").child(arrayCart.get(i).getStatus()).removeValue();
+            }
+        }
 
         bill.item.addAll(arrayItem);
         assert key != null;
