@@ -126,6 +126,12 @@ public class Bill {
         this.item = new ArrayList<>();
         this.id = id;
         this.price = price;
+        if (String.valueOf(time.charAt(1)).equals("d"))
+            time = "0" + time;
+        if (String.valueOf(time.charAt(4)).equals("h"))
+            time = time.substring(0,3) + "0" + time.substring(3);
+        if (String.valueOf(time.charAt(7)).equals("p"))
+            time = time.substring(0,6) + "0" + time.substring(6);
         this.time = time;
     }
 
