@@ -9,16 +9,15 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/btnCart"
-        android:src="@drawable/black_cart"
-        android:backgroundTint="@android:color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/white"
         android:elevation="6dp"
-        app:pressedTranslationZ="12dp"
+        android:src="@drawable/black_cart"
         app:layout_anchor="@id/app_bar_layout"
         app:layout_anchorGravity="bottom|right|end"
-        app:useCompatPadding="true"
-        />
+        app:pressedTranslationZ="12dp"
+        app:useCompatPadding="true" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/btn_rating"

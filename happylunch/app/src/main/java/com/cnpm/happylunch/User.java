@@ -2,6 +2,7 @@ package com.cnpm.happylunch;
 
 import com.google.firebase.database.Exclude;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +15,8 @@ public class User {
     private String mssv;
     private String email;
     private int HPCoin;
-    private List<Food> listFood;
+    private List<Food> listFood = new ArrayList<Food>();
+    private ArrayList<RatingFood> ratingFoods = new ArrayList<RatingFood>();
 
     public User(){
 
@@ -33,6 +35,14 @@ public class User {
     public User(String mssv, String firstName, String lastName){
         this.lastName = lastName;
         this.mssv = mssv;
+    }
+
+    public List<Food> getListFood() {
+        return listFood;
+    }
+
+    public ArrayList<RatingFood> getRatingFoods() {
+        return ratingFoods;
     }
 
     public String getUid() {

@@ -13,6 +13,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class VerifyEmail extends AppCompatActivity {
 
@@ -84,7 +89,7 @@ public class VerifyEmail extends AppCompatActivity {
             if(mAuth.getCurrentUser().isEmailVerified()){
                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
                 FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                databaseReference.child("Customers").child(mAuth.getUid()).addValueEventListener(new ValueEventListener() {
+                databaseReference.child("Customers").child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         App.user = dataSnapshot.getValue(User.class);

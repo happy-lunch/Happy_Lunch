@@ -8,13 +8,22 @@ public class Food implements Serializable{
     private String img;
     private String menuId;
     private String name;
+    private int numPeopleRating;
     private int numSold;
     private String price;
-    private int rating;
+    private float rating;
     private int timeFinish;
 
     public Food() {
 
+    }
+
+    public void setNumPeopleRating(int numPeopleRating) {
+        this.numPeopleRating = numPeopleRating;
+    }
+
+    public int getNumPeopleRating() {
+        return numPeopleRating;
     }
 
     public void setDescription(String description) {
@@ -45,7 +54,7 @@ public class Food implements Serializable{
         this.price = price;
     }
 
-    public void setRating(int rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
 
@@ -81,7 +90,7 @@ public class Food implements Serializable{
         return price;
     }
 
-    public int getRating() {
+    public float getRating() {
         return rating;
     }
 
@@ -94,8 +103,10 @@ public class Food implements Serializable{
         return getName();
     }
 
-}
+    @Override
+    public boolean equals( Object obj) {
+        Food food = (Food) obj;
+        return food.getFoodId().equals(getFoodId());
+    }
 
-enum KindOfFood {
-    Com, Mi, Banh_Mi, Banh_Bao, An_Nhe, Sandwich, Trang_Mieng
 }

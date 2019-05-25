@@ -1,5 +1,6 @@
 package com.cnpm.happylunch;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -15,7 +17,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.hsalf.smilerating.SmileRating;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 public class FoodDetail extends AppCompatActivity {
 
@@ -33,10 +40,15 @@ public class FoodDetail extends AppCompatActivity {
     TextView food_Name, food_Price, food_Description;
     ImageView food_Image;
     CollapsingToolbarLayout collapsingToolbarLayout;
-    FloatingActionButton btnCart;
+    FloatingActionButton btnCart, btnRating;
     RatingBar rb;
-    FloatingActionButton btnRating;
 
+    Food f;
+    Dialog dialogRating;
+    private int levelRate = 0;
+    private int levelRated;
+    private boolean isRated = false;
+    private boolean isRestart = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,15 +57,19 @@ public class FoodDetail extends AppCompatActivity {
 
         map();
 
+        dialogRating = new Dialog(this);
+        dialogRating.setContentView(R.layout.dialog_rating);
+
         if(App.isIntent){
             App.isIntent = false;
             map();
             Intent i = getIntent();
-            Food f = (Food)i.getSerializableExtra("Food");
+            f = (Food)i.getSerializableExtra("Food");
 
             food_Description.setText(f.getDescription());
             food_Name.setText(f.getName());
             food_Price.setText(f.getPrice());
+            rb.setRating(f.getRating());
             Picasso.get().load(f.getImg()).into(food_Image);
             toolbar.setTitle(f.getName().toUpperCase());
         }else if(isSet){
@@ -101,14 +117,114 @@ public class FoodDetail extends AppCompatActivity {
                 finish();
             }
         });*/
-		
-		btnCart.setOnClickListener(new View.OnClickListener() {
+
+        btnCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+
             }
         });
-		
+
+        btnRating.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogRating.show();
+                TextView txtYes = dialogRating.findViewById(R.id.DRBtnYes);
+                TextView txtNo = dialogRating.findViewById(R.id.DRBtnNo);
+                SmileRating sr = dialogRating.findViewById(R.id.smile_rating);
+
+                if(!App.user.getRatingFoods().isEmpty()){
+                    for(int i = 0; i < App.user.getRatingFoods().size(); i++){
+                        if(App.user.getRatingFoods().get(i).getFoodId().equals(f.getFoodId())){
+                            isRated = true;
+                            levelRate = App.user.getRatingFoods().get(i).getLevel();
+                            levelRated = levelRate;
+                            switch (levelRate){
+                                case 1:
+                                    sr.setSelectedSmile(SmileRating.TERRIBLE);
+                                    break;
+                                case 2:
+                                    sr.setSelectedSmile(SmileRating.BAD);
+                                    break;
+                                case 3:
+                                    sr.setSelectedSmile(SmileRating.OKAY);
+                                    break;
+                                case 4:
+                                    sr.setSelectedSmile(SmileRating.GOOD);
+                                    break;
+                                case 5:
+                                    sr.setSelectedSmile(SmileRating.GREAT);
+                                    break;
+                            }
+                            break;
+                        }
+                    }
+                }
+
+                sr.setOnRatingSelectedListener(new SmileRating.OnRatingSelectedListener() {
+                    @Override
+                    public void onRatingSelected(int level, boolean reselected) {
+                        levelRate = level;
+                    }
+                });
+
+                txtYes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(levelRate == 0){
+                            dialogRating.cancel();
+                            return;
+                        }
+                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                        if(isRated){
+                            float rating = (f.getRating()*f.getNumPeopleRating() - levelRated + levelRate)/(f.getNumPeopleRating());
+                            databaseReference.child("foods").child(f.getFoodId()).child("rating").setValue(rating);
+                            //ArrayList<RatingFood> rf = App.user.getRatingFoods();
+                            for(RatingFood rf:App.user.getRatingFoods()){
+                                if(rf.getFoodId().equals(f.getFoodId())){
+                                    rf.setLevel(levelRate);
+                                }
+                            }
+                        }else{
+                            float rating = (f.getRating()*f.getNumPeopleRating() + levelRate)/(f.getNumPeopleRating() + 1);
+                            databaseReference.child("foods").child(f.getFoodId()).child("rating").setValue(rating);
+                            App.user.getRatingFoods().add(new RatingFood(f.getFoodId(), levelRate));
+                            int numPeoRate = f.getNumPeopleRating() + 1;
+                            databaseReference.child("foods").child(f.getFoodId()).child("numPeopleRating").setValue(numPeoRate);
+                        }
+                        databaseReference.child("Customers").child(App.user.getUid()).setValue(App.user);
+
+                        dialogRating.cancel();
+                        isRestart = true;
+                        onRestart();
+                    }
+                });
+
+                txtNo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogRating.cancel();
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        if(isRestart){
+            isRestart = false;
+            f = App.foods.get(App.foods.indexOf(f));
+            food_Description.setText(f.getDescription());
+            food_Name.setText(f.getName());
+            food_Price.setText(f.getPrice());
+            rb.setRating(f.getRating());
+            Picasso.get().load(f.getImg()).into(food_Image);
+            toolbar.setTitle(f.getName().toUpperCase());
+        }
+
     }
 
     private void map(){
@@ -127,6 +243,9 @@ public class FoodDetail extends AppCompatActivity {
         btnFD = findViewById(R.id.btnFD);*/
 
         btnCart = (FloatingActionButton) findViewById(R.id.btnCart);
+        btnRating = findViewById(R.id.btn_rating);
+        rb = findViewById(R.id.ratingBar);
+
         food_Description= (TextView) findViewById(R.id.food_description);
         food_Name= (TextView) findViewById(R.id.food_name);
         food_Price= (TextView) findViewById(R.id.food_price);

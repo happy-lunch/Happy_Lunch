@@ -29,9 +29,6 @@ public class Launch extends AppCompatActivity {
     private Intent i;
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    private volatile boolean isFoodLoaded = false;
-    private volatile boolean isUserLoaded = false;
-    private volatile boolean isCategoryLoaded = false;
     private boolean isStartActivity = false;
     private boolean isSignIn = false;
 
@@ -52,7 +49,7 @@ public class Launch extends AppCompatActivity {
             i = new Intent(Launch.this, Login.class);
         }
         if(isSignIn){
-            databaseReference.child("Customers").child(mAuth.getUid()).addValueEventListener(new ValueEventListener() {
+            databaseReference.child("Customers").child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     App.user = dataSnapshot.getValue(User.class);
@@ -86,7 +83,8 @@ public class Launch extends AppCompatActivity {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
+                Food food = dataSnapshot.getValue(Food.class);
+                App.foods.set(App.foods.indexOf(food), food);
             }
 
             @Override
