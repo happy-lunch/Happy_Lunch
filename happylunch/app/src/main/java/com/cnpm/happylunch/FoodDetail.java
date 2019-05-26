@@ -209,7 +209,7 @@ public class FoodDetail extends AppCompatActivity {
                         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
                         if(isRated){
                             float rating = (f.getRating()*f.getNumPeopleRating() - levelRated + levelRate)/(f.getNumPeopleRating());
-                            databaseReference.child("foods").child(f.getFoodId()).child("rating").setValue(rating);
+                            databaseReference.child("food").child(f.getMenuId()).child(f.getFoodId()).child("rating").setValue(rating);
                             //ArrayList<RatingFood> rf = App.user.getRatingFoods();
                             for(RatingFood rf:App.user.getRatingFoods()){
                                 if(rf.getFoodId().equals(f.getFoodId())){
@@ -218,10 +218,10 @@ public class FoodDetail extends AppCompatActivity {
                             }
                         }else{
                             float rating = (f.getRating()*f.getNumPeopleRating() + levelRate)/(f.getNumPeopleRating() + 1);
-                            databaseReference.child("foods").child(f.getFoodId()).child("rating").setValue(rating);
+                            databaseReference.child("food").child(f.getMenuId()).child(f.getFoodId()).child("rating").setValue(rating);
                             App.user.getRatingFoods().add(new RatingFood(f.getFoodId(), levelRate));
                             int numPeoRate = f.getNumPeopleRating() + 1;
-                            databaseReference.child("foods").child(f.getFoodId()).child("numPeopleRating").setValue(numPeoRate);
+                            databaseReference.child("food").child(f.getMenuId()).child(f.getFoodId()).child("numPeopleRating").setValue(numPeoRate);
                         }
                         databaseReference.child("Customers").child(App.user.getUid()).setValue(App.user);
 

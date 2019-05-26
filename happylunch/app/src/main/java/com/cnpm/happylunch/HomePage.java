@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,7 +75,6 @@ public class HomePage extends Fragment {
     private void setUpPopularView(){
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
 
-
         App.foods.sort((f1,f2)->{
             if(f1.getNumSold() < f2.getNumSold()){
                 return 1;
@@ -83,7 +83,7 @@ public class HomePage extends Fragment {
             }
         });
         ArrayList<Food> popularFood = new ArrayList<Food>();
-        for(int i=0; i < numPopularItem; i++){
+        for(int i = 0; i < numPopularItem; i++){
             popularFood.add(App.foods.get(i));
         }
         viewAdapter = new popularViewPagerAdapter(getActivity(), popularFood);
@@ -152,7 +152,7 @@ public class HomePage extends Fragment {
     private void setUpCategories(){
 
         imgFoodInCategory = new ArrayList<FoodImageView>();
-
+        Log.e("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", String.valueOf(App.categories.size()));
         for(int i = 0;i < numCategories;i++){
             imgFoodInCategory.add(new FoodImageView(getActivity(), App.categories.get(i)));
         }
