@@ -50,6 +50,7 @@ public class HomePage extends Fragment {
     {
         view = inflater.inflate(R.layout.fragment_home_page, container, false);
 
+		sortFoodByStar();
         GridView grid = (GridView) view.findViewById(R.id.gridView);
         grid.setAdapter(new FoodAdapter(getActivity(), App.foods));
 
@@ -174,6 +175,16 @@ public class HomePage extends Fragment {
             });
             linearCategary.addView(imgFoodInCategory.get(i), params);
         }
+    }
+	
+	private void sortFoodByStar(){
+        App.foods.sort((f1,f2)->{
+            if(f1.getRating() < f2.getRating()){
+                return 1;
+            }else{
+                return -1;
+            }
+        });
     }
 
 }
