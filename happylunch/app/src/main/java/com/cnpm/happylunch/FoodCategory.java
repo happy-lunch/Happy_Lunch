@@ -128,7 +128,7 @@ public class FoodCategory extends Fragment {
 
         listCategoryView = view.findViewById(R.id.list_category_item);
         //Firedatabase and Storage
-        catRef= FirebaseDatabase.getInstance().getReference("category");
+        catRef= FirebaseDatabase.getInstance().getReference("categories");
 
         storage = FirebaseStorage.getInstance();
         storeRef= storage.getReference();
