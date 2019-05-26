@@ -8,6 +8,8 @@
 
     <GridView
         android:numColumns="2"
+        android:horizontalSpacing="5dp"
+        android:verticalSpacing="5dp"
         android:id="@+id/grid_second_shop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

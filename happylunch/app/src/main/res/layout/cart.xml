@@ -40,6 +40,8 @@
     </LinearLayout>
 
     <ListView
+        android:horizontalSpacing="5dp"
+        android:verticalSpacing="5dp"
         android:id="@+id/list_cart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
