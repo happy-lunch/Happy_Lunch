@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,15 +84,18 @@ class AdRechargeAdapter extends BaseAdapter {
 public class AdRecharge extends Fragment {
 
     private GridView gvAdRecharge;
-    private ArrayList<User> arrayAdRecharge;
-    private AdRechargeAdapter adRechargeAdapter;
-    String mssv;
-    int money;
+    private ArrayList<User> arrayAdRecharge, arrayAdRechargeSearch;
+    private AdRechargeAdapter adRechargeAdapter, adRechargeAdapterSearch;
+
     private EditText txtMssv, txtMoney;
 
     private View view;
 
     private DatabaseReference mData;
+
+    User user;
+    int money;
+    boolean isSearch=false;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -99,11 +104,30 @@ public class AdRecharge extends Fragment {
 
         gvAdRecharge = view.findViewById(R.id.grid_adRecharge);
         arrayAdRecharge = new ArrayList<>();
+        arrayAdRechargeSearch = new ArrayList<>();
 
         txtMssv  = (EditText)view.findViewById(R.id.editText_adRecharge_mssv);
         txtMoney = (EditText)view.findViewById(R.id.editText_adRecharge_money);
 
+        txtMssv.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                AdRechargeSearch(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         adRechargeAdapter = new AdRechargeAdapter(getContext(), R.layout.ad_recharge_element, arrayAdRecharge);
+        adRechargeAdapterSearch = new AdRechargeAdapter(getContext(), R.layout.ad_recharge_element, arrayAdRechargeSearch);
         gvAdRecharge.setAdapter(adRechargeAdapter);
 
         mData.child("Customers").addChildEventListener(new ChildEventListener() {
@@ -145,6 +169,24 @@ public class AdRecharge extends Fragment {
         });
 
         return view;
+    }
+
+    private void AdRechargeSearch(String s){
+        if (s.equals("")){
+            isSearch = false;
+            gvAdRecharge.setAdapter(adRechargeAdapter);
+        }
+        else{
+            isSearch=true;
+            arrayAdRechargeSearch.removeAll(arrayAdRechargeSearch);
+            for(int i=0;i<arrayAdRecharge.size();i++){
+                if (arrayAdRecharge.get(i).getMssv().contains(s)){
+                    arrayAdRechargeSearch.add(arrayAdRecharge.get(i));
+                }
+            }
+            gvAdRecharge.setAdapter(adRechargeAdapterSearch);
+            adRechargeAdapterSearch.notifyDataSetChanged();
+        }
     }
 
     private boolean isMoneyValid(){
@@ -190,14 +232,25 @@ public class AdRecharge extends Fragment {
     }
 
     private void Dialog_click_item(final int position){
+
+        if(isSearch)
+            user = arrayAdRechargeSearch.get(position);
+        else
+            user = arrayAdRecharge.get(position);
+
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
         alertDialog.setTitle("Hỏi lại chắc chắn!!!");
-        alertDialog.setMessage("Nạp tiền cho MSSV " + arrayAdRecharge.get(position).getMssv() + "???");
+        alertDialog.setMessage("Nạp tiền cho MSSV " + user.getMssv() + "???");
 
         alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Nap_tien(position);}
+
+                user.setHPCoin(user.getHPCoin() + money);
+                mData.child("Customers").child(user.getUid()).setValue(user);
+
+                Toast.makeText(getContext(),"Giao dịch thành cômg", Toast.LENGTH_SHORT).show();
+            }
         });
 
         alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -208,17 +261,6 @@ public class AdRecharge extends Fragment {
         });
 
         alertDialog.show();
-    }
-
-    private void Nap_tien(int position){
-
-        Toast.makeText(getContext(),"Giao dịch thành cômg", Toast.LENGTH_SHORT).show();
-
-        User u = arrayAdRecharge.get(position);
-        u.setHPCoin(u.getHPCoin() + money);
-        mData.child("Customers").child(u.getUid()).setValue(u);
-
-
     }
 
     private void AnhXa() {
