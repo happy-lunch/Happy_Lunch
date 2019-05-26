@@ -63,6 +63,19 @@ public class Launch extends AppCompatActivity {
 
                 }
             });
+			
+			databaseReference.child("Customers").child(mAuth.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                App.user = dataSnapshot.getValue(User.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+			
         }else{
             Handler hand = new Handler();
             hand.postDelayed(()->{
