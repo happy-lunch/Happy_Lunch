@@ -53,13 +53,23 @@ class Food_Detail{
     private String price;
     private Float rating;
     private String description;
+    private int numPeopleRating;
     public Food_Detail(){}
-    public Food_Detail(String name, String img, String price, Float rating, String description) {
+    public Food_Detail(String name, String img, String price, Float rating, String description,int numPeopleRating) {
         this.name = name;
         this.img = img;
         this.price = price;
         this.rating = rating;
         this.description = description;
+        this.numPeopleRating=numPeopleRating;
+    }
+
+    public int getNumPeopleRating() {
+        return numPeopleRating;
+    }
+
+    public void setNumPeopleRating(int numPeopleRating) {
+        this.numPeopleRating = numPeopleRating;
     }
 
     public String getName() {
@@ -125,7 +135,7 @@ public class Food_detail_frag extends AppCompatActivity {
     //public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         //view = inflater.inflate(R.layout.activity_food_detail_show, container, false);
-        foods = FirebaseDatabase.getInstance().getReference("foods");
+        foods = FirebaseDatabase.getInstance().getReference("food");
 
 
 
@@ -145,7 +155,7 @@ public class Food_detail_frag extends AppCompatActivity {
     }
     private void getDetailFood(String foodID)
     {
-        foods.child(foodID).addValueEventListener(new ValueEventListener() {
+        foods.child(CurrentVariables.menuId).child(foodID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Food_Detail food= dataSnapshot.getValue(Food_Detail.class);

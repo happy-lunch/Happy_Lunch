@@ -64,11 +64,11 @@ class foods {
     private float rating;
     private int timeFinish = name.length()/2;
     private int numSold = name.length();
-
+    private int numPeopleRating=0;
 
     public foods(){}
 
-    public foods(String foodId,String name, String price, String img, String des,String menuId,float rating) {
+    public foods(String foodId,String name, String price, String img, String des,String menuId,float rating,int numPeopleRating) {
         this.foodId=foodId;
         this.name = name;
         this.price = price;
@@ -78,8 +78,16 @@ class foods {
         this.rating=rating;
         this.timeFinish = name.length()/2;
         this.numSold = name.length();
+        this.numPeopleRating=numPeopleRating;
     }
 
+    public int getNumPeopleRating() {
+        return numPeopleRating;
+    }
+
+    public void setNumPeopleRating(int numPeopleRating) {
+        this.numPeopleRating = numPeopleRating;
+    }
 
     public String getName() {
         return name;
@@ -566,7 +574,7 @@ public class food_info extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     newFood= new foods("",edtName.getText().toString(),edtPrice.getText().toString(), uri.toString(),
-                                            edtDes.getText().toString(),CurrentVariables.menuId,0);
+                                            edtDes.getText().toString(),CurrentVariables.menuId,0,0);
                                 }
                             });
                         }
