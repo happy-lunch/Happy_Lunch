@@ -9,17 +9,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDialogFragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,7 +26,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.util.ByteBufferUtil;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,13 +34,17 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -159,12 +159,10 @@ class foods {
 public class food_info extends AppCompatActivity {
     private Food_detail_frag food_detail_frag;
     private ListView lvAdItem;
+    private foods newFood;
 
     private FirebaseListAdapter<foods> adItemAdapter;
-    private ImageButton search, add;
-    private String txtSearch;
-
-    //private View view;
+    private ImageButton add;
 
     //database
     public static DatabaseReference foodRef;
@@ -173,34 +171,37 @@ public class food_info extends AppCompatActivity {
     public static StorageReference storeRef;
     public static Uri saveUrl;
     public static final int PICK_IMAGE_REQUEST =71;
-    //test
-    private int i=-1;
+
 
     //dialogAdd
-    public static MaterialEditText edtName,edtPrice,edtDes,edtMenuId;
+    public static MaterialEditText edtName,edtPrice,edtDes;
     public static Button btnSelect;
     public static Button btnUpload;
 
+    // Search Bar
+    private boolean onStartSearch=false;
+    private ArrayList<String> suggestList=new ArrayList<String>();
+    private FirebaseListAdapter<foods>  searchAdapter;
+    private MaterialSearchBar materialSearchBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ad_item);
-    //public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //view = inflater.inflate(R.layout.ad_item, container, false);
 
         lvAdItem = findViewById(R.id.list_item_in_cat);
 
 
-        foodRef= FirebaseDatabase.getInstance().getReference("foods");
+        foodRef= FirebaseDatabase.getInstance().getReference("food");
 
         storage = FirebaseStorage.getInstance();
         storeRef= storage.getReference();
 
+        suggestList.clear();
 
 
         adItemAdapter= new FirebaseListAdapter<foods>(this, foods.class,
-                R.layout.ad_item_element,foodRef.orderByChild("menuId").equalTo(CurrentVariables.menuId)) {
+                R.layout.ad_item_element,foodRef.child(CurrentVariables.menuId).orderByChild("name")) {
             @Override
             protected void populateView(View v, foods foodInCat, int position) {
                 ImageView imgImg = v.findViewById(R.id.imgViewItemInCat);
@@ -215,29 +216,17 @@ public class food_info extends AppCompatActivity {
                 imgIconMore.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //Dialog_click_item(adItemAdapter.getRef(position).getKey(),
-                                //adItemAdapter.getItem(position));
-                        Dialog_click_item dialog = new Dialog_click_item();
-                        Dialog_click_item.key = adItemAdapter.getRef(position).getKey();
-                        Dialog_click_item.item = adItemAdapter.getItem(position);
-                        dialog.show(getSupportFragmentManager(), "Dialog");
+                        Dialog_click_item(adItemAdapter.getRef(position).getKey(),
+                                adItemAdapter.getItem(position));
                     }
                 });
 
             }
         };
+
         adItemAdapter.notifyDataSetChanged();
         lvAdItem.setAdapter(adItemAdapter);
 
-
-
-        search = findViewById(R.id.imageButton_adItem_search);
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Search();
-            }
-        });
 
         add = findViewById(R.id.imageButton_adItem_add);
         add.setOnClickListener(new View.OnClickListener() {
@@ -247,43 +236,124 @@ public class food_info extends AppCompatActivity {
             }
         });
 
-        lvAdItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        materialSearchBar =  findViewById(R.id.search_Bar);
+        materialSearchBar.setHint("Hãy nhập tên món ăn");
+        loadSuggest();
+        materialSearchBar.setLastSuggestions(suggestList);
+        materialSearchBar.setCardViewElevation(10);
+        materialSearchBar.addTextChangeListener(new TextWatcher() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getBaseContext(),"Chuyễn sang food_detail " , Toast.LENGTH_SHORT).show();
-                food_detail_frag=new Food_detail_frag();
-                CurrentVariables.foodId= adItemAdapter.getRef(position).getKey();
-                CurrentVariables.stillInFragment=true;
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                startActivity(new Intent(getBaseContext(), Food_detail_frag.class));
-                /*
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft
-                        .replace(R.id.ad_fragment_container, food_detail_frag)
-                        .addToBackStack("my_fragment")
-                        .show(food_detail_frag)
-                        .commit();*/
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                List<String> suggest =new ArrayList<String>();
+                for (String search: suggestList){
+                    if (search.toLowerCase().contains(materialSearchBar.getText().toLowerCase())) suggest.add(search);
+                }
+                materialSearchBar.setLastSuggestions(suggest);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        materialSearchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
+            @Override
+            public void onSearchStateChanged(boolean enabled) {
+                if (!enabled){
+                    lvAdItem.setAdapter(adItemAdapter);
+                    onStartSearch=false;
+                    add.setVisibility(View.VISIBLE);
+                }
+                else{
+                    add.setVisibility(View.INVISIBLE);
+                }
+            }
+
+            @Override
+            public void onSearchConfirmed(CharSequence text) {
+                startSearch(text);
+            }
+
+            @Override
+            public void onButtonClicked(int buttonCode) {
             }
         });
 
-        //return view;
+
+
+        lvAdItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                food_detail_frag=new Food_detail_frag();
+
+                if (onStartSearch)
+                { CurrentVariables.foodId= searchAdapter.getRef(position).getKey();onStartSearch=false;}
+                else
+                    CurrentVariables.foodId= adItemAdapter.getRef(position).getKey();
+
+                startActivity(new Intent(food_info.this, Food_detail_frag.class));
+            }
+        });
+
     }
 
-    private void Search(){
-        txtSearch = ((EditText)findViewById(R.id.editText_adItem_search)).getText().toString();
-        Toast.makeText(getBaseContext(), "Tìm kiếm " + txtSearch, Toast.LENGTH_SHORT).show();
-    }
+
 
     private void Add(){
-        //showDialogAdd();
-        DialogAdd dialog = new DialogAdd();
+        showDialogAdd();
+    }
+    private void loadSuggest(){
 
-        dialog.show(getSupportFragmentManager(), "Dialog");
+        foodRef.child(CurrentVariables.menuId).orderByChild("name").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                suggestList.clear();
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren() ){
+                    foods item = postSnapshot.getValue(foods.class);
+                    suggestList.add(item.getName());
+                }
+                materialSearchBar.setLastSuggestions(suggestList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+    private void startSearch(CharSequence text) {
+        onStartSearch=true;
+
+        searchAdapter= new FirebaseListAdapter<foods>(this, foods.class,
+                R.layout.ad_item_element,foodRef.child(CurrentVariables.menuId).orderByChild("name").equalTo(text.toString())) {
+            @Override
+            protected void populateView(View v, foods foodInCat, int position) {
+                ImageView imgImg = v.findViewById(R.id.imgViewItemInCat);
+                TextView txtName = v.findViewById(R.id.txtViewInCat1);
+                TextView txtPrice = v.findViewById(R.id.txtViewInCat2);
+                ImageView imgIconMore= v.findViewById(R.id.iconToShowInCat);
+
+                Picasso.get().load(foodInCat.getImg()).into(imgImg);
+                txtName.setText(foodInCat.getName());
+                txtPrice.setText(String.format("Price : %s", String.valueOf(foodInCat.getPrice())));
+
+                imgIconMore.setVisibility(View.INVISIBLE);
+            }
+        };
+        searchAdapter.notifyDataSetChanged();
+        lvAdItem.setAdapter(searchAdapter);
     }
 
-    /*
+
     private void Dialog_click_item(String key, foods item){
-        final Dialog dialog = new Dialog(getBaseContext());
+        final Dialog dialog = new Dialog(food_info.this);
+
         dialog.setContentView(R.layout.ad_item_dialog);
         dialog.setTitle("Bạn muốn làm gì ?");
 
@@ -310,17 +380,16 @@ public class food_info extends AppCompatActivity {
         btn_dialog_exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(getBaseContext(),"Cẩn thận đấy!!!", Toast.LENGTH_SHORT).show();
                 dialog.cancel();
             }
         });
 
         dialog.show();
-    }*/
+    }
 
-    /*
+
     private void Dialog_click_delete(final String key, foods item){
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getBaseContext());
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(food_info.this);
         alertDialog.setTitle("Cảnh báo!!!");
         alertDialog.setMessage("Bạn chắc chắn muốn xóa "  + "???");
 
@@ -333,25 +402,25 @@ public class food_info extends AppCompatActivity {
                 photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(getBaseContext(),"image deleted " , Toast.LENGTH_SHORT).show();
+                        Toast.makeText(food_info.this,"image deleted " , Toast.LENGTH_SHORT).show();
                     }
                 });
-                foodRef.child(key).removeValue();
-                Toast.makeText(getBaseContext(),"Bạn đã xóa item " , Toast.LENGTH_SHORT).show();
+                foodRef.child(CurrentVariables.menuId).child(key).removeValue();
+                Toast.makeText(food_info.this,"Bạn đã xóa item " , Toast.LENGTH_SHORT).show();
             }
         });
 
         alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getBaseContext(),"Cẩn thận đấy!!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(food_info.this,"Cẩn thận đấy!!!", Toast.LENGTH_SHORT).show();
             }
         });
 
         alertDialog.show();
-    }*/
+    }
 
-    /*
+
     private void chooseImage(){
         Intent intent =new Intent();
         intent.setType("image/*");
@@ -367,11 +436,11 @@ public class food_info extends AppCompatActivity {
             saveUrl = data.getData();
             btnSelect.setText("Image Selected");
         }
-    }*/
+    }
 
-    /*
+
     private void showDialogUpdate(String key, foods item){
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getBaseContext());
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(food_info.this);
         alertDialog.setTitle("Edit food detail");
         alertDialog.setMessage("Please fill full information");
 
@@ -413,7 +482,7 @@ public class food_info extends AppCompatActivity {
                 item.setPrice((edtPrice.getText().toString()));
                 item.setDescription(edtDes.getText().toString());
 
-                foodRef.child(key).setValue(item);
+                foodRef.child(CurrentVariables.menuId).child(key).setValue(item);
 
             }
         });
@@ -424,13 +493,106 @@ public class food_info extends AppCompatActivity {
             }
         });
         alertDialog.show();
-    }*/
-    /*
+    }
+    private void showDialogAdd(){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(food_info.this);
+        alertDialog.setTitle("Add new Item");
+        alertDialog.setMessage("Please fill full information");
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View add_new_food_layout= inflater.inflate(R.layout.dialog_add_new_food_layout_,null);
+
+        edtName= add_new_food_layout.findViewById(R.id.edtName);
+        edtPrice= add_new_food_layout.findViewById(R.id.edtPrice);
+        edtDes= add_new_food_layout.findViewById(R.id.edtDes);
+
+
+        btnSelect= add_new_food_layout.findViewById(R.id.btnSelect);
+        btnUpload= add_new_food_layout.findViewById(R.id.btnUpload);
+
+        btnSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseImage();
+            }
+        });
+        btnUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uploadImage();
+            }
+        });
+
+        alertDialog.setView(add_new_food_layout);
+        alertDialog.setIcon(R.drawable.ic_shopping_cart_nav);
+
+        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                if (newFood != null){
+                    String foodId= foodRef.child(CurrentVariables.menuId).push().getKey();
+                    newFood.setFoodId(foodId);
+                    foodRef.child(CurrentVariables.menuId).child(foodId).setValue(newFood);
+                    View v=findViewById(R.id.ad_item_layout);
+                    Snackbar.make(v,"New food: "+newFood.getName()+" was added",Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        });
+        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alertDialog.show();
+    }
+    private void uploadImage(){
+        if(saveUrl != null)
+        {
+            ProgressDialog nDialog = new ProgressDialog(food_info.this);
+            nDialog.setMessage("Uploading...");
+            nDialog.show();
+            String imageName = UUID.randomUUID().toString();
+            StorageReference imageFolder = storeRef.child("hình ảnh món ăn/"+imageName);
+            imageFolder.putFile(saveUrl)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            nDialog.dismiss();
+                            Toast.makeText(food_info.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                            btnUpload.setText("Uploaded");
+                            imageFolder.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    newFood= new foods("",edtName.getText().toString(),edtPrice.getText().toString(), uri.toString(),
+                                            edtDes.getText().toString(),CurrentVariables.menuId,0);
+                                }
+                            });
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            nDialog.dismiss();
+                            Toast.makeText(food_info.this,""+ e.getMessage(),Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred()/ taskSnapshot.getTotalByteCount());
+                            nDialog.setMessage("Uploaded"+progress+"%");
+                        }
+                    })
+            ;
+        };
+    }
     private void changeImage( foods item){
         if(saveUrl != null)
         {
             //show dialog
-            ProgressDialog nDialog = new ProgressDialog(getBaseContext());
+            ProgressDialog nDialog = new ProgressDialog(food_info.this);
             nDialog.setMessage("Uploading...");
             nDialog.show();
 
@@ -441,7 +603,7 @@ public class food_info extends AppCompatActivity {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             nDialog.dismiss();
-                            Toast.makeText(getBaseContext(), "Uploaded", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(food_info.this, "Uploaded", Toast.LENGTH_SHORT).show();
                             btnUpload.setText("Uploaded");
 
                             imageFolder.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -453,7 +615,7 @@ public class food_info extends AppCompatActivity {
                                     photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
-                                            Toast.makeText(getBaseContext(),"image changed " , Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(food_info.this,"image changed " , Toast.LENGTH_SHORT).show();
                                         }
                                     });
                                     item.setImg(uri.toString());
@@ -465,7 +627,7 @@ public class food_info extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             nDialog.dismiss();
-                            Toast.makeText(getBaseContext(),""+ e.getMessage(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(food_info.this,""+ e.getMessage(),Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -477,9 +639,12 @@ public class food_info extends AppCompatActivity {
                     })
             ;
         }
-    }*/
+    }
+
 }
 
+
+/*
 @SuppressLint("ValidFragment")
 class Dialog_click_item extends AppCompatDialogFragment {
 
@@ -534,7 +699,8 @@ class Dialog_click_item extends AppCompatDialogFragment {
         return dialog.create();
     }
 }
-
+*/
+/*
 @SuppressLint("ValidFragment")
 class DialogUpdate extends AppCompatDialogFragment {
 
@@ -598,10 +764,10 @@ class DialogUpdate extends AppCompatDialogFragment {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
-        });*/
+        });
         return dialog.create();
-    }
-
+    }*/
+/*
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -676,8 +842,8 @@ class DialogUpdate extends AppCompatDialogFragment {
             ;
         }
     }
-}
-
+}*/
+/*
 @SuppressLint("ValidFragment")
 class DialogDelete extends AppCompatDialogFragment{
     public volatile static String key;
@@ -719,8 +885,8 @@ class DialogDelete extends AppCompatDialogFragment{
 
         return dialog.create();
     }
-}
-
+}*/
+/*
 @SuppressLint("ValidFragment")
 class DialogAdd extends AppCompatDialogFragment {
 
@@ -777,11 +943,11 @@ class DialogAdd extends AppCompatDialogFragment {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
-        });*/
+        })
 
         return dialog.create();
-    }
-
+    }*/
+/*
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -846,3 +1012,4 @@ class DialogAdd extends AppCompatDialogFragment {
         }
     }
 }
+*/

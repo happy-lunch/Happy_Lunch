@@ -10,10 +10,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.TextWatcher;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,13 +35,17 @@ import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.squareup.picasso.Picasso;
 
@@ -51,15 +60,23 @@ class FoodCategoryInfo {
 
     private String name;
     private String img;
-
+    private String id;
 
     public FoodCategoryInfo(){}
     //constructor
-    public FoodCategoryInfo(String name, String img) {
+    public FoodCategoryInfo(String id ,String name, String img) {
         this.name = name;
         this.img = img;
+        this.id = id;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -81,15 +98,17 @@ class FoodCategoryInfo {
 
 
 public class FoodCategory extends Fragment {
-    private food_info foodFragment;
     private ListView listCategoryView;
-    private ArrayList<FoodCategoryInfo> listCategory;
+
+    private boolean onStartSearch=false;
+    private ArrayList<String> suggestList=new ArrayList<String>();
+    private FirebaseListAdapter<FoodCategoryInfo> searchAdapter;
+    private MaterialSearchBar materialSearchBar;
 
     private View view;
 
     //database
     private DatabaseReference catRef;
-
     private FirebaseStorage storage;
     private StorageReference storeRef;
     private FirebaseListAdapter<FoodCategoryInfo> categoryAdapter;
@@ -97,20 +116,13 @@ public class FoodCategory extends Fragment {
     private FoodCategoryInfo  newCat;
     Uri saveUrl;
     private final int PICK_IMAGE_REQUEST =71;
-    //test
-    private int i=-1;
 
     //dialogAdd
-    MaterialEditText edtName,edtPrice,edtDes,edtMenuId;
+    MaterialEditText edtName;
     Button btnSelect;
     Button btnUpload;
 
     @Override
-    /*
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ad_item);
-    */
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.list_item_category, container, false);
 
@@ -121,7 +133,9 @@ public class FoodCategory extends Fragment {
         storage = FirebaseStorage.getInstance();
         storeRef= storage.getReference();
 
-        categoryAdapter = new FirebaseListAdapter<FoodCategoryInfo>(getActivity(), FoodCategoryInfo.class,R.layout.list_category_element,catRef) {
+        suggestList.clear();
+
+        categoryAdapter = new FirebaseListAdapter<FoodCategoryInfo>(getActivity(), FoodCategoryInfo.class,R.layout.list_category_element,catRef.orderByChild("name")) {
             @Override
             protected void populateView(View v, FoodCategoryInfo foodCat, int position) {
 
@@ -135,6 +149,7 @@ public class FoodCategory extends Fragment {
                 imgIconMore.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Log.d("debug: ","populate: "+foodCat.getName());
                         Dialog_click_item(categoryAdapter.getRef(position).getKey(),
                                 categoryAdapter.getItem(position));
                     }
@@ -145,17 +160,7 @@ public class FoodCategory extends Fragment {
         categoryAdapter.notifyDataSetChanged();
         listCategoryView.setAdapter(categoryAdapter);
 
-
-
-
-        ImageButton btnSearch = view.findViewById(R.id.imgBtnSearch);
-        btnSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Search();
-            }
-        });
-
+        //Button Add
         ImageButton btnAdd = view.findViewById(R.id.imgBtnAdd);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,34 +169,72 @@ public class FoodCategory extends Fragment {
             }
         });
 
+        //For Search Function
+        materialSearchBar =  view.findViewById(R.id.searchBar);
+        materialSearchBar.setHint("Hãy nhập loại món ăn");
+        loadSuggest();
+        materialSearchBar.setLastSuggestions(suggestList);
+        materialSearchBar.setCardViewElevation(10);
+        materialSearchBar.addTextChangeListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                List<String> suggest =new ArrayList<String>();
+                for (String search: suggestList){
+                    if (search.toLowerCase().contains(materialSearchBar.getText().toLowerCase())) suggest.add(search);
+                }
+                materialSearchBar.setLastSuggestions(suggest);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        materialSearchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
+            @Override
+            public void onSearchStateChanged(boolean enabled) {
+                if (!enabled){
+                    listCategoryView.setAdapter(categoryAdapter);
+                    onStartSearch=false;
+                    btnAdd.setVisibility(View.VISIBLE);
+                }
+                else{
+                    btnAdd.setVisibility(View.INVISIBLE);
+                }
+            }
+
+            @Override
+            public void onSearchConfirmed(CharSequence text) {
+                startSearch(text);
+            }
+
+            @Override
+            public void onButtonClicked(int buttonCode) {
+
+            }
+        });
+
         listCategoryView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(),"Chuyển sang danh sách món ăn " , Toast.LENGTH_SHORT).show();
-                foodFragment=new food_info();
                 CurrentVariables.menuId = categoryAdapter.getRef(position).getKey();
                 CurrentVariables.stillInFragment=true;
-                /*
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        ft
-                        .replace(R.id.ad_fragment_container, foodFragment)
-                                .addToBackStack("my_fragment")
-                        .show(foodFragment)
-                        .commit();*/
+
+                if (onStartSearch)
+                {CurrentVariables.menuId= searchAdapter.getRef(position).getKey(); onStartSearch=false;}
+                else CurrentVariables.menuId= categoryAdapter.getRef(position).getKey();
+
                 startActivity(new Intent(getContext(), food_info.class));
-                //Option(position);
-                //Dialog_click_item(position);
             }
         });
 
         return view;
     }
-
-    private void Search(){
-
-        Toast.makeText(getContext(), "Tìm kiếm " , Toast.LENGTH_SHORT).show();
-    }
-
 
     private void Dialog_click_item(final String key, FoodCategoryInfo item){
         final Dialog dialog = new Dialog(getContext());
@@ -230,7 +273,7 @@ public class FoodCategory extends Fragment {
         dialog.show();
     }
 
-   private void Dialog_click_delete(final String key, FoodCategoryInfo item){
+    private void Dialog_click_delete(final String key, FoodCategoryInfo item){
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
         alertDialog.setTitle("Cảnh báo!!!");
         alertDialog.setMessage("Bạn chắc chắn muốn xóa "  + "???");
@@ -247,6 +290,7 @@ public class FoodCategory extends Fragment {
                         Toast.makeText(getContext(),"image deleted " , Toast.LENGTH_SHORT).show();
                     }
                 });
+                deleteAllImageInCat(key);
                 catRef.child(key).removeValue();
                 Toast.makeText(getContext(),"Bạn đã xóa item " , Toast.LENGTH_SHORT).show();
             }
@@ -264,8 +308,9 @@ public class FoodCategory extends Fragment {
 
 
     private void showDialogUpdate(String key, FoodCategoryInfo item){
-        Dialog alertDialog = new Dialog(getContext());
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
         alertDialog.setTitle("Edit Category");
+        alertDialog.setMessage("Please fill full information");
 
         LayoutInflater inflater = this.getLayoutInflater();
         View add_new_food_layout= inflater.inflate(R.layout.dialog_add_new_category_layout_,null);
@@ -284,22 +329,20 @@ public class FoodCategory extends Fragment {
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeImage(item, key);
-                alertDialog.cancel();
-
+                changeImage(item);
             }
         });
 
+        alertDialog.setView(add_new_food_layout);
+        alertDialog.setIcon(R.drawable.ic_shopping_cart_nav);
 
-        alertDialog.setContentView(add_new_food_layout);
-
-
-        /*
         alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 item.setName(edtName.getText().toString());
+
+
                 catRef.child(key).setValue(item);
 
             }
@@ -309,12 +352,13 @@ public class FoodCategory extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
-        });*/
+        });
         alertDialog.show();
     }
     private void showDialogAdd(){
-        Dialog alertDialog = new Dialog(Objects.requireNonNull(getContext()));
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
         alertDialog.setTitle("Add new Category");
+        alertDialog.setMessage("Please fill full information");
 
         LayoutInflater inflater = this.getLayoutInflater();
         View add_new_food_layout= inflater.inflate(R.layout.dialog_add_new_category_layout_,null);
@@ -334,21 +378,23 @@ public class FoodCategory extends Fragment {
             @Override
             public void onClick(View v) {
                 uploadImage();
-                alertDialog.cancel();
             }
         });
 
-        alertDialog.setContentView(add_new_food_layout);
+        alertDialog.setView(add_new_food_layout);
+        alertDialog.setIcon(R.drawable.ic_shopping_cart_nav);
 
-        /*
         alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 if (newCat != null){
-                    catRef.push().setValue(newCat);
+                    String catId= catRef.push().getKey();
+                    newCat.setId(catId);
+                    catRef.child(catId).setValue(newCat);
 
-                    View v= Objects.requireNonNull(getActivity()).findViewById(R.id.list_item_category);
+
+                    View v=getActivity().findViewById(R.id.list_item_category);
                     Snackbar.make(v,"New food: "+newCat.getName()+" was added",Snackbar.LENGTH_SHORT).show();
                 }
             }
@@ -358,7 +404,7 @@ public class FoodCategory extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
-        });*/
+        });
         alertDialog.show();
     }
 
@@ -373,7 +419,7 @@ public class FoodCategory extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode== Activity.RESULT_OK
-            && data != null && data.getData() !=null) {
+                && data != null && data.getData() !=null) {
             saveUrl = data.getData();
             btnSelect.setText("Image Selected");
         }
@@ -392,19 +438,18 @@ public class FoodCategory extends Fragment {
             imageFolder.putFile(saveUrl)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                nDialog.dismiss();
-                                Toast.makeText(getContext(), "Uploaded", Toast.LENGTH_SHORT).show();
-                                btnUpload.setText("Uploaded");
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            nDialog.dismiss();
+                            Toast.makeText(getContext(), "Uploaded", Toast.LENGTH_SHORT).show();
+                            btnUpload.setText("Uploaded");
 
-                                imageFolder.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                        public void onSuccess(Uri uri) {
-                                            newCat= new FoodCategoryInfo(edtName.getText().toString(),uri.toString());
-                                            catRef.push().setValue(newCat);
-                                         }
-                                });
-                            }
+                            imageFolder.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    newCat= new FoodCategoryInfo("",edtName.getText().toString(),uri.toString());
+                                }
+                            });
+                        }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -424,7 +469,7 @@ public class FoodCategory extends Fragment {
             ;
         };
     }
-    private void changeImage( FoodCategoryInfo item, String key){
+    private void changeImage( FoodCategoryInfo item){
         if(saveUrl != null)
         {
             //show dialog
@@ -451,10 +496,7 @@ public class FoodCategory extends Fragment {
                                     photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
-                                            Toast.makeText(getContext(),"image changed " , Toast.LENGTH_SHORT).show();
-                                            item.setName(Objects.requireNonNull(edtName.getText()).toString());
-                                            catRef.child(key).setValue(item);
-                                            catRef.child(key).child("id").setValue(key);
+                                            Toast.makeText(getContext(),"Old image deleted " , Toast.LENGTH_SHORT).show();
                                         }
                                     });
                                     item.setImg(uri.toString());
@@ -478,5 +520,70 @@ public class FoodCategory extends Fragment {
                     })
             ;
         };
+    }
+
+    //For Search functiom
+    private void loadSuggest(){
+
+        catRef.orderByChild("name").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                suggestList.clear();
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren() ){
+                    FoodCategoryInfo item = postSnapshot.getValue(FoodCategoryInfo.class);
+                    suggestList.add(item.getName());
+                }
+                materialSearchBar.setLastSuggestions(suggestList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+    private void startSearch(CharSequence text) {
+
+        onStartSearch=true;
+        searchAdapter = new FirebaseListAdapter<FoodCategoryInfo>(getActivity(), FoodCategoryInfo.class,R.layout.list_category_element,catRef.orderByChild("name").equalTo(text.toString()))  {
+            @Override
+            protected void populateView(View v, FoodCategoryInfo foodCat, int position) {
+                TextView txt= v.findViewById(R.id.txtViewCategory);
+                txt.setText(foodCat.getName());
+
+                ImageView img=v.findViewById(R.id.imageViewCategory);
+                Picasso.get().load(foodCat.getImg()).into(img);
+
+                ImageView imgIconMore= v.findViewById(R.id.iconToShow);
+
+                imgIconMore.setVisibility(View.INVISIBLE);
+            }
+        };
+        searchAdapter.notifyDataSetChanged();
+        listCategoryView.setAdapter(searchAdapter);
+    }
+    private void deleteAllImageInCat(String key) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("food");
+        ref.child(key).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren() ){
+                    FoodCategoryInfo item = postSnapshot.getValue(FoodCategoryInfo.class);
+
+                    StorageReference photoRef = FirebaseStorage
+                            .getInstance()
+                            .getReferenceFromUrl(item.getImg());
+
+                    photoRef.delete();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }

@@ -51,11 +51,11 @@
             android:textColorHint="@color/colorPrimary"
             android:text=""
             android:textColor="@color/colorPrimary"
-            android:textSize="34sp"
+            android:textSize="24sp"
             app:met_baseColor="@color/colorPrimary"
             app:met_floatingLabel="highlight"
             app:met_primaryColor="@color/colorPrimary"
-            app:met_singleLineEllipsis="true"
+            android:maxLines="4"
             android:inputType="textMultiLine"
             />
 

@@ -66,6 +66,8 @@ dependencies {
     implementation 'com.rengwuxian.materialedittext:library:2.1.4'
 
     implementation 'com.github.sujithkanna:smileyrating:1.6.8'
+
+    implementation 'com.github.mancj:MaterialSearchBar:0.8.2'
 }
     apply plugin: 'com.google.gms.google-services'
     com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true

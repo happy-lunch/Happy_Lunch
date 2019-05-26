@@ -8,46 +8,43 @@
     android:background="@color/white"
     android:id="@+id/list_item_category"
     >
-
-    <ImageButton
-        android:id="@+id/imgBtnSearch"
+    <LinearLayout
+        android:id="@+id/layoutSearch"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@null"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_search_black_18dp" />
+        android:weightSum="10"
+        >
+        <com.mancj.materialsearchbar.MaterialSearchBar
+            android:id="@+id/searchBar"
+            android:layout_weight="9"
+            android:layout_width="345dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/imgBtnAdd"
+            app:layout_constraintTop_toTopOf="parent"
+            app:mt_hint="Nhập loại món ăn"
+            app:mt_speechMode="false"></com.mancj.materialsearchbar.MaterialSearchBar>
 
-    <EditText
-        android:id="@+id/edtSearch"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:ems="10"
-        android:hint="Search"
-        app:layout_constraintBottom_toBottomOf="@+id/imgBtnSearch"
-        app:layout_constraintEnd_toStartOf="@+id/imgBtnAdd"
-        app:layout_constraintStart_toEndOf="@+id/imgBtnSearch"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
-        android:id="@+id/imgBtnAdd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:background="@null"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_add_circle_black_18dp" />
+        <ImageButton
+            android:layout_weight="1"
+            android:id="@+id/imgBtnAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
+            android:background="@null"
+            android:layout_toRightOf="@+id/searchBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_add_circle_black_18dp" />
+    </LinearLayout>
 
     <ListView
         android:id="@+id/list_category_item"
@@ -65,6 +62,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgBtnSearch" />
+        app:layout_constraintTop_toBottomOf="@+id/layoutSearch"
+        />
 
 </android.support.constraint.ConstraintLayout>
