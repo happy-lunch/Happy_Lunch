@@ -91,7 +91,7 @@ public class Launch extends AppCompatActivity {
         }
         //=======================================================================================
         //Load Food
-        databaseReference.child("food").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("food").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot data:dataSnapshot.getChildren()){
