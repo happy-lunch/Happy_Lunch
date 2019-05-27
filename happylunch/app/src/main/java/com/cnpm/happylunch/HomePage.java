@@ -189,8 +189,10 @@ public class HomePage extends Fragment {
         App.foods.sort((f1,f2)->{
             if(f1.getRating() < f2.getRating()){
                 return 1;
-            }else{
+            }else if(f1.getRating() > f2.getRating()){
                 return -1;
+            }else{
+                return 0;
             }
         });
     }
