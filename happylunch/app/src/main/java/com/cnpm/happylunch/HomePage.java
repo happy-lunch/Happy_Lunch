@@ -65,7 +65,15 @@ public class HomePage extends Fragment {
 
         return view;
     }
-
+	
+	@Override
+    public void onStart() {
+        super.onStart();
+        sortFoodByStar();
+        GridView grid = (GridView) view.findViewById(R.id.gridView);
+        grid.setAdapter(new FoodAdapter(getActivity(), App.foods));
+    }
+	
     public void Order(Food food){
 
         //FoodDetail.food = food;
