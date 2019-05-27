@@ -61,7 +61,13 @@ public class AccountPage extends Fragment {
             }
         });
 
-
+		view.findViewById(R.id.btnKiemTraTK).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Tài khoản của bạn có " + String.valueOf(App.user.getHPCoin() + String.valueOf('\u20AB')), Toast.LENGTH_SHORT).show();
+            }
+        });
+		
         btnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
