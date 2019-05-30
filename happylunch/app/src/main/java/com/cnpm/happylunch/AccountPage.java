@@ -93,7 +93,7 @@ public class AccountPage extends Fragment {
             }
         });
 
-        if(isCreate){
+        //if(isCreate){
             txtName.setText(App.user.getFirstName() + " " + App.user.getLastName());
             txtID.setText(App.user.getMssv());
 
@@ -103,10 +103,9 @@ public class AccountPage extends Fragment {
             }else{
                 //Toast.makeText(getActivity(), "NULL", Toast.LENGTH_SHORT).show();
             }
-        }
+        //}
 
-        isCreate = true;
-
+        //isCreate = true;
 
 
         return view;
