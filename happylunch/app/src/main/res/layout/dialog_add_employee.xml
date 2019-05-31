@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="horizontal"
+    android:gravity="center"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_weight="8"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <EditText
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:inputType="text"
+            android:maxLines="1"
+            android:id="@+id/edtNameEmployee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:hint="Họ và Tên" />
+
+        <EditText
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:inputType="text"
+            android:maxLines="1"
+            android:layout_marginTop="5dp"
+            android:id="@+id/edtSDTEmployee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="SĐT" />
+
+        <EditText
+            android:selectAllOnFocus="true"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:maxLines="1"
+            android:layout_marginTop="5dp"
+            android:id="@+id/edtAdminName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Tài khoản"
+            />
+
+        <EditText
+            android:id="@+id/edtPassAdmin"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:maxLines="1"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Mật khẩu"
+            android:inputType="textPassword"
+             />
+
+        <CheckBox
+            android:text="Owner"
+            android:id="@+id/isOwner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp">
+            <RelativeLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:textColor="#2196F3"
+                    android:layout_marginRight="30dp"
+                    android:gravity="center"
+                    android:id="@+id/add"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="center|right"
+                    android:text="Add"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:textColor="#2196F3"
+                    android:layout_marginRight="30dp"
+                    android:gravity="center"
+                    android:layout_toLeftOf="@+id/add"
+                    android:id="@+id/cancel"
+                    android:text="Cancel"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_weight="8"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></LinearLayout>
+
+</LinearLayout>
