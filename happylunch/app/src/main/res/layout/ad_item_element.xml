@@ -14,7 +14,7 @@
       android:layout_marginLeft="5dp"
       android:layout_marginTop="5dp"
       android:layout_marginRight="5dp"
-      android:src="@drawable/banh_mi_7" />
+      android:src="@drawable/com_1" />
 
   <TextView
       android:id="@+id/txtViewInCat1"

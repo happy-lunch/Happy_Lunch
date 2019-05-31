@@ -211,7 +211,7 @@
                 android:layout_height="match_parent"
                 android:contentDescription="@null"
                 android:scaleType="centerCrop"
-                android:src="@drawable/com_xuc_xich"
+                android:src="@drawable/com_1"
                 app:layout_collapseMode="parallax" />
 
             <android.support.v7.widget.Toolbar
