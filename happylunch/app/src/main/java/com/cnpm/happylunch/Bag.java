@@ -107,6 +107,26 @@ class BagRow {
         this.idBIll = idBill;
     }
 
+    public BagRow(BillItem billItem){
+        this.idFood = billItem.getId();
+        this.count = billItem.getNum();
+        this.price = billItem.getPrice();
+        this.status = billItem.getStatus();
+        int i = get_food(billItem.getId());
+        this.img = App.foods.get(i).getImg();
+        this.name = App.foods.get(i).getName();
+    }
+
+    public BagRow(BillResellItem billResellItem) {
+        this.idFood = billResellItem.getIdFood();
+        this.idBIll = billResellItem.getIdBill();
+        this.idResell = billResellItem.getIdResell();
+        this.count = billResellItem.getNumResell();
+        int i = get_food(this.idFood);
+        this.img = App.foods.get(i).getImg();
+        this.name = App.foods.get(i).getName();
+        this.price = Integer.valueOf(App.foods.get(i).getPrice())/10;
+    }
 
     private int get_food(String id){
         for (int i = 0; i < App.foods.size(); i++){
@@ -296,6 +316,13 @@ public class Bag extends Fragment {
         bagAdapter = new BagAdapter(getContext(), R.layout.element_bag, arrayBag);
         lvBag = view.findViewById(R.id.list_bag);
 
+        if (arrayBag.size() > 0){
+            arrayBag.removeAll(arrayBag);
+        }
+
+        //if (arrayBill.size() > 0)
+            //arrayBill.removeAll(arrayBill);
+
         //AnhXa();
         Button btn_resell = view.findViewById(R.id.button_bag_resell);
 
@@ -444,7 +471,7 @@ public class Bag extends Fragment {
             if (arrayBag.get(i).getIdFood().equals(food.getIdFood())){
                 arrayBag.get(i).setCount(arrayBag.get(i).getCount() + food.getCount());
                 //bagAdapter.notifyDataSetChanged();
-                break;
+                return;
             }
         }
         arrayBag.add(new BagRow(food));

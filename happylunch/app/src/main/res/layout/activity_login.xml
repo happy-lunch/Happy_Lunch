@@ -28,8 +28,7 @@
             android:hint="Email"
             android:inputType="text"
             android:maxLines="1"
-            android:padding="8dp"
-            android:text="datai28599@gmail.com" />
+            android:padding="8dp"/>
 
         <EditText
             android:id="@+id/txtPassword"
@@ -43,8 +42,7 @@
             android:hint="Password"
             android:inputType="textPassword"
             android:maxLines="1"
-            android:selectAllOnFocus="true"
-            android:text="1713015" />
+            android:selectAllOnFocus="true" />
         <FrameLayout
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
@@ -57,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center"
                 android:layout_weight="1"
-                android:checked="true"
+                android:checked="false"
                 android:onClick="isRememberMe"
                 android:text="Employee" />
 
