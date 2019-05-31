@@ -41,7 +41,7 @@ public class Setting_account extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_account_customer);
+        setContentView(R.layout.fragment_account_page);
         ChangePassword();
     }
 

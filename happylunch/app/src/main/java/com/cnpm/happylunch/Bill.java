@@ -1,5 +1,7 @@
 package com.cnpm.happylunch;
 
+import android.widget.ListView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -165,6 +167,92 @@ public class Bill {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+}
+
+class BillResellItem{
+    private String idFood, idBill, idResell;
+    private int numResell;
+
+    public BillResellItem(){}
+
+    public BillResellItem(String idFood, String idBill, String idResell, int numResell) {
+        this.idFood = idFood;
+        this.idBill = idBill;
+        this.idResell = idResell;
+        this.numResell = numResell;
+    }
+
+    public int getNumResell() {
+        return numResell;
+    }
+
+    public void setNumResell(int numResell) {
+        this.numResell = numResell;
+    }
+
+    public String getIdFood() {
+        return idFood;
+    }
+
+    public void setIdFood(String idFood) {
+        this.idFood = idFood;
+    }
+
+    public String getIdBill() {
+        return idBill;
+    }
+
+    public void setIdBill(String idBill) {
+        this.idBill = idBill;
+    }
+
+    public String getIdResell() {
+        return idResell;
+    }
+
+    public void setIdResell(String idResell) {
+        this.idResell = idResell;
+    }
+}
+
+class BillResell{
+    private String id,time;
+    private int cost;
+    public List<BillResellItem> item;
+
+    public BillResell(){}
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
+    }
+
+    public List<BillResellItem> getItem() {
+        return item;
+    }
+
+    public void setItem(List<BillResellItem> item) {
+        this.item = item;
     }
 }
 

@@ -11,7 +11,7 @@
         android:icon="@drawable/ic_login"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-	<activity android:name=".Launch"
+        <activity android:name=".Launch"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
@@ -52,11 +52,11 @@
         <activity android:name=".ForgotPassword"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
-	<activity
+        <activity
             android:screenOrientation="portrait"
             android:name=".VerifyEmail"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-	<activity
+        <activity
             android:screenOrientation="portrait"
             android:name=".Sign_Up"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -68,6 +68,10 @@
             android:name=".ListFoodsInCategory"/>
         <activity
             android:name=".AccountBill"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".BillDetail"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity

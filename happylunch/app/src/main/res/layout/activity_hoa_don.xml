@@ -5,17 +5,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-<android.support.v7.widget.Toolbar
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#f20"
-    app:title="Hoa don"
-    android:id="@+id/toolbarhoadon"></android.support.v7.widget.Toolbar>
-    <Button
+    <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Quay lại"
-        android:textSize="30dp"
-        android:id="@+id/btnquaylai"
-        />
+        android:background="#f20"
+        app:title="Bill"
+        android:id="@+id/toolbarhoadon"></android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_accBill_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Type"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/button_accBill_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Money"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/button_accBill_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Time"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <ListView
+        android:layout_marginTop="16dp"
+        android:horizontalSpacing="5dp"
+        android:verticalSpacing="5dp"
+        android:id="@+id/list_AccountBill"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </LinearLayout>

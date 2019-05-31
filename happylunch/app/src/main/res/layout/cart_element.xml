@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            app:srcCompat="@drawable/ck_burger" />
+            app:srcCompat="@drawable/com_1" />
     </FrameLayout>
 
     <LinearLayout

@@ -159,16 +159,26 @@ public class BagResell extends AppCompatActivity {
                     mData.child("Bill").child(App.user.getMssv()).child("Resell").child(Objects.requireNonNull(key0)).child("id").setValue(key0);
                     mData.child("Bill").child(App.user.getMssv()).child("Resell").child(key0).child("cost").setValue(cost);
                     String time = String.format("%sd%sh%sp", calendar.get(Calendar.DATE), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
+                    if (String.valueOf(time.charAt(1)).equals("d"))
+                        time = "0" + time;
+                    if (String.valueOf(time.charAt(4)).equals("h"))
+                        time = time.substring(0,3) + "0" + time.substring(3);
+                    if (String.valueOf(time.charAt(7)).equals("p"))
+                        time = time.substring(0,6) + "0" + time.substring(6);
                     mData.child("Bill").child(App.user.getMssv()).child("Resell").child(key0).child("time").setValue(time);
                     for (int i = 0; i < arrayBagResell.size(); i++){
                         String key = mData.child("Resell").push().getKey();
                         FoodResell foodResell = new FoodResell(key, arrayBagResell.get(i), App.user.getUid());
                         assert key != null;
                         mData.child("Resell").child(key).setValue(foodResell);
+                        BillResellItem billResellItem = new BillResellItem(arrayBagResell.get(i).getIdFood(),arrayBagResell.get(i).getIdBIll(),key, arrayBagResell.get(i).getCount());
+                        mData.child("Bill").child(App.user.getMssv()).child("Resell").child(key0).child("item")
+                                .child(String.valueOf(i)).setValue(billResellItem);
+                        /*
                         mData.child("Bill").child(App.user.getMssv()).child("Resell").child(key0).child("item")
                                 .child(String.valueOf(i)).child("idResell").setValue(key);
                         mData.child("Bill").child(App.user.getMssv()).child("Resell").child(key0).child("item")
-                                .child(String.valueOf(i)).child("idBill").setValue(arrayBagResell.get(i).getIdBIll());
+                                .child(String.valueOf(i)).child("idBill").setValue(arrayBagResell.get(i).getIdBIll());*/
 
                         int indexBill = 0, indexFood = 0;
                         int numResell = 0;
@@ -338,7 +348,7 @@ public class BagResell extends AppCompatActivity {
             if (arrayBagResell.get(i).getIdFood().equals(food.getIdFood())){
                 arrayBagResell.get(i).setCount(arrayBagResell.get(i).getCount() + food.getCount());
                 //bagResellAdapter.notifyDataSetChanged();
-                break;
+                return;
             }
         }
         arrayBagResell.add(new BagRow(food));

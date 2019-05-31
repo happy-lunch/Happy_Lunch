@@ -135,7 +135,7 @@
 
             <ImageView
                 android:id="@+id/img_food"
-                android:src="@drawable/com_xuc_xich"
+                android:src="@drawable/com_1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@null"

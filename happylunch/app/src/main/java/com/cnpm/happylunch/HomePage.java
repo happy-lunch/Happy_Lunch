@@ -1,10 +1,13 @@
 package com.cnpm.happylunch;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -84,13 +87,18 @@ public class HomePage extends Fragment {
     private void setUpPopularView(){
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
 
-        App.foods.sort((f1,f2)->{
-            if(f1.getNumSold() < f2.getNumSold()){
-                return 1;
-            }else{
-                return -1;
-            }
-        });
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            App.foods.sort((f1,f2)->{
+                if(f1.getNumSold() < f2.getNumSold()){
+                    return 1;
+                }else{
+                    return -1;
+                }
+            });
+        }
+
+
         ArrayList<Food> popularFood = new ArrayList<Food>();
         for(int i = 0; i < numPopularItem; i++){
             popularFood.add(App.foods.get(i));
@@ -161,7 +169,7 @@ public class HomePage extends Fragment {
     private void setUpCategories(){
 
         imgFoodInCategory = new ArrayList<FoodImageView>();
-        Log.e("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", String.valueOf(App.categories.size()));
+        Log.e("aaaaaaaaaaa", String.valueOf(App.categories.size()));
         for(int i = 0;i < numCategories;i++){
             imgFoodInCategory.add(new FoodImageView(getActivity(), App.categories.get(i)));
         }
@@ -186,6 +194,7 @@ public class HomePage extends Fragment {
     }
 	
 	private void sortFoodByStar(){
+        /*
         App.foods.sort((f1,f2)->{
             if(f1.getRating() < f2.getRating()){
                 return 1;
@@ -194,7 +203,7 @@ public class HomePage extends Fragment {
             }else{
                 return 0;
             }
-        });
+        });*/
     }
 
 }

@@ -83,7 +83,7 @@ class SecondShopAdapter extends BaseAdapter {
         holder.txtName.setText(secondShop.getName());
         holder.txtPrice.setText(String.format("Price : %s", String.valueOf(secondShop.getPrice())));
         holder.txtTime.setText(String.format("Time : %s", secondShop.getTime()));
-        holder.txtNumMax.setText(String.format("NumSell : %s", secondShop.getCount()));
+        holder.txtNumMax.setText(String.format("Sell : %s", secondShop.getCount()));
 
         return convertView;
     }
@@ -105,7 +105,8 @@ public class SecondShop extends Fragment {
 
         gvSecondShop = view.findViewById(R.id.grid_second_shop);
 
-
+        if(arraySecondShop.size() >0)
+            arraySecondShop.removeAll(arraySecondShop);
         //AnhXa();
 
         secondShopAdapter = new SecondShopAdapter(getContext(), R.layout.second_shop_element, arraySecondShop);

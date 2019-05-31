@@ -16,7 +16,7 @@
             android:id="@+id/imageView_secondShop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ck_banh_bao_hoang_kim" />
+            app:srcCompat="@drawable/com_1" />
     </FrameLayout>
 
 

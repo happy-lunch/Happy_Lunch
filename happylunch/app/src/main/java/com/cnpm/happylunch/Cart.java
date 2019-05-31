@@ -35,11 +35,19 @@ class CartAdapter extends BaseAdapter {
     private Context context;
     private int layout;
     private List<BagRow> cartList;
+    private boolean isCart = true;
 
     CartAdapter(Context context, int layout, List<BagRow> cartList) {
         this.context = context;
         this.layout = layout;
         this.cartList = cartList;
+    }
+
+    CartAdapter(Context context, int layout, List<BagRow> cartList, boolean isCart) {
+        this.context = context;
+        this.layout = layout;
+        this.cartList = cartList;
+        this.isCart = isCart;
     }
 
 
@@ -87,7 +95,10 @@ class CartAdapter extends BaseAdapter {
         Picasso.get().load(cart.getImg()).into(holder.imgImg);
         holder.txtName.setText(cart.getName());
         holder.txtNum.setText(String.format("Num : %s",cart.getCount()));
-        holder.txtPrice.setText(String.format("Price : %s",cart.getPrice()));
+        if (isCart)
+            holder.txtPrice.setText(String.format("Price : %s",cart.getPrice()));
+        else
+            holder.txtPrice.setText(String.format("Cost : %s",cart.getPrice()));
 
         return convertView;
     }
@@ -114,6 +125,9 @@ public class Cart extends Fragment {
         view = inflater.inflate(R.layout.cart, container, false);
 
         calendar = Calendar.getInstance();
+
+        if (arrayCart.size()>0)
+            arrayCart.removeAll(arrayCart);
 
         isCreate = true;
         gvCart = view.findViewById(R.id.list_cart);
@@ -422,14 +436,17 @@ public class Cart extends Fragment {
     }
 
     public static void add(BagRow food, int num){
+        boolean isAdd =false;
         for(int i=0; i<arrayCart.size(); i++){
             if (arrayCart.get(i).getIdFood().equals(food.getIdFood())){
                 if(arrayCart.get(i).getIdResell().equals(food.getIdResell())){
                     arrayCart.get(i).setCount(arrayCart.get(i).getCount() + num);
+                    isAdd = true;
                     break;
                 }
             }
         }
-        arrayCart.add(new BagRow(food, num));
+        if(!isAdd)
+            arrayCart.add(new BagRow(food, num));
     }
 }
