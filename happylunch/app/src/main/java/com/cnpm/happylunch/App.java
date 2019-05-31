@@ -13,10 +13,13 @@ import java.util.ArrayList;
 
 public class App {
     public volatile static User user;
+    public static Employee employee;
 
     public static ArrayList<Food> foods = new ArrayList<Food>();
     public static ArrayList<Category> categories = new ArrayList<Category>();
     public static ArrayList<User> customers = new ArrayList<>();
+
+    public static ArrayList<Employee> employees = new ArrayList<Employee>();
 
     public static boolean isIntent = false;
 

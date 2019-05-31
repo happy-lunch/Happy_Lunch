@@ -4,17 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".account_customer"
+    tools:context=".Customer"
     android:orientation="vertical">
-<android.support.v7.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:title="Account"
-        app:titleTextColor="#f001"
-        android:background="#f20"
-        android:id="@+id/toolbaraccount">
 
-</android.support.v7.widget.Toolbar>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -32,7 +24,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/texttenkhachhang"
+                android:id="@+id/txtTenNV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -61,21 +53,8 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Kiểm tra tài khoàn "
-            android:textSize="20dp"
-            android:id="@+id/btnkiemtrataikhoan"
-            />
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Cài đặt tài khoản"
-            android:id="@+id/btncaidattaikhoan"
-            android:textSize="20dp"/>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Kiểm tra hóa đơn"
-            android:id="@+id/btnhoadon"
+            android:text="Cài đặt nhân viên"
+            android:id="@+id/btnCaiDatNV"
             android:textSize="20dp"/>
         <Button
             android:layout_width="match_parent"

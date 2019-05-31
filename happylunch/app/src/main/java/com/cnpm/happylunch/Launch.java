@@ -192,5 +192,33 @@ public class Launch extends AppCompatActivity {
 
             }
         });
+
+        databaseReference.child("Employees").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                App.employees.add(dataSnapshot.getValue(Employee.class));
+                Log.e("AAAAAAAAAAAAAAAAAAAAAAAA", "EMEMEMEMMEMEMEMEMEMEMMEME");
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                App.employees.remove(dataSnapshot.getValue(Employee.class));
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }
