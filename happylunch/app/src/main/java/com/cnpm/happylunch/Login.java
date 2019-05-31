@@ -44,7 +44,6 @@ public class Login extends AppCompatActivity {
         progressBar = new ProgressDialog(this);
         progressBar.setMessage("Đăng nhập");
         progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressBar.setCancelable(true);
 
         forgotPassword = (TextView) findViewById(R.id.txtForgotPassword);
         forgotPassword.setOnClickListener(new View.OnClickListener() {
@@ -72,6 +71,21 @@ public class Login extends AppCompatActivity {
             return;
         }
 
+        if(check.isChecked()){
+            for(int i = 0; i < App.employees.size(); i++){
+                Employee e = App.employees.get(i);
+                if(email.equals(e.getUsername()) && password.equals(e.getPassword())){
+                    startActivity(new Intent(Login.this, AdBottom_Nav.class));
+                    App.employee = e;
+                    progressBar.cancel();
+                    return;
+                }
+            }
+            Toast.makeText(this, "Tài khoản hoặc mật khẩu không chính xác", Toast.LENGTH_SHORT).show();
+            progressBar.cancel();
+            return;
+        }
+
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -83,11 +97,7 @@ public class Login extends AppCompatActivity {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 App.user = dataSnapshot.getValue(User.class);
-                                if (check.isChecked()) {
-                                    startActivity(new Intent(Login.this, AdBottom_Nav.class));
-                                }
-                                else
-                                    startActivity(new Intent(Login.this, Bottom_Nav.class));
+                                startActivity(new Intent(Login.this, Bottom_Nav.class));
                             }
 
                             @Override
