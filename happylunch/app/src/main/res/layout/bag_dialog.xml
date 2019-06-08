@@ -1,52 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
-
+    android:orientation="vertical"
+    app:cardElevation="4dp">
     <LinearLayout
+        android:layout_margin="20dp"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:weightSum="2">
+        android:layout_height="wrap_content">
 
-
-        <ImageButton
-            android:id="@+id/button_bagDialog_down"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@null"
-            app:srcCompat="@drawable/ic_remove_black_18dp" />
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="0dp"
+            android:gravity="center"
+            android:orientation="horizontal">
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center|center_horizontal">
 
-        <TextView
-            android:id="@+id/editText_bagDialog"
-            android:layout_width="wrap_content"
+                <ImageButton
+                    android:id="@+id/button_bagDialog_down"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:background="@null"
+                    app:srcCompat="@drawable/ic_remove_black_18dp" />
+
+                <TextView
+                    android:id="@+id/editText_bagDialog"
+                    android:layout_width="95dp"
+                    android:layout_height="wrap_content"
+
+                    android:ems="10"
+                    android:inputType="number"
+                    android:text="0"
+                    android:textAlignment="center"
+                    android:textColor="#009688"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/button_bagDialog_up"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    app:srcCompat="@drawable/ic_add_black_18dp"
+
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="2"
-            android:text="1"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
 
-        <ImageButton
-            android:id="@+id/button_bagDialog_up"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@null"
-            app:srcCompat="@drawable/ic_add_black_18dp" />
+            <Button
+
+                android:id="@+id/button_bagDialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Xác nhận"
+                android:textAlignment="center" />
+
+        </LinearLayout>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/button_bagDialog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Xác nhận" />
-
-</LinearLayout>
+</android.support.v7.widget.CardView>

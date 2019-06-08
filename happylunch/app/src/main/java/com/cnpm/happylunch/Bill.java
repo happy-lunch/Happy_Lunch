@@ -5,6 +5,75 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
+class MSSVOder{
+    public List<Bill> arrayBill;
+
+    public MSSVOder(List<Bill> bill) {
+        this.arrayBill = bill;
+    }
+
+    public List<Bill> getArrayBill() {
+        return arrayBill;
+    }
+
+    public void setBill(List<Bill> bill) {
+        this.arrayBill = bill;
+    }
+}
+
+class MSSV{
+    private MSSVOder classOder;
+
+    public MSSV(){};
+
+    public MSSV(MSSVOder classOder) {
+        this.classOder = classOder;
+    }
+
+    public MSSVOder getClassOder() {
+        return classOder;
+    }
+
+    public void setClassOder(MSSVOder classOder) {
+        this.classOder = classOder;
+    }
+}
+
+class RootBill{
+    private String mssv;
+    public RootBill(){};
+
+    public RootBill(String mssv) {
+        this.mssv = mssv;
+    }
+
+    public String getMssv() {
+        return mssv;
+    }
+
+    public void setMssv(String mssv) {
+        this.mssv = mssv;
+    }
+}
+
+class BillRoot{
+    private MSSV mssv;
+
+    public BillRoot(){};
+
+    public BillRoot(com.cnpm.happylunch.MSSV mssv) {
+        this.mssv = mssv;
+    }
+
+    public com.cnpm.happylunch.MSSV getMssv() {
+        return mssv;
+    }
+
+    public void setMssv(com.cnpm.happylunch.MSSV mssv) {
+        this.mssv = mssv;
+    }
+}
+
 class Order{
 
     private String id;
@@ -20,6 +89,12 @@ class Order{
         this.id = id;
         this.MSSV = MSSV;
         this.bill = bill;
+        if (String.valueOf(time.charAt(1)).equals("d"))
+            time = "0" + time;
+        if (String.valueOf(time.charAt(4)).equals("h"))
+            time = time.substring(0,3) + "0" + time.substring(3);
+        if (String.valueOf(time.charAt(7)).equals("p"))
+            time = time.substring(0,6) + "0" + time.substring(6);
         this.time = time;
     }
 
@@ -52,6 +127,12 @@ class Order{
     }
 
     public void setTime(String time) {
+        if (String.valueOf(time.charAt(1)).equals("d"))
+            time = "0" + time;
+        if (String.valueOf(time.charAt(4)).equals("h"))
+            time = time.substring(0,3) + "0" + time.substring(3);
+        if (String.valueOf(time.charAt(7)).equals("p"))
+            time = time.substring(0,6) + "0" + time.substring(6);
         this.time = time;
     }
 }

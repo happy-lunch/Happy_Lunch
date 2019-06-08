@@ -88,8 +88,8 @@ class BagResellAdapter extends BaseAdapter {
         //holder.imgImg.setImageResource(bagResell.getImg());
         Picasso.get().load(bagResell.getImg()).into(holder.imgImg);
         holder.txtName.setText(bagResell.getName());
-        holder.txtNum.setText(String.format("%s", String.valueOf(bagResell.getCount())));
-        holder.txtPrice.setText(String.format("%s", String.valueOf(bagResell.getPrice())));
+        holder.txtNum.setText(String.format("NumResell:%s", String.valueOf(bagResell.getCount())));
+        holder.txtPrice.setText(String.format("Price:%s", String.valueOf(bagResell.getPrice())));
         holder.txtTime.setText(String.format("%s", bagResell.getTime()));
 
         return convertView;

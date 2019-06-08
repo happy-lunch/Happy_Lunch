@@ -342,8 +342,8 @@ public class AccountBill extends AppCompatActivity {
                     case "timeDown":
                         set();
                         isTime = true;
-                        //if(arrayBill.get(i).getTxtTime().compareTo(arrayBill.get(j).getTxtTime())<0){
-                        if(arrayBill.get(i).getTime() < arrayBill.get(j).getTime()){
+                        if(arrayBill.get(i).getTxtTime().compareTo(arrayBill.get(j).getTxtTime())<0){
+                        //if(arrayBill.get(i).getTime() < arrayBill.get(j).getTime()){
                             swap(i,j);
                         }
                         break;

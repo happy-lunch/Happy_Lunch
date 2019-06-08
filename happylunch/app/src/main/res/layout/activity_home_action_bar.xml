@@ -28,7 +28,6 @@
         android:layout_gravity="center"
         android:layout_marginLeft="20dp"
         android:backgroundTint="#FFFFFF"
-        android:background="@drawable/ic_notification"
         android:layout_weight="2"
         android:layout_width="match_parent"
         android:layout_height="30dp"

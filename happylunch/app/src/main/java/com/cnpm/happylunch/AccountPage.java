@@ -91,6 +91,9 @@ public class AccountPage extends Fragment {
         btnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bag.arrayBill.removeAll(Bag.arrayBill);
+                Bag.arrayBag.removeAll(Bag.arrayBag);
+                BagResell.arrayBagResell.removeAll(BagResell.arrayBagResell);
                 FirebaseAuth.getInstance().signOut();
                 App.user = null;
                 startActivity(new Intent(getActivity(), Login.class));
@@ -245,7 +248,7 @@ public class AccountPage extends Fragment {
                             else if (repeatpassword.getText().toString().equals("")){
                                 Toast.makeText(getContext(),"Please fill repeat password!", Toast.LENGTH_LONG).show();
                             }
-                            else if(newpassword.getText().toString().equals(repeatpassword.getText().toString())){
+                            else if(!newpassword.getText().toString().equals(repeatpassword.getText().toString())){
                                 Toast.makeText(getContext(),"Wrong password!",Toast.LENGTH_LONG).show();
                             }
                             else {
@@ -264,14 +267,14 @@ public class AccountPage extends Fragment {
                             }
                         }
                         else {
-                            Toast.makeText(getContext(), " Error",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), "Login fail",Toast.LENGTH_LONG).show();
                         }
 
                     }
                 });
             }
         });
-        alerDialog.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+        alerDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();

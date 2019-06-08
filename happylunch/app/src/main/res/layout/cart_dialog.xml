@@ -1,138 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
+    app:cardElevation="4dp">
     <LinearLayout
-        android:weightSum="3"
+        android:layout_margin="20dp"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="40dp"
-            android:text="Day"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="0dp"
+            android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/imageButton_cartDialog_dayRemove"
-            android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="20dp"
+                android:text="Day"
+                android:textColor="#009688"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+
+                <TextView
+                    android:id="@+id/editText_cartDialog_day"
+                    android:layout_width="95dp"
+                    android:layout_height="wrap_content"
+
+                    android:ems="10"
+                    android:inputType="number"
+                    android:text="14"
+                    android:textAlignment="center"
+                    android:textColor="#009688"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+
+
+                    />
+            </LinearLayout>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@null"
-            app:srcCompat="@drawable/ic_remove_black_18dp" />
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="0dp"
+            android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/editText_cartDialog_day"
-            android:layout_width="20dp"
+            <TextView
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="20dp"
+                android:text="Hour"
+                android:textColor="#009688"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageButton
+                    android:id="@+id/imageButton_cartDialog_hourRemove"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:background="@null"
+                    app:srcCompat="@drawable/ic_remove_black_18dp" />
+
+                <TextView
+                    android:id="@+id/editText_cartDialog_hour"
+                    android:layout_width="95dp"
+                    android:layout_height="wrap_content"
+
+                    android:ems="10"
+                    android:inputType="number"
+                    android:text="14"
+                    android:textAlignment="center"
+                    android:textColor="#009688"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/imageButton_cartDialog_hourAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    app:srcCompat="@drawable/ic_add_black_18dp"
+
+                    />
+            </LinearLayout>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="number"
-            android:text="14" />
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="0dp"
+            android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/imageButton_cartDialog_dayAdd"
-            android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="20dp"
+                android:text="Minute"
+                android:textSize="24sp"
+                android:textColor="#009688"
+                android:textStyle="bold" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageButton
+                    android:id="@+id/imageButton_cartDialog_minuteRemove"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:background="@null"
+                    app:srcCompat="@drawable/ic_remove_black_18dp" />
+
+                <TextView
+                    android:id="@+id/editText_cartDialog_minute"
+                    android:layout_width="95dp"
+                    android:layout_height="wrap_content"
+
+                    android:ems="10"
+                    android:inputType="number"
+                    android:text="14"
+                    android:textAlignment="center"
+                    android:textColor="#009688"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/imageButton_cartDialog_minuteAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    app:srcCompat="@drawable/ic_add_black_18dp"
+
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@null"
-            app:srcCompat="@drawable/ic_add_black_18dp" />
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
 
+            <Button
+
+                android:id="@+id/button_cartDialog_order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Order"
+                android:textAlignment="center" />
+
+        </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:weightSum="3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="30dp"
-            android:text="Hour"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <ImageButton
-            android:id="@+id/imageButton_cartDialog_hourRemove"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@null"
-            app:srcCompat="@drawable/ic_remove_black_18dp" />
-
-        <EditText
-            android:id="@+id/editText_cartDialog_hour"
-            android:layout_width="20dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="number"
-            android:text="28" />
-
-        <ImageButton
-            android:id="@+id/imageButton_cartDialog_hourAdd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@null"
-            app:srcCompat="@drawable/ic_add_black_18dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:weightSum="3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:text="Minute"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <ImageButton
-            android:id="@+id/imageButton_cartDialog_minuteRemove"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@null"
-            app:srcCompat="@drawable/ic_remove_black_18dp" />
-
-        <EditText
-            android:id="@+id/editText_cartDialog_minute"
-            android:layout_width="20dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="number"
-            android:text="05" />
-
-        <ImageButton
-            android:id="@+id/imageButton_cartDialog_minuteAdd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@null"
-            app:srcCompat="@drawable/ic_add_black_18dp" />
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/button_cartDialog_order"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Order" />
-
-
-</LinearLayout>
+</android.support.v7.widget.CardView>

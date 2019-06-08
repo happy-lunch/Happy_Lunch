@@ -74,7 +74,7 @@ public class Setting_account extends AppCompatActivity {
                             else if (repeatpassword.getText().toString().equals("")){
                                 Toast.makeText(Setting_account.this,"Please fill repeat password!", Toast.LENGTH_LONG).show();
                             }
-                            else if(newpassword.getText().toString().equals(repeatpassword.getText().toString())){
+                            else if(!newpassword.getText().toString().equals(repeatpassword.getText().toString())){
                                 Toast.makeText(Setting_account.this,"Wrong password!",Toast.LENGTH_LONG).show();
                             }
                             else {

@@ -36,7 +36,7 @@ public class Launch extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
-        //FirebaseAuth.getInstance().signOut();
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user != null){
             if(user.isEmailVerified()){

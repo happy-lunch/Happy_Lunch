@@ -86,12 +86,14 @@ class BagRow {
     }
 
 
-    BagRow(String img, String name, String time, int count) {
-        this.img = img;
-        this.name = name;
-        this.time = time;
+    BagRow(BagRow bagRow, int count, String idUser, String idBill) {
+        this.img = bagRow.getImg();
+        this.name = bagRow.getName();
+        this.time = bagRow.getTime();
+        this.idFood = bagRow.getIdFood();
         this.count = count;
-        this.status = "Đang xử lí";
+        this.idUser = idUser;
+        this.idBIll = idBill;
     }
 
 
@@ -126,6 +128,19 @@ class BagRow {
         this.img = App.foods.get(i).getImg();
         this.name = App.foods.get(i).getName();
         this.price = Integer.valueOf(App.foods.get(i).getPrice())/10;
+    }
+
+    public BagRow(BillItem billItem, String time, Order order) {
+        this.idFood = billItem.getId();
+        this.count = billItem.getNum();
+        this.price = billItem.getPrice();
+        this.status = billItem.getStatus();
+        int i = get_food(billItem.getId());
+        this.img = App.foods.get(i).getImg();
+        this.name = App.foods.get(i).getName();
+        this.time = time;
+        this.idBIll = order.getBill();
+        this.idUser = order.getMSSV();
     }
 
     private int get_food(String id){
@@ -316,9 +331,9 @@ public class Bag extends Fragment {
         bagAdapter = new BagAdapter(getContext(), R.layout.element_bag, arrayBag);
         lvBag = view.findViewById(R.id.list_bag);
 
-        if (arrayBag.size() > 0){
-            arrayBag.removeAll(arrayBag);
-        }
+        //if (arrayBag.size() > 0){
+            //arrayBag.removeAll(arrayBag);
+        //}
 
         //if (arrayBill.size() > 0)
             //arrayBill.removeAll(arrayBill);
@@ -476,22 +491,4 @@ public class Bag extends Fragment {
         }
         arrayBag.add(new BagRow(food));
     }
-
-    /*
-    private void AnhXa(){
-        arrayBag.add(new BagRow(R.drawable.ck_banh_bao_ba_xiu_2,   "Bánh bao xá xíu 2",
-                "9:50",3));
-        arrayBag.add(new BagRow(R.drawable.ck_com_chien,           "Cơm chiên",
-                "9:45",2));
-        arrayBag.add(new BagRow(R.drawable.ck_fruit_whole_nodish,  "Fruit whole nodish",
-                "9:30",3));
-        arrayBag.add(new BagRow(R.drawable.ck_salad_caron,         "Salad caron",
-                "9:20",1));
-        arrayBag.add(new BagRow(R.drawable.ck_single_banana,       "Single banana",
-                "8:30",1));
-        arrayBag.add(new BagRow(R.drawable.ck_trung_cut,           "Trứng cút",
-                "8:20",4));
-        arrayBag.add(new BagRow(R.drawable.ck_salad_caron,         "Salad caron",
-                "8:00",1));
-    }*/
 }

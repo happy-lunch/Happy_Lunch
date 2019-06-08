@@ -186,15 +186,15 @@ public class Cart extends Fragment {
         dialog.setContentView(R.layout.cart_dialog);
         dialog.setTitle("Nhập giờ lấy hàng");
 
-        ImageButton btn_day_add         = dialog.findViewById(R.id.imageButton_cartDialog_dayAdd);
-        ImageButton btn_day_remove      = dialog.findViewById(R.id.imageButton_cartDialog_dayRemove);
+        //ImageButton btn_day_add         = dialog.findViewById(R.id.imageButton_cartDialog_dayAdd);
+        //ImageButton btn_day_remove      = dialog.findViewById(R.id.imageButton_cartDialog_dayRemove);
         ImageButton btn_hour_add        = dialog.findViewById(R.id.imageButton_cartDialog_hourAdd);
         ImageButton btn_hour_remove     = dialog.findViewById(R.id.imageButton_cartDialog_hourRemove);
         ImageButton btn_minute_add      = dialog.findViewById(R.id.imageButton_cartDialog_minuteAdd);
         ImageButton btn_minute_remove   = dialog.findViewById(R.id.imageButton_cartDialog_minuteRemove);
-        EditText txt_day    = dialog.findViewById(R.id.editText_cartDialog_day);
-        EditText txt_hour   = dialog.findViewById(R.id.editText_cartDialog_hour);
-        EditText txt_minute = dialog.findViewById(R.id.editText_cartDialog_minute);
+        TextView txt_day    = dialog.findViewById(R.id.editText_cartDialog_day);
+        TextView txt_hour   = dialog.findViewById(R.id.editText_cartDialog_hour);
+        TextView txt_minute = dialog.findViewById(R.id.editText_cartDialog_minute);
         Button btn_order    = dialog.findViewById(R.id.button_cartDialog_order);
 
         final int[] day = {calendar.get(Calendar.DATE)};
@@ -212,13 +212,13 @@ public class Cart extends Fragment {
         txt_hour.setText(String.valueOf(hour[0]));
         txt_minute.setText(String.valueOf(minute[0]));
 
-        btn_day_add.setOnClickListener(v -> {
-            if (day[0] < 32) txt_day.setText(String.valueOf(++day[0]));
-        });
+        //btn_day_add.setOnClickListener(v -> {
+          //  if (day[0] < 32) txt_day.setText(String.valueOf(++day[0]));
+        //});
 
-        btn_day_remove.setOnClickListener(v -> {
-            if (day[0] > 2) txt_day.setText(String.valueOf(--day[0]));
-        });
+        //btn_day_remove.setOnClickListener(v -> {
+          //  if (day[0] > 2) txt_day.setText(String.valueOf(--day[0]));
+        //});
 
         btn_hour_add.setOnClickListener(v -> {
             if (hour[0] < 24) txt_hour.setText(String.valueOf(++hour[0]));

@@ -3,11 +3,13 @@ package com.cnpm.happylunch;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -32,6 +35,7 @@ public class AdWork extends Fragment {
 
     private ListView lvAdWork;
     public static ArrayList<Order> arrayOrder = new ArrayList<>();
+    public static ArrayList<BillRoot> arrayMSSV = new ArrayList<>();
     public static ArrayList<Bill> arrayBill = new ArrayList<>();
     public static ArrayList<BagRow> arrayAdWork = new ArrayList<>();
     public static BagAdapter adWorkAdapter;
@@ -50,16 +54,32 @@ public class AdWork extends Fragment {
         adWorkAdapter = new BagAdapter(getContext(), R.layout.element_bag, arrayAdWork);
         lvAdWork.setAdapter(adWorkAdapter);
 
-        //Duyệt tạm chưa sài db
-        //AnhXa();
+
 
         mData = FirebaseDatabase.getInstance().getReference();
+
+        get_data();
+
+        lvAdWork.setOnItemClickListener((parent, view, position, id) -> {
+            Dialog_click_item(position);
+
+
+        });
+
+
+
+
+        return view;
+    }
+
+    private void get_data(){
         mData.child("Order").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 //Lấy mảng order về và sort theo time
                 Order order = dataSnapshot.getValue(Order.class);
                 if (order != null){
+                    Log.e("1232132111112222222",order.getMSSV());
                     arrayOrder.add(order);
                     sortTime(arrayOrder);
                 }
@@ -86,20 +106,121 @@ public class AdWork extends Fragment {
             }
         });
 
-        lvAdWork.setOnItemClickListener((parent, view, position, id) -> {
-            Dialog_click_item(position);
+        mData.child("Bill").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                RootBill order = dataSnapshot.getValue(RootBill.class);
+                if (order != null){
+                    //arrayMSSV.add(order);
+                }
+            }
 
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
         });
 
+        Handler h = new Handler();
+        h.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                for(int i=0;i<arrayOrder.size();i++) {
+                    final int a = i;
+                    Log.e("AAAAAAAAAAAAAAAAAAAA",String.valueOf(i));
+                    mData.child("Bill").child(arrayOrder.get(i).getMSSV()).child("Order").child(arrayOrder.get(i).getBill()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Log.e("AAAAAAAAAAAAAAAAAAAA","AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                            Bill bill = dataSnapshot.getValue(Bill.class);
+                            for (int j = 0; j < bill.item.size(); j++) {
+                                arrayAdWork.add(new BagRow(bill.item.get(j), bill.getTime(),arrayOrder.get(a)));
+                            }
+                            adWorkAdapter.notifyDataSetChanged();
+                        }
 
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
+                        }
+                    });
+                }
+            }
+        },2000);
 
-        return view;
+        /*
+        mData.child("Bill").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                //Lấy mảng order về và sort theo time
+                BillRoot order = dataSnapshot.getValue(BillRoot.class);
+                if (order != null){
+                    arrayMSSV.add(order);
+                    for(int i=0;i<arrayMSSV.size();i++){
+                        for(int j=0;j<arrayMSSV.get(i).getMssv().getClassOder().getArrayBill().size();j++){
+                            Bill bill = arrayMSSV.get(i).getMssv().getClassOder().getArrayBill().get(j);
+                            if (bill.getStatus().equals("Đang xử lí")){
+                                arrayBill.add(bill);
+                                for(int k=0;k<bill.item.size();k++){
+                                    arrayAdWork.add(new BagRow(bill.item.get(k)));
+                                }
+                                adWorkAdapter.notifyDataSetChanged();
+                            }
+                        }
+
+                    }
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });*/
     }
 
     private void sortTime(ArrayList<Order> arrayList) {
 
+        for(int i=0;i<arrayList.size();i++) {
+            for (int j = i + 1; j < arrayList.size(); j++) {
+                if(arrayList.get(i).getTime().compareTo(arrayList.get(j).getTime())<0){
+                    Order c = arrayList.get(i);
+                    arrayList.set(i, arrayList.get(j));
+                    arrayList.set(j,c);
+                }
+            }
+        }
+        /*
         int i,j;
         for (i = 1; i < arrayList.size(); i++) {
             Order key = arrayList.get(i);
@@ -112,7 +233,7 @@ public class AdWork extends Fragment {
                 time0 = get_time(arrayList.get(--j-1).getTime());
             }
             arrayList.set(j,key);
-        }
+        }*/
     }
 
     private int get_time(String s){
@@ -132,6 +253,7 @@ public class AdWork extends Fragment {
         textView.setText((String.valueOf(temp.getCount())));
 
         final int[] count = new int[1];
+        count[0] = temp.getCount();
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -152,15 +274,19 @@ public class AdWork extends Fragment {
         });
 
         button.setOnClickListener(v -> {
+            Log.e("GGGGGGGGGGGGGGGGGGGGGG","GGGGGGGGGGGGGGGGG");
             if (count[0] > 0){
-                BagRow new_row = new BagRow(temp.getImg(), temp.getName(), temp.getTime(), count[0]);
+                BagRow new_row = new BagRow(temp, count[0], temp.getIdUser(), temp.getIdBIll());
                 if (count[0] == temp.getCount()){
+                    Log.e(String.valueOf(count[0]), String.valueOf(temp.getCount()));
                     arrayAdWork.remove(position);
                 }
                 else {
+                    Log.e(String.valueOf(count[0]), String.valueOf(temp.getCount()));
                     arrayAdWork.get(position).setCount(temp.getCount() - count[0]);
                 }
                 adWorkAdapter.notifyDataSetChanged();
+                Log.e(String.valueOf(count[0]), String.valueOf(temp.getCount()));
 
                 AdMyWork.arrayAdMyWork.add(new_row);
                 AdMyWork.adMyWorkAdapter.notifyDataSetChanged();
@@ -171,18 +297,4 @@ public class AdWork extends Fragment {
 
         dialog.show();
     }
-
-    /*
-    private void AnhXa(){
-        arrayAdWork.add(new BagRow(R.drawable.ck_banh_bao_ba_xiu_2,   "Bánh bao xá xíu 2",
-                "9:50",3));
-        arrayAdWork.add(new BagRow(R.drawable.ck_com_chien,           "Cơm chiên",
-                "9:45",2));
-        arrayAdWork.add(new BagRow(R.drawable.ck_fruit_whole_nodish,  "Fruit whole nodish",
-                "9:30",3));
-        arrayAdWork.add(new BagRow(R.drawable.ck_salad_caron,         "Salad caron",
-                "9:20",5));
-        arrayAdWork.add(new BagRow(R.drawable.ck_single_banana,       "Single banana",
-                "8:55",1));
-    }*/
 }

@@ -262,12 +262,4 @@ public class AdRecharge extends Fragment {
 
         alertDialog.show();
     }
-
-    private void AnhXa() {
-        arrayAdRecharge.add(new User("1713015", "Nguyễn Đức Anh", "Tài"));
-        arrayAdRecharge.add(new User("1711445", "Đoàn Thái", "Học"));
-        arrayAdRecharge.add(new User("1712281", "Lê Thị Kim", "Ngân"));
-        arrayAdRecharge.add(new User("1714050", "Nguyễn Khải", "Vy"));
-        arrayAdRecharge.add(new User("1711354", "Hà Huy", "Hiệu"));
-    }
 }
