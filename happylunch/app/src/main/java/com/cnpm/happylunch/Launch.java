@@ -197,7 +197,7 @@ public class Launch extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 App.employees.add(dataSnapshot.getValue(Employee.class));
-                Log.e("AAAAAAAAAAAAAAAAAAAAAAAA", "EMEMEMEMMEMEMEMEMEMEMMEME");
+                Log.e("AAAAAAAAAA", "EMEMEMEMMEMEMEMEMEMEMMEME");
             }
 
             @Override
